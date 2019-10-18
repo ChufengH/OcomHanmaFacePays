@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="1100dp"
+             android:layout_height="wrap_content"
+             android:padding="24dp">
+
+
+    <View
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+
+    <LinearLayout
+            android:id="@+id/payinput_moneyContainer"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:background="@drawable/shape_money_edittext"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:textColor="@color/common_text"
+                android:text="￥"
+                android:textSize="46sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <AutoCompleteTextView
+                android:id="@+id/tv_input"
+                android:layout_width="match_parent"
+                android:layout_height="86dp"
+                android:hint="请输入金额"
+                android:paddingStart="5dp"
+                android:textSize="38sp"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"/>
+    </LinearLayout>
+
+
+</FrameLayout>

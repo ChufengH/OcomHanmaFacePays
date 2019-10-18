@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/payinput_container"
+        android:background="@drawable/ic_orange"
+        android:keepScreenOn="true">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:id="@+id/payinput_moneyContainer"
+                android:layout_marginTop="80dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="5dp"
+                android:background="@drawable/shape_money_edittext"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:textColor="@color/common_text"
+                    android:text="￥"
+                    android:textSize="46sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <EditText
+                    android:id="@+id/payinput_moneyEdt"
+                    android:background="@null"
+                    android:hint="等待输入金额"
+                    android:textColor="@color/common_text"
+                    android:paddingStart="5dp"
+                    android:textSize="38sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"/>
+        </LinearLayout>
+
+
+        <TextView
+                android:id="@+id/payinput_constartPayView"
+                android:visibility="invisible"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/payinput_moneyContainer"
+                android:text="定值消费模式"
+                android:textColor="@color/common_container_background_orange"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

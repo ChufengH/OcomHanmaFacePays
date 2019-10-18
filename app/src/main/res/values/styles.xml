@@ -1,0 +1,136 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/app_theme</item>
+        <item name="colorPrimaryDark">@color/common_status_bar</item>
+        <item name="colorAccent">@color/app_theme</item>
+        <item name="android:textColorPrimary">@color/common_text_subtitle</item>
+        <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowNoTitle">true</item>//无标题
+        <item name="windowActionBar">false</item>//无ActionBar
+        <item name="android:windowFullscreen">true</item>//全屏即无通知栏
+        <item name="android:windowContentOverlay">@null</item>//是否有遮盖
+    </style>
+
+
+
+
+    <!--        textInputLayout样式             -->
+    <style name="TextInputLayoutErrorTextAppTheme">
+        <item name="android:textColor">@color/common_edittext_error_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextInputLayoutHintTextAppTheme">
+        <item name="android:textColor">@color/common_text_white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <!--                dialog样式                   -->
+    <!--默认 Style-->
+    <style name="dialogDefault" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+    </style>
+
+    <style name="lightDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert"/>
+
+    <!--switch开关样式-->
+    <style name="SwitchTheme" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/color_switch_text</item>
+    </style>
+
+    <!--虚拟键盘样式-->
+    <style name="MoneyKeyBroadTextView">
+        <item name="android:background">@drawable/selector_moneykeybroad</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/common_text</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_width">0dp</item>
+
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <style name="MoneyKeyBroadTextView_Delete">
+        <item name="android:background">@drawable/selector_moneykeybroad_delete</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/common_text</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_width">0dp</item>
+
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MoneyKeyBroadTextView_Clear">
+        <item name="android:background">@drawable/selector_moneykeybroad_clear</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/common_text</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_width">0dp</item>
+
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <style name="MoneyKeyBroadTextView_Confirm">
+        <item name="android:background">@drawable/selector_moneykeybroad_confrim</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/common_text</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_width">0dp</item>
+
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--动画-->
+    <!-- 从下往上滑出动画-->
+    <style name="anim_bottomTopVertical">
+        <item name="android:windowEnterAnimation">@anim/anim_vertical_bottom_to_top_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_vertical_bottom_to_top_out</item>
+    </style>
+
+    <!--<style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">-->
+        <!--<item name="android:background">@color/black_overlay</item>-->
+    <!--</style>-->
+
+    <declare-styleable name="CustomStatusView">
+        <attr name="progress_color" format="color" />
+        <attr name="progress_width" format="dimension" />
+        <attr name="progress_radius" format="dimension" />
+        <attr name="load_success_color" format="color" />
+        <attr name="load_failure_color" format="color" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/menu_setting_settingsBtn"
+            android:enabled="true"
+            android:icon="@drawable/selector_nav_setting"
+            android:title="常规设置"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/menu_setting_tradeBtn"
+            android:enabled="true"
+            android:icon="@drawable/selector_nav_trade"
+            android:title="交易记录"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/menu_setting_summary_Btn"
+            android:enabled="true"
+            android:icon="@drawable/selector_nav_summary"
+            android:title="按日汇总"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/menu_setting_aboutBtn"
+            android:enabled="true"
+            android:icon="@drawable/selector_nav_about"
+            android:title="关于本机"
+            app:showAsAction="ifRoom" />
+
+
+</menu>

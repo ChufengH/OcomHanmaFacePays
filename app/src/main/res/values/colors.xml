@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#962F56</color>
+
+    <color name="app_theme">#03A9F4</color>
+
+    <color name="shadow80">#80808080</color>
+    <color name="color_gray80">#80808080</color>
+    <color name="_8c">#8c8c8c</color>
+
+
+    <!--                              全局公有的                      -->
+    <color name="common_status_bar">#0288D1</color><!--状态栏颜色-->
+    <color name="common_img_background">#DBDBDB</color><!--图片背景颜色-->
+    <color name="common_text">#212121</color><!--文字颜色-->
+    <color name="common_text_subtitle">#BDBDBD</color><!--副标题-->
+    <color name="common_text_white">#FFFFFFFF</color><!--文字颜色 白色-->
+
+
+    <color name="common_tran">#00000000</color><!--全透明-->
+    <color name="common_half_tran_white">#50ffffff</color><!--半透明白色-->
+    <color name="common_edittext_text">#ff2c2c2c</color><!--输入的文字颜色-->
+    <color name="common_edittext_error_text">#FFCC0000</color><!--输入错误提示文字颜色-->
+    <color name="common_edittext_sub">#FF808080</color><!--副文本-->
+
+    <color name="common_container_background">#FFFFFFFF</color><!--容器vierw的背景颜色-->
+    <color name="common_container_background_white">#FFFFFFFF</color><!--容器view背景颜色（白色）-->
+    <color name="common_container_background_orange">#ffff8800</color><!--容器view背景颜色（橘色）-->
+    <color name="common_container_background_green">#ff99cc00</color><!--容器view背景颜色（橘色）-->
+    <color name="common_container_background_red">#ffcc0000</color><!--容器view背景颜色（橘色）-->
+    <color name="common_container_background_deepGreen">#003333</color><!--容器view背景颜色（深绿）-->
+    <color name="common_container_background_lightGreen">#FF336666</color><!--容器view背景颜色（浅绿）-->
+
+    <color name="load_success">#FF4CAF50</color>
+    <color name="load_failure">#de0e26</color>
+    <color name="loading">#ffff8800</color>
+    
+    <color name="common_clip_line">#88888888</color><!--分割线颜色-->
+    <color name="green">#7CFC00</color>
+    <color name="red">#ff0006</color>
+
+
+
+</resources>

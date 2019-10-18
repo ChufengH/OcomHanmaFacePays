@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <RelativeLayout
+            android:id="@+id/pay_title"
+            android:background="@color/app_theme"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+        <TextView
+                android:textSize="22sp"
+                android:textColor="@android:color/white"
+                android:layout_centerInParent="true"
+                android:text="@string/pay_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        <TextView
+                android:id="@+id/pay_reciprocal"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/back"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/pay_userImg"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/app_theme"
+                    app:civ_border_overlay="true"/>
+
+        </LinearLayout>
+
+
+        <TextView
+                android:layout_marginTop="10dp"
+                android:background="@color/common_clip_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        <LinearLayout
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <com.ocom.hanmafacepay.ui.widget.CustomStatusView
+                    android:id="@+id/as_status"
+                    android:padding="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:load_failure_color="@color/load_failure"
+                    app:load_success_color="@color/load_success"
+                    app:progress_color="@color/load_success"
+                    app:progress_radius="82dp"
+                    app:progress_width="3dp"/>
+            <TextView
+                    android:id="@+id/pay_statusTv"
+                    android:layout_marginTop="15dp"
+                    android:textSize="28sp"
+                    android:text="@string/paying"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <TextView
+                android:id="@+id/pay_moneyTv"
+                android:layout_marginTop="10dp"
+                android:textSize="34sp"
+                android:textColor="@color/common_text_white"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/pay_failReasonTv"
+                android:layout_marginTop="5dp"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

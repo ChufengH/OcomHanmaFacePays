@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_rain"
+        android:keepScreenOn="true"
+        android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:padding="10dp">
+        <com.ocom.hanmafacepay.ui.widget.FocusedTextView
+                android:id="@+id/device_noTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="45dp"
+                android:textColor="@color/common_text_white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        <com.ocom.hanmafacepay.ui.widget.FocusedTextView
+                android:id="@+id/tv_offline_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="当前还有0个离线订单等待上传"
+                android:textColor="@color/common_container_background_red"
+                android:textSize="27sp" />
+
+        <com.ocom.hanmafacepay.ui.widget.FocusedTextView
+                android:id="@+id/payhome_amountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/tv_offline_hint"
+                android:layout_marginBottom="60dp"
+                android:text="定值消费: 30元"
+                android:textColor="@color/common_text_white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+        <LinearLayout
+                android:id="@+id/payhome_timeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/shape_home_time"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+            <TextClock
+                    android:id="@+id/payhome_yearTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format12Hour="yyyy"
+                    android:format24Hour="yyyy"
+                    android:textColor="@color/common_text_white"
+                    android:textSize="60sp"
+                    android:textStyle="bold" />
+
+            <TextClock
+                    android:id="@+id/payhome_monthDayTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format12Hour="MM月dd日"
+                    android:format24Hour="MM月dd日"
+                    android:textColor="@color/common_text_white"
+                    android:textSize="60sp"
+                    android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <ImageView
+                android:id="@+id/payhome_settingBtn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_settings_48dp" />
+
+        <TextClock
+                android:id="@+id/payhome_nowTimeTextClock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/payhome_timeContainer"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="85dp"
+                android:format24Hour="HH:mm:ss"
+                android:gravity="center"
+                android:textColor="@color/common_container_background_white"
+                android:textSize="58sp"
+                android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+    <Button
+            android:id="@+id/initDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册初始化设备"
+            android:visibility="gone" />
+
+
+    <LinearLayout
+            android:id="@+id/ll_refund"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/common_text_white" />
+
+        <TextView
+                android:id="@+id/payhome_cancelOrderBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_half_tran_white"
+                android:gravity="center"
+                android:text="￥退款"
+                android:textColor="@color/common_text_white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/common_text_white" />
+
+        <TextView
+                android:id="@+id/payhome_payBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingTop="30dp"
+                android:background="@color/common_half_tran_white"
+                android:text="￥支付"
+                android:textColor="@color/common_text_white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

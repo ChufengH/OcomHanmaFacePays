@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/shape_setting_tag">
+
+
+    <TextView
+            android:textSize="10sp"
+            android:text="交易时间"
+            android:textColor="@color/common_text_white"
+            android:gravity="center"
+            android:layout_weight="0.20"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:background="@color/common_text_white"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:textSize="9sp"
+            android:text="订单类型"
+            android:textColor="@color/common_text_white"
+            android:gravity="center"
+            android:layout_weight="0.15"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:background="@color/common_text_white"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:textSize="10sp"
+            android:text="订单流水"
+            android:textColor="@color/common_text_white"
+            android:gravity="center"
+            android:layout_weight="0.30"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:background="@color/common_text_white"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+    <TextView
+            android:textSize="10sp"
+            android:text="用户ID"
+            android:textColor="@color/common_text_white"
+            android:gravity="center"
+            android:layout_weight="0.20"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:background="@color/common_text_white"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    <TextView
+            android:textSize="10sp"
+            android:text="交易金额"
+            android:textColor="@color/common_text_white"
+            android:gravity="center"
+            android:layout_weight="0.16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+</LinearLayout>

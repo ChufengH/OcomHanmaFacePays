@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:orientation="vertical"
+android:background="#FF567777">
+    <TextView
+            android:background="@color/common_clip_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+    <RelativeLayout
+
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:gravity="center"
+                android:id="@+id/dialog_payway_closeBtn"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <ImageView
+
+                    android:src="@drawable/ic_keyboard_backspace_white_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+            <TextView
+                    android:textSize="14sp"
+                    android:text="返回"
+                    android:textColor="@color/common_container_background_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+
+        <TextView
+                android:textSize="20sp"
+                android:text="请选择支付方式"
+                android:layout_centerInParent="true"
+                android:textColor="@color/common_container_background_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:id="@+id/dialog_payway_cardBtn"
+                android:gravity="center"
+                android:background="@drawable/shape_payway_btn"
+                android:orientation="vertical"
+                android:layout_weight="0.3"
+                android:layout_width="0dp"
+                android:layout_height="120dp">
+            <ImageView
+                    android:src="@drawable/icon_scancard"
+                    android:layout_width="48dp"
+                      android:layout_height="48dp"/>
+
+
+            <TextView
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    android:text="刷卡支付"
+                    android:textColor="@color/common_text_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:id="@+id/dialog_payway_faceBtn"
+                android:gravity="center"
+                android:background="@drawable/shape_payway_btn"
+                android:orientation="vertical"
+                android:layout_weight="0.3"
+                android:layout_width="0dp"
+                android:layout_height="120dp">
+            <ImageView
+
+                    android:src="@drawable/icon_scanface"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
+
+
+            <TextView
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    android:text="扫脸支付(推荐)"
+                    android:textColor="@color/common_text_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/dialog_payway_qrCodeBtn"
+                android:gravity="center"
+                android:background="@drawable/shape_payway_btn"
+                android:orientation="vertical"
+                android:layout_weight="0.3"
+                android:layout_width="0dp"
+                android:layout_height="120dp">
+            <ImageView
+                    android:src="@drawable/icon_scanqrcord"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
+
+
+            <TextView
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    android:text="扫码支付"
+                    android:textColor="@color/common_text_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+        android:background="@drawable/shape_setting_item"
+    android:layout_height="48dp">
+
+    <TextView
+        android:id="@+id/item_timeTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.20"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="@color/common_text_white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/common_text_white" />
+
+    <Button
+        android:id="@+id/refund_btn"
+        android:layout_width="0dp"
+        android:layout_margin="12dp"
+        android:layout_height="match_parent"
+            android:visibility="gone"
+        android:layout_weight="0.15"
+        android:text="退款"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:textColor="@color/common_text_white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/item_tradeStatusTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/common_text_white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/common_text_white" />
+
+    <TextView
+        android:id="@+id/item_cardNumTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.30"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/common_text_white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/common_text_white" />
+
+    <TextView
+        android:id="@+id/item_userNameTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.20"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/common_text_white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/common_text_white" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.16"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/item_moneyTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/common_text_white"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</LinearLayout>

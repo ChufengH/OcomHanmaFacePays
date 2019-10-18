@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:minHeight="200dp"
+        android:padding="48dp">
+
+    <TextView
+            android:id="@+id/card_title_tv"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_marginTop="18dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/common_text_white" />
+
+    <TextView
+            android:id="@+id/breakfast_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_marginLeft="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="59dp" />
+
+    <TextView
+            android:id="@+id/afternoon_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="94dp" />
+
+    <TextView
+            android:id="@+id/dinner_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="129dp" />
+
+    <TextView
+            android:id="@+id/evening_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="164dp" />
+
+    <TextView
+            android:id="@+id/other_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="199dp" />
+
+    <TextView
+            android:id="@+id/total_tv"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="234dp"
+            android:gravity="end" />
+</com.google.android.material.card.MaterialCardView>
