@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
@@ -19,10 +18,8 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ServiceUtils
 import com.example.android.observability.Injection
 import com.google.gson.Gson
-import com.hanma.faceservice.BitMapUtil
 import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
-import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.*
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
@@ -128,21 +125,8 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
             ll_refund.visibility = GONE
         }
         updateConstantPayHint()
-//        testInstall()
-//        val bitmap = BitmapFactory.decodeStream(assets.open("7086.jpg"));
-//        val rgbBytes = BitMapUtil.getRGBFromBMP(bitmap)
-//        FaceServiceManager.getInstance().addRunnable {
-//            val ret = FaceServiceManager.getInstance()
-//                .registerUserByImage("7086", rgbBytes, bitmap.width, bitmap.height)
-//            log("注册7086成功$ret")
-//        }
         super.onResume()
     }
-
-//    private fun testInstall() = launch(Dispatchers.IO) {
-//        Log.d("HomeActivity", "testInstall 开始拷贝")
-//        InstallUtil().copyApk(null, this@HomeActivity)
-//    }
 
     private fun updateConstantPayHint() {
         if (CommonProcess.getSettingIsUseConstantMoney()) {
@@ -311,16 +295,16 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                 str = mInputTv?.text.toString()
                 if (str.isNotEmpty()) {
                     TTSUtils.startAuto(mTTS, str + "元")
-                    async(Dispatchers.IO) { reSendKeyboardNumber(str) }
+                    launch(Dispatchers.IO) { reSendKeyboardNumber(str) }
                 } else {
                     // ToastUtil.showShortToast("0")
                     TTSUtils.startAuto(mTTS, "已清零")
-                    async(Dispatchers.IO) { reSendKeyboardNumber("0") }
+                    launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
                 }
 
             } else {
                 TTSUtils.startAuto(mTTS, "已清零")
-                async(Dispatchers.IO) { reSendKeyboardNumber("0") }
+                launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
             }
         }
     }
