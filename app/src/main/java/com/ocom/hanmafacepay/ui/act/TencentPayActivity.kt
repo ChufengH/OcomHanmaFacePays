@@ -1,6 +1,7 @@
 package com.ocom.hanmafacepay.ui.act
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -89,7 +90,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         /**
          * 人脸支付
          */
-        fun jump4PayFace(activity: BaseActivity, money: Int, userId: String) {
+        fun jump4PayFace(activity: Activity, money: Int, userId: String) {
             val intent = Intent(activity, TencentPayActivity::class.java)
             val bundle = Bundle()
             val event = PayEvent(money, userId, if (OFFLINE_MODE) 1 else 0)

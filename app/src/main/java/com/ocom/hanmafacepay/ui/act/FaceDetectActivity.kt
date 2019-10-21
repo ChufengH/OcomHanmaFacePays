@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
+import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.const.KEY_USER_ID
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.ioToMain
@@ -102,10 +103,16 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
 
     private fun finishWithUserId(userId: String) {
-        val intent = Intent()
-        intent.putExtra(KEY_USER_ID, userId)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+        //如果定值消费,那么直接跳消费
+        if (mContantHint != null) {
+            TencentPayActivity.jump4PayFace(this, CommonProcess.getSettingConstantMoney(),
+                userId)
+        } else {
+            val intent = Intent()
+            intent.putExtra(KEY_USER_ID, userId)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 
     /**
