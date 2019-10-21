@@ -68,11 +68,14 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
             tv_description.text = mContantHint ?: "检测中...."
             mFaceRectView.clearRect()
         } else {
-            mFaceRectView.drawFaceRect(faces, 640, 640)
-            tv_description.text = "检测到人脸,请稍等"
-            p0?.run {
-                if (!mIsRegistering)
-                    getUserIdAsync(this)
+            //不在支付的时候才识别
+            if (!mIsPaying) {
+                mFaceRectView.drawFaceRect(faces, 640, 640)
+                tv_description.text = "检测到人脸,请稍等"
+                p0?.run {
+                    if (!mIsRegistering)
+                        getUserIdAsync(this)
+                }
             }
         }
     }
@@ -100,13 +103,21 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     }
 
     private var mIsRegistering = false
+    private var mIsPaying = false
 
+    override fun onResume() {
+        super.onResume()
+        mIsPaying = false;
+    }
 
     private fun finishWithUserId(userId: String) {
         //如果定值消费,那么直接跳消费
         if (mContantHint != null) {
-            TencentPayActivity.jump4PayFace(this, CommonProcess.getSettingConstantMoney(),
-                userId)
+            mIsPaying = true;
+            TencentPayActivity.jump4PayFace(
+                this, CommonProcess.getSettingConstantMoney(),
+                userId
+            )
         } else {
             val intent = Intent()
             intent.putExtra(KEY_USER_ID, userId)
