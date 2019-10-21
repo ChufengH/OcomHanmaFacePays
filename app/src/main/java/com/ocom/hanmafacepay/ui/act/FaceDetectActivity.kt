@@ -51,7 +51,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     private val disposable = CompositeDisposable()
     //标记是否是定值消费模式
     private var mContantHint: String? = null;
-
+    private val mBroadcastReceiver = FaceDetectBroadcastReceiver()
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_face_detect)
         super.onCreate(savedInstanceState)
