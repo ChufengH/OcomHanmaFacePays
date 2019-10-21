@@ -136,12 +136,16 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     .doOnSubscribe { payhome_amountTv.visibility = VISIBLE }
                     .subscribe { it ->
                         val limit = it.find { it.isInRange(it.amount) }
-                        if (limit != null) {
+                        if (limit != null && CommonProcess.getSettingConstantMoney() != limit.amount) {
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
                                 "${limit.meal_section}消费: ${limit.amount / 100f}元"
+                            start(FaceDetectActivity::class.java)
                         } else {
                             payhome_amountTv.text = "不在指定时间段, 暂停消费"
+                            val intent =
+                                Intent().apply { action = FaceDetectActivity.ACTION_SHUT_DOWN }
+                            sendBroadcast(intent)
                         }
                     }
             )
@@ -253,7 +257,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                         mInputTv?.setText("")
                         mInputDialog?.dismiss()
                         TTSUtils.startAuto(mTTS, "已清零")
-                        async(Dispatchers.IO) { reSendKeyboardNumber("0") }
+                        launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
                     }
                 }
             }
@@ -268,7 +272,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     mInputDialog = showMoneyInputDialog(moneyStr!!)
                 }
                 mInputDialog?.show()
-                async(Dispatchers.IO) {
+                launch(Dispatchers.IO) {
                     reSendKeyboardNumber(keyName)
                 }
             } else {
@@ -486,7 +490,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         )
     }
 
-    private fun onPayEventAsync(payEvent: PayEvent) = async(Dispatchers.IO) {
+    private fun onPayEventAsync(payEvent: PayEvent) = launch(Dispatchers.IO) {
         withContext(Dispatchers.Main) {
             if (!mLoadingDialog.isShowing && payEvent.offline == 0) {
                 mLoadingDialog.show()
@@ -524,7 +528,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     }
 
 
-    private fun offlinePayAsync(payEvent: PayEvent) = async(Dispatchers.IO) {
+    private fun offlinePayAsync(payEvent: PayEvent) = launch(Dispatchers.IO) {
         //离线消费
         val mealLimits = viewModel.getAllMealLimits().blockingGet()
 //        val policy = viewModel.getPolicyLimitForUser(payEvent.userId).blockingGet()
@@ -759,7 +763,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             checkPassword(oldTv, newTv)
         }
-        builder.setNeutralButton("默认密码"){_,_->
+        builder.setNeutralButton("默认密码") { _, _ ->
             CommonProcess.settingPassword = "123321"
             ToastUtil.showLongToastCenter("密码已恢复!")
         }
