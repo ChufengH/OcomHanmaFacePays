@@ -2,8 +2,8 @@ package com.ocom.hanmafacepay
 
 import android.app.Application
 import android.content.Intent
-import android.media.FaceDetector
 import android.util.Log
+import com.blankj.utilcode.util.ShellUtils
 import com.ocom.hanmafacepay.const.Constant
 import com.ocom.hanmafacepay.ui.act.LauncherActivity
 import com.ocom.hanmafacepay.util.FileLogUtil
