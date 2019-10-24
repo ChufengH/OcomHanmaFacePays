@@ -136,12 +136,13 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     .doOnSubscribe { payhome_amountTv.visibility = VISIBLE }
                     .subscribe { it ->
                         val limit = it.find { it.isInRange(it.amount) }
-                        if (limit != null && CommonProcess.getSettingConstantMoney() != limit.amount) {
+                        if (limit != null) {
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
                                 "${limit.meal_section}消费: ${limit.amount / 100f}元"
-                            start(FaceDetectActivity::class.java)
+                            btn_start_constant_pay.visibility = VISIBLE
                         } else {
+                            btn_start_constant_pay.visibility = GONE
                             payhome_amountTv.text = "不在指定时间段, 暂停消费"
                             val intent =
                                 Intent().apply { action = FaceDetectActivity.ACTION_SHUT_DOWN }
@@ -159,6 +160,9 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         val about_version_text = "当前应用版本：" + AppUtils.getAppVersionName()
         val about_deviceTv_text = "设备编号: $DEVICE_NUMBER"
         device_noTv.text = "$about_deviceTv_text"
+        btn_start_constant_pay.setOnClickListener {
+            FaceDetectActivity.start(this,payhome_amountTv.text.toString())
+        }
         payhome_settingBtn.setOnClickListener {
             //设置
             if (mIsAdmin) {

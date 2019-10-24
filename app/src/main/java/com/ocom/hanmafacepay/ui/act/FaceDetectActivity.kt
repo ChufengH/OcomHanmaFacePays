@@ -83,12 +83,14 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onStart() {
         super.onStart()
         com.hanma.fcd.CameraUtil.turnOnLight()
-        disposable.add(Maybe.timer(10, TimeUnit.SECONDS)
-            .ioToMain()
-            .subscribe {
-                finishWithUserId("")
-            }
-        )
+        if (mContantHint.isNullOrEmpty()) {
+            disposable.add(Maybe.timer(10, TimeUnit.SECONDS)
+                .ioToMain()
+                .subscribe {
+                    finishWithUserId("")
+                }
+            )
+        }
     }
 
     override fun onStop() {
