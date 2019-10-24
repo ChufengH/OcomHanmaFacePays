@@ -137,6 +137,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     .subscribe { it ->
                         val limit = it.find { it.isInRange(it.amount) }
                         if (limit != null) {
+                            log("发送广播--->")
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
                                 "${limit.meal_section}消费: ${limit.amount / 100f}元"

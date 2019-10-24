@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.hardware.Camera
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.TextUtils
 import com.ocom.hanmafacepay.FaceServiceManager
@@ -57,6 +59,10 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
         tv_description.text = mContantHint ?: "检测中...."
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(ACTION_SHUT_DOWN)
+        }
+        registerReceiver(mBroadcastReceiver,filter)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -106,6 +112,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(mBroadcastReceiver)
         mCameraHelper.stopCamera()
         disposable.dispose()
     }
@@ -156,6 +163,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         override fun onReceive(context: Context?, intent: Intent?) {
             context ?: return
             intent ?: return
+            log("收到广播")
             if (TextUtils.equals(intent.action, ACTION_SHUT_DOWN)) {
                 this@FaceDetectActivity.finish()
             }

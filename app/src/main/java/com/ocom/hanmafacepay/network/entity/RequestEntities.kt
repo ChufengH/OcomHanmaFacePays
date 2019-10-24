@@ -27,7 +27,7 @@ data class PayRequest(@AutoField("device_no") val device_no:String,
 data class OrderStatusRequest(val device_no: String, val trade_no:String,
                               val timestamp:String, val sign:String,val userid: String="")
 
-data class UpdateStatusRequest(val status:Int = 0)
+data class UpdateStatusRequest(val device_no: String,val status:Int = 0)
 
 
 //@Body device_no: String,//设备号

@@ -1,7 +1,6 @@
 package com.ocom.hanmafacepay.mvp.datasource
 
 import android.text.TextUtils
-import com.blankj.utilcode.util.AppUtils
 import com.ocom.hanmafacepay.const.DEVICE_NUMBER
 import com.ocom.hanmafacepay.const.OFFLINE_MODE
 import com.ocom.hanmafacepay.const.SIGN
@@ -20,6 +19,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
 
 class HomeDataSource(val mIHomeView: IHomeView) :
@@ -53,9 +53,9 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                             getRiskControlInfo()
                         if (it?.needUpdateUsers() == true)
                             updateUsers()
-                        if (it?.needUpdateSoft() == true)
-//                            downloadSoft(it.downloadUrl)
-                            downloadSoft("http://61.129.251.161:6006/api/ocom/firmwareImage?version=1_4_5")
+                        if (it?.needUpdateSoft() == true) {
+                            downloadSoft(it.downloadUrl)
+                        }
                     }
                 })
         )
@@ -202,7 +202,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
 
     fun updateStatus() {
         addSubscription(
-            mAPIWrapper.updateStatus(UpdateStatusRequest())
+            mAPIWrapper.updateStatus(UpdateStatusRequest(DEVICE_NUMBER))
                 .ioToMain().subscribe({
                     log("update status success")
                     log("downloadSoft complete start install")
@@ -216,14 +216,16 @@ class HomeDataSource(val mIHomeView: IHomeView) :
 
     private var mDownloadUrl: String = ""
     fun downloadSoft(path: String) {
-        if (TextUtils.isEmpty(path) || TextUtils.equals(path, mDownloadUrl))
+        if (TextUtils.isEmpty(path) || mDownloadUrl.contains(path))
             return
-        if (AppUtils.getAppVersionCode() != 5)
-            return
-        mDownloadUrl = path
+        if (!path.startsWith("http")) {
+            mDownloadUrl = "http://$path"
+        }else{
+            mDownloadUrl = path
+        }
         log("开始下载${mDownloadUrl}")
         addSubscription(
-            mAPIWrapper.downloadFileWithDynamicUrlSync(path)
+            mAPIWrapper.downloadFileWithDynamicUrlSync(mDownloadUrl)
                 .map { body ->
                     var inputStream: InputStream? = null
                     var outputStream: OutputStream? = null
