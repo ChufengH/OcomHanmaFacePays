@@ -62,7 +62,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
             addAction(ACTION_SHUT_DOWN)
         }
-        registerReceiver(mBroadcastReceiver,filter)
+        registerReceiver(mBroadcastReceiver, filter)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -72,6 +72,9 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
 
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
+//        if (!mIsPaying) {
+//            finishWithUserId("6028")
+//        }
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
         val faces = FaceServiceManager.getInstance().getFacesDrawByYuvData(
             p0, mCameraHelper.previewSize.width, mCameraHelper.previewSize.height

@@ -347,7 +347,8 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private fun back() {
         TTSUtils.shutDownAuto(mTTS)
         countdonwDispose?.dispose()
-        startWithFinish(HomeActivity::class.java)
+//        startWithFinish(HomeActivity::class.java)
+        finish()
     }
 
 
