@@ -55,7 +55,13 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_face_detect)
         super.onCreate(savedInstanceState)
-        mContantHint = intent.getStringExtra(KEY_CONSTANT_HINT)
+        mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
+        tv_description.text = mContantHint ?: "检测中...."
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
     }
 
 

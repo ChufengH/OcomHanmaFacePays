@@ -32,9 +32,9 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
-//        GlobalScope.launch {
-//            FaceServiceManager.getInstance().Init(this@FacePayApplication)
-//        }
+        GlobalScope.launch {
+            FaceServiceManager.getInstance().Init(this@FacePayApplication)
+        }
         initBugly()
     }
 
