@@ -153,6 +153,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
             )
         } else {
             payhome_amountTv.visibility = GONE
+            btn_start_constant_pay.visibility = GONE
         }
     }
 
