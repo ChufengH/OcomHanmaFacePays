@@ -7,6 +7,7 @@ import android.view.SurfaceView
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.hanma.faceservice.RealandApplication
+import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.util.extension.REQUEST_ALL_PERMISSION
 import com.ocom.hanmafacepay.util.extension.hasPermissions
@@ -18,7 +19,7 @@ import dou.helper.CameraParams
 import dou.utils.DeviceUtil
 import java.lang.ref.WeakReference
 
-abstract class BaseCameraActivity : AppCompatActivity() {
+abstract class BaseCameraActivity : BaseKeybroadActivity() {
 
     /**
      * 默认相机参数
@@ -27,7 +28,9 @@ abstract class BaseCameraActivity : AppCompatActivity() {
         CameraParams().apply {
             // 优先使用的camera Id,
             firstCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
-            surfaceView = mCameraPreviewView
+            mCameraPreviewView?.let {
+                surfaceView = mCameraPreviewView
+            }
             preview_width = 640
             preview_height = 640
 

@@ -23,17 +23,18 @@ public class FileLogUtil {
     public static final int I = 3;
     public static final int W = 4;
     public static final int E = 5;
+    private static String mLogPath = FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log";
 
     public FileLogUtil() {
     }
 
     public static void clearCache() {
-        FileUtil.writeFile(FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log",
+        FileUtil.writeFile(mLogPath,
                 "log0:\n", false);
     }
 
     public static File getLogFile() {
-        return new File(FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log");
+        return new File(mLogPath);
     }
 
     public static void time(String tag) {
@@ -133,29 +134,20 @@ public class FileLogUtil {
 
             String logStr = stringBuilder.toString();
             if (mWrite) {
-                String filePath = FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log";
-                File file = new File(filePath);
                 if (mFileDisposable != null && !mFileDisposable.isDisposed())
                     mFileDisposable.dispose();
                 //超过20MB清除缓存
-                mFileDisposable = Maybe.just(file)
+                mFileDisposable = Maybe.just(mLogPath)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
-                        .subscribe(new Consumer<File>() {
-                            @Override
-                            public void accept(File file) throws Exception {
-                                if (file.exists() && file.length() > 20 * 1024 * 1024) {
-                                    clearCache();
-                                }
-                                FileUtil.writeFile(filePath, stamp + " ----> " + tag + " : " + logStr + "\n", true);
+                        .subscribe(path -> {
+                            File file = new File(path);
+                            if (file.exists() && file.length() > 20 * 1024 * 1024) {
+                                clearCache();
+                            }
+                            FileUtil.writeFile(path, stamp + " ----> " + tag + " : " + logStr + "\n", true);
 
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                throwable.printStackTrace();
-                            }
-                        });
+                        }, Throwable::printStackTrace);
             } else {
                 switch (type) {
                     case 1:

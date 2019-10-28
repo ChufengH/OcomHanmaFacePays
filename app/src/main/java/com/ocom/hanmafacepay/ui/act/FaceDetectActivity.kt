@@ -54,16 +54,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     //标记是否是定值消费模式
     private var mContantHint: String? = null;
     private val mBroadcastReceiver = FaceDetectBroadcastReceiver()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_face_detect)
-        super.onCreate(savedInstanceState)
-        mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
-        tv_description.text = mContantHint ?: "检测中...."
-        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
-            addAction(ACTION_SHUT_DOWN)
-        }
-        registerReceiver(mBroadcastReceiver, filter)
-    }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -168,5 +158,23 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                 this@FaceDetectActivity.finish()
             }
         }
+    }
+    override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
+    }
+
+    override fun onKeybroadKeyUp(keyCode: Int, keyName: String) {
+    }
+
+    override fun onActivityCreat(savedInstanceState: Bundle?) {
+        mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
+        tv_description.text = mContantHint ?: "检测中...."
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(ACTION_SHUT_DOWN)
+        }
+        registerReceiver(mBroadcastReceiver, filter)
+    }
+
+    override fun setAttachLayoutRes(): Int {
+        return R.layout.activity_face_detect;
     }
 }

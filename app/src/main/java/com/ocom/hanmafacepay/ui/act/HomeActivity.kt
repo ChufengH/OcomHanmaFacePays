@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.hardware.Camera
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
@@ -18,8 +19,8 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ServiceUtils
 import com.example.android.observability.Injection
 import com.google.gson.Gson
-import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
+import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.*
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
@@ -50,7 +51,20 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetStateChangeObserver {
+class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateChangeObserver {
+
+    override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
+        FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
+        p0 ?: return
+        val users = mutableListOf<String>()
+        val iw = mCameraHelper.previewSize.width
+        val ih = mCameraHelper.previewSize.height
+        val result = FaceServiceManager.getInstance()
+            .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
+        if (result == 1 && users.isNotEmpty()) {
+            log("识别成功!$users[0]")
+        }
+    }
 
     private val job = SupervisorJob()
 
@@ -163,7 +177,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         val about_deviceTv_text = "设备编号: $DEVICE_NUMBER"
         device_noTv.text = "$about_deviceTv_text"
         btn_start_constant_pay.setOnClickListener {
-            FaceDetectActivity.start(this,payhome_amountTv.text.toString())
+            FaceDetectActivity.start(this, payhome_amountTv.text.toString())
         }
         payhome_settingBtn.setOnClickListener {
             //设置
