@@ -56,15 +56,23 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
         p0 ?: return
-        val users = mutableListOf<String>()
-        val iw = mCameraHelper.previewSize.width
-        val ih = mCameraHelper.previewSize.height
-        val result = FaceServiceManager.getInstance()
-            .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
-        if (result == 1 && users.isNotEmpty()) {
-            log("识别成功!$users[0]")
+        if (!mIsWaitingFaceDetect) return
+        if (CommonProcess.getSettingIsUseConstantMoney()) {
+            val users = mutableListOf<String>()
+            val iw = mCameraHelper.previewSize.width
+            val ih = mCameraHelper.previewSize.height
+            val result = FaceServiceManager.getInstance()
+                .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
+            if (result == 1 && users.isNotEmpty()) {
+                if (!mIsWaitingFaceDetect) return
+                FaceDetectActivity.start(this,payhome_amountTv.text.toString())
+                mIsWaitingFaceDetect = false
+
+            }
         }
     }
+
+
 
     private val job = SupervisorJob()
 
@@ -142,6 +150,8 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
         super.onResume()
     }
 
+    private var mIsWaitingFaceDetect = false
+
     private fun updateConstantPayHint() {
         if (CommonProcess.getSettingIsUseConstantMoney()) {
             disposable.add(
@@ -151,13 +161,21 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                     .subscribe { it ->
                         val limit = it.find { it.isInRange(it.amount) }
                         if (limit != null) {
-//                            log("发送广播--->")
+                            val tempText = "${limit.meal_section}消费: ${limit.amount / 100f}元"
+                            if (TextUtils.equals(tempText, payhome_amountTv.text.toString()))
+                                return@subscribe
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
-                                "${limit.meal_section}消费: ${limit.amount / 100f}元"
-                            btn_start_constant_pay.visibility = VISIBLE
+                                tempText
+                            val intent =
+                                Intent().apply { action = FaceDetectActivity.ACTION_CHANGE_HINT }
+                            intent.putExtra(
+                                FaceDetectActivity.KEY_CONSTANT_HINT,
+                                payhome_amountTv.text.toString()
+                            )
+                            sendBroadcast(intent)
+                            mIsWaitingFaceDetect = true
                         } else {
-                            btn_start_constant_pay.visibility = GONE
                             payhome_amountTv.text = "不在指定时间段, 暂停消费"
                             val intent =
                                 Intent().apply { action = FaceDetectActivity.ACTION_SHUT_DOWN }
@@ -166,8 +184,8 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                     }
             )
         } else {
+            mIsWaitingFaceDetect = false
             payhome_amountTv.visibility = GONE
-            btn_start_constant_pay.visibility = GONE
         }
     }
 
@@ -176,9 +194,6 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
         val about_version_text = "当前应用版本：" + AppUtils.getAppVersionName()
         val about_deviceTv_text = "设备编号: $DEVICE_NUMBER"
         device_noTv.text = "$about_deviceTv_text"
-        btn_start_constant_pay.setOnClickListener {
-            FaceDetectActivity.start(this, payhome_amountTv.text.toString())
-        }
         payhome_settingBtn.setOnClickListener {
             //设置
             if (mIsAdmin) {
@@ -207,12 +222,14 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
     override fun onStart() {
         super.onStart()
         mTTS = TTSUtils.creatTextToSpeech(this)
+        mCameraHelper.startPreview()
 //        val strings = resources.assets.list("照片")
     }
 
     override fun onStop() {
         super.onStop()
         TTSUtils.shutDownAuto(mTTS)
+        mCameraHelper.stopPreview()
     }
 
     /**

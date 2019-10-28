@@ -44,18 +44,6 @@
                 android:textColor="@color/common_text_white"
                 android:textSize="48sp"
                 android:textStyle="bold" />
-        <Button
-                android:id="@+id/btn_start_constant_pay"
-                android:text="开始定值消费"
-                android:padding="15dp"
-                android:textSize="19sp"
-                android:textColor="@color/common_text_white"
-                android:background="@drawable/shape_pay_btn"
-                android:layout_above="@id/payhome_amountTv"
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"/>
 
         <LinearLayout
                 android:id="@+id/payhome_timeContainer"

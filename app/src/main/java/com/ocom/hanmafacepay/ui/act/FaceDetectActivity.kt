@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.hardware.Camera
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.text.TextUtils
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
@@ -38,6 +37,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     companion object {
         const val REQUEST_FACE_DETECT = 0x1004
         const val ACTION_SHUT_DOWN = "ACTION_SHUT_DOWN"
+        const val ACTION_CHANGE_HINT = "ACTION_CHANGE_HINT"
         const val KEY_CONSTANT_HINT = "KEY_CONSTANT_HINT"
         fun start(context: Context, constantHint: String) {
             val intent = Intent(context, FaceDetectActivity::class.java).apply {
@@ -85,6 +85,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onStart() {
         super.onStart()
         com.hanma.fcd.CameraUtil.turnOnLight()
+        mCameraHelper.startPreview()
         if (mContantHint.isNullOrEmpty()) {
             disposable.add(Maybe.timer(10, TimeUnit.SECONDS)
                 .ioToMain()
@@ -97,6 +98,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onStop() {
         com.hanma.fcd.CameraUtil.turnOffLight()
+        mCameraHelper.stopPreview()
         super.onStop()
     }
 
@@ -154,11 +156,17 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
             context ?: return
             intent ?: return
             log("收到广播")
-            if (TextUtils.equals(intent.action, ACTION_SHUT_DOWN)) {
-                this@FaceDetectActivity.finish()
+            when (intent.action) {
+                ACTION_SHUT_DOWN -> {
+                    this@FaceDetectActivity.finish()
+                }
+                ACTION_CHANGE_HINT->{
+                    this@FaceDetectActivity.mContantHint = intent.getStringExtra(KEY_CONSTANT_HINT)
+                }
             }
         }
     }
+
     override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
     }
 
@@ -170,6 +178,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         tv_description.text = mContantHint ?: "检测中...."
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
             addAction(ACTION_SHUT_DOWN)
+            addAction(ACTION_CHANGE_HINT)
         }
         registerReceiver(mBroadcastReceiver, filter)
     }
