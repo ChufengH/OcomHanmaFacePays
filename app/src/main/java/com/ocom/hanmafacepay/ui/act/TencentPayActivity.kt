@@ -538,4 +538,10 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         super.onUnknownError(message)
         commonNetError()
     }
+
+    //禁止掉
+    override fun onBackPressed() {
+//        return
+//        super.onBackPressed()
+    }
 }
