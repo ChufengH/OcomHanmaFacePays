@@ -8,6 +8,10 @@ import com.ocom.hanmafacepay.FacePayApplication;
 import java.io.File;
 
 import dou.utils.FileUtil;
+import io.reactivex.Maybe;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class FileLogUtil {
 
@@ -28,7 +32,7 @@ public class FileLogUtil {
                 "log0:\n", false);
     }
 
-    public static File getLogFile(){
+    public static File getLogFile() {
         return new File(FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log");
     }
 
@@ -102,6 +106,8 @@ public class FileLogUtil {
         llog(5, tag, message);
     }
 
+    public static Disposable mFileDisposable;
+
     public static void llog(int type, String tagStr, Object obj) {
         if (mSwitch) {
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -129,11 +135,27 @@ public class FileLogUtil {
             if (mWrite) {
                 String filePath = FacePayApplication.INSTANCE.getFilesDir().getAbsolutePath() + "/local_log";
                 File file = new File(filePath);
+                if (mFileDisposable != null && !mFileDisposable.isDisposed())
+                    mFileDisposable.dispose();
                 //超过20MB清除缓存
-                if (file.exists() && file.length() > 20 * 1024 * 1024) {
-                    clearCache();
-                }
-                FileUtil.writeFile(filePath, stamp + " ----> " + tag + " : " + logStr + "\n", true);
+                mFileDisposable = Maybe.just(file)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(new Consumer<File>() {
+                            @Override
+                            public void accept(File file) throws Exception {
+                                if (file.exists() && file.length() > 20 * 1024 * 1024) {
+                                    clearCache();
+                                }
+                                FileUtil.writeFile(filePath, stamp + " ----> " + tag + " : " + logStr + "\n", true);
+
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                throwable.printStackTrace();
+                            }
+                        });
             } else {
                 switch (type) {
                     case 1:
