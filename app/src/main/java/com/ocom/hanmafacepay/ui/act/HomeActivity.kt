@@ -222,14 +222,11 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
     override fun onStart() {
         super.onStart()
         mTTS = TTSUtils.creatTextToSpeech(this)
-        mCameraHelper.startPreview()
-//        val strings = resources.assets.list("照片")
     }
 
     override fun onStop() {
         super.onStop()
         TTSUtils.shutDownAuto(mTTS)
-        mCameraHelper.stopPreview()
     }
 
     /**

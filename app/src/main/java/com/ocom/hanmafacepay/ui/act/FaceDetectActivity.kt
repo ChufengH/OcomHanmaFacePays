@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.hardware.Camera
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.text.TextUtils
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
@@ -63,6 +64,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
+        mCameraHelper ?: return
         val faces = FaceServiceManager.getInstance().getFacesDrawByYuvData(
             p0, mCameraHelper.previewSize.width, mCameraHelper.previewSize.height
         )
@@ -160,7 +162,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                 ACTION_SHUT_DOWN -> {
                     this@FaceDetectActivity.finish()
                 }
-                ACTION_CHANGE_HINT->{
+                ACTION_CHANGE_HINT -> {
                     this@FaceDetectActivity.mContantHint = intent.getStringExtra(KEY_CONSTANT_HINT)
                 }
             }
@@ -185,5 +187,12 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun setAttachLayoutRes(): Int {
         return R.layout.activity_face_detect;
+    }
+
+    override fun onBackPressed() {
+        if (!TextUtils.isEmpty(mContantHint)) {
+            return
+        }
+        super.onBackPressed()
     }
 }
