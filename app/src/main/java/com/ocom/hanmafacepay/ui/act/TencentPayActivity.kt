@@ -36,7 +36,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_tencent_pay.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -283,7 +286,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     }
 
     private fun onPayEventAsync(payEvent: PayEvent) = async(Dispatchers.IO) {
-//        withContext(Dispatchers.Main) {
+        //        withContext(Dispatchers.Main) {
 //            as_status.loadLoading()
 //        }
         //判断是否需要本地离线支付
@@ -514,6 +517,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
                     }
             )
         }
+        com.hanma.fcd.DoolLockUtil.Instance().openDoorDelay(AUTO_CLOSE_DELAY * 1000L)
         setCountDown()
     }
 

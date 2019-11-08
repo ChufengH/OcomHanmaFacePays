@@ -24,6 +24,8 @@ val DEVICE_NUMBER by DeviceNoDelegate()
 var OFFLINE_MODE by Preference("offline_mode",false)
 
 var LAST_CLEAR_ORDER_DATE by Preference("LAST_CLEAR_ORDER_DATE",System.currentTimeMillis().toString())
+//自动关门时间
+var AUTO_CLOSE_DELAY by Preference("AUTO_CLOSE_DELAY",2)
 
 /**
  * 时间戳
