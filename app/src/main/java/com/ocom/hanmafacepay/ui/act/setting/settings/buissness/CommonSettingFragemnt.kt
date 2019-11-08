@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.ArrayAdapter
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.ui.base.BaseFragment
@@ -13,10 +14,10 @@ import com.ocom.hanmafacepay.util.EditTextUtils
 import com.ocom.hanmafacepay.util.ToastUtil
 import kotlinx.android.synthetic.main.fragment_tecent_buissness.*
 
-class TencentBuissnessFragment : BaseFragment() {
+class CommonSettingFragemnt : BaseFragment() {
     companion object {
-        fun newInstance(): TencentBuissnessFragment {
-            return TencentBuissnessFragment()
+        fun newInstance(): CommonSettingFragemnt {
+            return CommonSettingFragemnt()
         }
     }
 
@@ -28,6 +29,17 @@ class TencentBuissnessFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initViews() {
+    // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            context!!,
+            R.array.auto_delay_arrays,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            auto_close_time.adapter = adapter
+        }
 
         //-----------------------------------------------------------------------------定值消费
         refundSwitch.isChecked = CommonProcess.getSettingRefundAllow()
@@ -37,7 +49,7 @@ class TencentBuissnessFragment : BaseFragment() {
 //        refundSwitch.isEnabled = false
         if (CommonProcess.getSettingIsUseConstantMoney()) { //当前系统设置是定值消费
             constantMoneySwitch.isChecked = true
-            constantMoneyTv.text ="定值消费(已开启)"
+            constantMoneyTv.text = "定值消费(已开启)"
 //                "定值消费（当前定额：￥${BigDecimalUtils.div(
 //                    CommonProcess.getSettingConstantMoney().toString(),
 //                    "100"
@@ -52,7 +64,7 @@ class TencentBuissnessFragment : BaseFragment() {
             when (isChecked) {
                 true -> { //打开定值消费
                     CommonProcess.setSettingIsUseConstantMoney(true)
-                    constantMoneyTv.text ="定值消费(已开启)"
+                    constantMoneyTv.text = "定值消费(已开启)"
 //                    constantMoneyTv.text =
 //                        "定值消费（当前定额：￥${BigDecimalUtils.div(
 //                            CommonProcess.getSettingConstantMoney().toString(),

@@ -3,7 +3,7 @@ package com.ocom.faceidentification.module.tencent.setting.settings
 import android.os.Bundle
 import android.view.View
 import com.ocom.hanmafacepay.R
-import com.ocom.hanmafacepay.ui.act.setting.settings.buissness.TencentBuissnessFragment
+import com.ocom.hanmafacepay.ui.act.setting.settings.buissness.CommonSettingFragemnt
 import com.ocom.hanmafacepay.ui.act.setting.settings.connect.TencentConnectFragment
 import com.ocom.hanmafacepay.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_tencent_settings.*
@@ -34,7 +34,7 @@ class TencentSettingsFragment : BaseFragment() {
      * 设置各个界面模块
      */
     private fun initFragment() {
-        itemFragments[0] = TencentBuissnessFragment.newInstance()
+        itemFragments[0] = CommonSettingFragemnt.newInstance()
         addFragmentInFragmentManager(R.id.setting_contentContainer,itemFragments[0]!!)
         showFragment(itemFragments[0]!!)
     }

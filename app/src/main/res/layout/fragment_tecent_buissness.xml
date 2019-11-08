@@ -3,224 +3,245 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:aigestudio="http://schemas.android.com/apk/res-auto"
         android:background="@color/common_container_background_deepGreen"
         android:orientation="vertical">
+
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <LinearLayout
-                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
+
             <TextView
-                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="金额相关设置"
                     android:textColor="@color/common_text_white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
+
             <TextView
-                    android:layout_marginTop="2dp"
-                    android:background="@color/common_text_white"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/common_text_white" />
+
             <RelativeLayout
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
                 <TextView
-                    android:id="@+id/RefundTv"
-                    android:text="交易记录退款开关"
-                    android:textSize="12sp"
-                    android:textColor="@color/common_text_white"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        android:id="@+id/RefundTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="交易记录退款开关"
+                        android:textColor="@color/common_text_white"
+                        android:textSize="12sp" />
 
                 <Switch
-                    android:id="@+id/refundSwitch"
-                    android:orientation="vertical"
-                    android:layout_alignParentEnd="true"
-                    android:switchTextAppearance="@style/SwitchTheme"
-                    android:textSize="10sp"
-                    android:track="@drawable/selector_switch_track"
-                    android:thumb="@drawable/selector_switch_thumb"
-                    android:textOff="@string/close"
-                    android:textOn="@string/open"
-                    android:showText="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" tools:targetApi="lollipop" android:layout_marginTop="0dp"
-                    android:layout_alignParentTop="true"/>
+                        android:id="@+id/refundSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical"
+                        android:showText="true"
+                        android:switchTextAppearance="@style/SwitchTheme"
+                        android:textOff="@string/close"
+                        android:textOn="@string/open"
+                        android:textSize="10sp"
+                        android:thumb="@drawable/selector_switch_thumb"
+                        android:track="@drawable/selector_switch_track"
+                        tools:targetApi="lollipop" />
             </RelativeLayout>
+
             <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
                 <TextView
                         android:id="@+id/constantMoneyTv"
-                        android:textSize="12sp"
-                        android:textColor="@color/common_text_white"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/common_text_white"
+                        android:textSize="12sp" />
 
                 <Switch
                         android:id="@+id/constantMoneySwitch"
-                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical"
+                        android:showText="true"
                         android:switchTextAppearance="@style/SwitchTheme"
-                        android:textSize="10sp"
-                        android:track="@drawable/selector_switch_track"
-                        android:thumb="@drawable/selector_switch_thumb"
                         android:textOff="@string/close"
                         android:textOn="@string/open"
-                        android:showText="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" tools:targetApi="lollipop" android:layout_marginTop="0dp"
-                        android:layout_alignParentTop="true"/>
+                        android:textSize="10sp"
+                        android:thumb="@drawable/selector_switch_thumb"
+                        android:track="@drawable/selector_switch_track"
+                        tools:targetApi="lollipop" />
             </RelativeLayout>
+
             <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content">
+                    android:visibility="gone">
+
                 <TextView
-                        android:layout_marginStart="10dp"
-                        android:textSize="10sp"
-                        android:textColor="@color/common_text_subtitle"
-                        android:text="@string/please_set_constant_money"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/please_set_constant_money"
+                        android:textColor="@color/common_text_subtitle"
+                        android:textSize="10sp" />
 
                 <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"
-                        android:layout_alignParentEnd="true"
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal">
+
                     <EditText
                             android:id="@+id/constantMoneyEdt"
+                            android:layout_width="120dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/selector_edittext_bg"
+                            android:gravity="center"
                             android:hint="在此输入金额"
                             android:inputType="numberDecimal"
-                            android:visibility="gone"
-                            android:textSize="12sp"
                             android:lines="1"
-                            android:gravity="center"
-                            android:background="@drawable/selector_edittext_bg"
-                            android:layout_width="120dp"
-                            android:layout_height="38dp"/>
+                            android:textSize="12sp"
+                            android:visibility="gone" />
+
                     <TextView
                             android:id="@+id/constantMoneyBtn"
-                            android:textSize="12sp"
+                            android:layout_width="32dp"
+                            android:layout_height="26dp"
+                            android:background="@drawable/selector_button_white_broder"
                             android:gravity="center"
                             android:text="@string/setting"
                             android:textColor="@color/common_text_white"
-                            android:background="@drawable/selector_button_white_broder"
-                            android:layout_width="32dp"
-                            android:layout_height="26dp"/>
+                            android:textSize="12sp" />
 
                 </LinearLayout>
             </RelativeLayout>
 
             <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:textStyle="bold"
                     android:text="用户相关设置"
                     android:textColor="@color/common_text_white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
+
             <TextView
-                    android:layout_marginTop="2dp"
-                    android:background="@color/common_text_white"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/common_text_white" />
 
             <RelativeLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
                 <TextView
                         android:id="@+id/registUserTv"
-                        android:textSize="12sp"
-                        android:textColor="@color/common_text_white"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/common_text_white"
+                        android:textSize="12sp" />
 
                 <Switch
                         android:id="@+id/registUserSwitch"
-                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical"
+                        android:showText="true"
                         android:switchTextAppearance="@style/SwitchTheme"
-                        android:textSize="10sp"
-                        android:track="@drawable/selector_switch_track"
-                        android:thumb="@drawable/selector_switch_thumb"
                         android:textOff="@string/close"
                         android:textOn="@string/open"
-                        android:showText="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" tools:targetApi="lollipop" android:layout_marginTop="0dp"
-                        android:layout_alignParentTop="true"/>
+                        android:textSize="10sp"
+                        android:thumb="@drawable/selector_switch_thumb"
+                        android:track="@drawable/selector_switch_track"
+                        tools:targetApi="lollipop" />
             </RelativeLayout>
 
             <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:textStyle="bold"
                     android:text="门禁设置"
                     android:textColor="@color/common_text_white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
+
             <TextView
-                    android:layout_marginTop="2dp"
-                    android:background="@color/common_text_white"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/common_text_white" />
+
             <TextView
                     android:id="@+id/quickPayTv"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/common_text_white"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            <FrameLayout
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:textColor="@color/common_text_white"
+                    android:textSize="12sp" />
 
-                <com.aigestudio.wheelpicker.WheelPicker
-                        android:id="@+id/auto_close_wheel"
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/transparent_bg"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="自动关门时长"
+                        android:textColor="@color/common_text_white" />
+                <Spinner
                         android:layout_gravity="right"
-                        aigestudio:wheel_atmospheric="true"
-                        aigestudio:wheel_curved="true"
-                        aigestudio:wheel_cyclic="true"
-                        aigestudio:wheel_item_align="center"
-                        aigestudio:wheel_item_text_color="@color/color_gray80"
-                        aigestudio:wheel_item_text_size="24sp"
-                        aigestudio:wheel_selected_item_text_color="@color/common_text_white" />
-
-
+                        android:id="@+id/auto_close_time"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"/>
             </FrameLayout>
+
             <TextView
                     android:id="@+id/settingBtn"
-                    android:layout_marginTop="10dp" android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="打开设置"
-                    android:textColor="@color/common_text_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@color/common_container_background_lightGreen"
                     android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="打开设置"
+                    android:textColor="@color/common_text_white" />
         </LinearLayout>
     </ScrollView>
 
