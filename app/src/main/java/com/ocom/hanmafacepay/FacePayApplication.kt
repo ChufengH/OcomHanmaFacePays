@@ -9,6 +9,8 @@ import com.ocom.hanmafacepay.ui.act.LauncherActivity
 import com.ocom.hanmafacepay.util.FileLogUtil
 import com.ocom.hanmafacepay.util.extension.log
 import com.tencent.bugly.crashreport.CrashReport
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -32,7 +34,7 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             FaceServiceManager.getInstance().Init(this@FacePayApplication)
         }
         initBugly()

@@ -30,8 +30,8 @@ import com.ocom.hanmafacepay.util.ioToMain
 import com.ocom.hanmafacepay.util.keyboard.Keyboard3
 import com.ocom.hanmafacepay.viewmodel.UserViewModel
 import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
+import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -250,8 +250,9 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private val disposable = CompositeDisposable()
     private fun readTTs(text: String) {
         disposable.add(
-            Observable.timer(800, TimeUnit.MILLISECONDS)
-                .ioToMain()
+            Maybe.timer(800, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .subscribe {
                     TTSUtils.startAuto(mTTS, text)
                 }
@@ -361,33 +362,19 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     @SuppressLint("SetTextI18n")
     private fun setCountDown() {
         countdonwDispose?.dispose()
-        Observable
+        countdonwDispose = Observable
             .interval(0, 1, TimeUnit.SECONDS)
             .take(jumpCountdown + 2)//还算入0秒
             .map { t -> jumpCountdown - t }//倒计时
             .ioToMain()
-            .subscribe(object : Observer<Long> {
-                override fun onComplete() {
-                    back()
+            .doOnComplete { back() }
+            .subscribe {t->
+                if (t < 0) {
+                    pay_reciprocal.text = " 返回（0)"
+                } else {
+                    pay_reciprocal.text = " 返回（" + t.toInt() + ")"
                 }
-
-                override fun onSubscribe(d: Disposable) {
-                    countdonwDispose = d
-                    pay_reciprocal.text = " 返回（$jumpCountdown)"
-                }
-
-                override fun onNext(t: Long) {
-                    if (t < 0) {
-                        pay_reciprocal.text = " 返回（0)"
-                    } else {
-                        pay_reciprocal.text = " 返回（" + t.toInt() + ")"
-                    }
-                }
-
-                override fun onError(e: Throwable) {
-                    e.printStackTrace()
-                }
-            })
+            }
     }
 
     private lateinit var viewModelFactory: ViewModelFactory
