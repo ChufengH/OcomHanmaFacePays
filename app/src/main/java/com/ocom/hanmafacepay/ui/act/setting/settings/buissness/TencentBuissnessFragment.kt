@@ -105,36 +105,36 @@ class TencentBuissnessFragment : BaseFragment() {
 
         //-----------------------------------------------------------------------------人脸注册
 
-        quickPayRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.facePayRadioButton -> {//人脸支付
-                    CommonProcess.setSettingQuickPay(0)
-                    quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
-                }
-                R.id.cardPayRadioButton -> {
-                    CommonProcess.setSettingQuickPay(1)
-                    quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
-                }
-                R.id.qrCodePayRadioButton -> {
-                    CommonProcess.setSettingQuickPay(2)
-                    quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
-                }
-            }
-        }
-        when (CommonProcess.getSettingQuickPay()) {
-            0 -> { //人脸支付
-                facePayRadioButton.isChecked = true
-                quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
-            }
-            1 -> {//刷卡支付
-                cardPayRadioButton.isChecked = true
-                quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
-            }
-            2 -> {//扫码支付
-                qrCodePayRadioButton.isChecked = true
-                quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
-            }
-        }
+//        quickPayRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+//            when (checkedId) {
+//                R.id.facePayRadioButton -> {//人脸支付
+//                    CommonProcess.setSettingQuickPay(0)
+//                    quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
+//                }
+//                R.id.cardPayRadioButton -> {
+//                    CommonProcess.setSettingQuickPay(1)
+//                    quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
+//                }
+//                R.id.qrCodePayRadioButton -> {
+//                    CommonProcess.setSettingQuickPay(2)
+//                    quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
+//                }
+//            }
+//        }
+//        when (CommonProcess.getSettingQuickPay()) {
+//            0 -> { //人脸支付
+//                facePayRadioButton.isChecked = true
+//                quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
+//            }
+//            1 -> {//刷卡支付
+//                cardPayRadioButton.isChecked = true
+//                quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
+//            }
+//            2 -> {//扫码支付
+//                qrCodePayRadioButton.isChecked = true
+//                quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
+//            }
+//        }
 
         settingBtn.setOnClickListener {
             //打开设置

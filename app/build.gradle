@@ -133,4 +133,5 @@ dependencies {
     androidTestImplementation deps.support.v4
     androidTestImplementation deps.support.app_compat
     androidTestImplementation deps.support.design
+    implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.3'
 }

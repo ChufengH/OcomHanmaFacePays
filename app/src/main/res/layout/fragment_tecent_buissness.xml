@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:aigestudio="http://schemas.android.com/apk/res-auto"
         android:background="@color/common_container_background_deepGreen"
         android:orientation="vertical">
     <ScrollView
@@ -172,14 +172,12 @@
             <TextView
                     android:layout_marginTop="20dp"
                     android:textStyle="bold"
-                    android:text="操作设置"
-                    android:visibility="gone"
+                    android:text="门禁设置"
                     android:textColor="@color/common_text_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
                     android:background="@color/common_text_white"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
@@ -191,50 +189,28 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-            <RelativeLayout
+            <FrameLayout
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <RadioGroup
-                        android:id="@+id/quickPayRadioGroup"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:layout_alignParentEnd="true"
-                        android:orientation="horizontal"
+                <com.aigestudio.wheelpicker.WheelPicker
+                        android:id="@+id/auto_close_wheel"
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/transparent_bg"
+                        android:layout_gravity="right"
+                        aigestudio:wheel_atmospheric="true"
+                        aigestudio:wheel_curved="true"
+                        aigestudio:wheel_cyclic="true"
+                        aigestudio:wheel_item_align="center"
+                        aigestudio:wheel_item_text_color="@color/color_gray80"
+                        aigestudio:wheel_item_text_size="24sp"
+                        aigestudio:wheel_selected_item_text_color="@color/common_text_white" />
 
-                    <RadioButton
-                            android:id="@+id/facePayRadioButton"
-                            android:checked="true"
-                            android:button="@drawable/selector_radiobutton"
-                            android:textSize="12sp"
-                            android:textColor="@color/common_text_white"
-                            android:text="人脸支付"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    <RadioButton
-                            android:id="@+id/cardPayRadioButton"
-                            android:layout_marginStart="5dp"
-                            android:button="@drawable/selector_radiobutton"
-                            android:textSize="12sp"
-                            android:textColor="@color/common_text_white"
-                            android:text="刷卡支付"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    <RadioButton
-                            android:id="@+id/qrCodePayRadioButton"
-                            android:layout_marginStart="5dp"
-                            android:button="@drawable/selector_radiobutton"
-                            android:textSize="12sp"
-                            android:textColor="@color/common_text_white"
-                            android:text="二维码支付"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                </RadioGroup>
-            </RelativeLayout>
+
+            </FrameLayout>
             <TextView
                     android:id="@+id/settingBtn"
                     android:layout_marginTop="10dp" android:paddingBottom="10dp"
