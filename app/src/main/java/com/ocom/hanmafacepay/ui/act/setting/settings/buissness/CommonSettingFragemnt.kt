@@ -29,16 +29,10 @@ class CommonSettingFragemnt : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initViews() {
-    // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            context!!,
-            R.array.auto_delay_arrays,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            auto_close_time.adapter = adapter
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        auto_close_time.also {
+            it.attachDataSource(context!!.resources.getStringArray(R.array.auto_delay_arrays).toList())
+            it.selectedIndex = 0
         }
 
         //-----------------------------------------------------------------------------定值消费

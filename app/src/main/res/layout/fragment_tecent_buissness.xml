@@ -3,6 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/common_container_background_deepGreen"
         android:orientation="vertical">
 
@@ -224,10 +225,15 @@
                         android:paddingTop="10dp"
                         android:text="自动关门时长"
                         android:textColor="@color/common_text_white" />
-                <Spinner
+                <org.angmarch.views.NiceSpinner
                         android:layout_gravity="right"
                         android:id="@+id/auto_close_time"
-                        android:layout_width="60dp"
+                        app:lineHeight="25dp"
+                        app:arrowTint="@color/common_text_white"
+                        app:textTint="@color/common_text_white"
+                        app:backgroundSelector="@color/color_gray80"
+                        android:textSize="18sp"
+                        android:layout_width="85dp"
                         android:layout_height="wrap_content"/>
             </FrameLayout>
 

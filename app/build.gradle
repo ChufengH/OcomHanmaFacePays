@@ -133,5 +133,5 @@ dependencies {
     androidTestImplementation deps.support.v4
     androidTestImplementation deps.support.app_compat
     androidTestImplementation deps.support.design
-    implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.3'
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 }
