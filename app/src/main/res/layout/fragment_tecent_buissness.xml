@@ -228,12 +228,12 @@
                 <org.angmarch.views.NiceSpinner
                         android:layout_gravity="right"
                         android:id="@+id/auto_close_time"
-                        app:lineHeight="25dp"
+                        app:lineHeight="15dp"
                         app:arrowTint="@color/common_text_white"
                         app:textTint="@color/common_text_white"
                         app:backgroundSelector="@color/color_gray80"
                         android:textSize="18sp"
-                        android:layout_width="85dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"/>
             </FrameLayout>
 

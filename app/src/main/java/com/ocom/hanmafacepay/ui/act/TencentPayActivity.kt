@@ -518,6 +518,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             )
         }
         com.hanma.fcd.DoolLockUtil.Instance().openDoorDelay(AUTO_CLOSE_DELAY * 1000L)
+        ToastUtil.showLongToastCenter("开门成功${AUTO_CLOSE_DELAY}秒后关门")
         setCountDown()
     }
 

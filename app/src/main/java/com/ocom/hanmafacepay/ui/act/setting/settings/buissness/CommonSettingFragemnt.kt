@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.ArrayAdapter
 import com.ocom.hanmafacepay.R
+import com.ocom.hanmafacepay.const.AUTO_CLOSE_DELAY
 import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.ui.base.BaseFragment
 import com.ocom.hanmafacepay.util.BigDecimalUtils
@@ -32,7 +32,10 @@ class CommonSettingFragemnt : BaseFragment() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         auto_close_time.also {
             it.attachDataSource(context!!.resources.getStringArray(R.array.auto_delay_arrays).toList())
-            it.selectedIndex = 0
+            it.selectedIndex = AUTO_CLOSE_DELAY - 1
+            it.setOnSpinnerItemSelectedListener { parent, view, position, id ->
+                AUTO_CLOSE_DELAY = position + 1
+            }
         }
 
         //-----------------------------------------------------------------------------定值消费
