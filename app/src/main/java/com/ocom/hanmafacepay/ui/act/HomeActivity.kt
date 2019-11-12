@@ -439,7 +439,7 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
 
     private fun getPayRequest(payEvent: PayEvent): PayRequest {
         val cal = Calendar.getInstance(Locale.CHINA)
-        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(cal.time)
+        val date = SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(cal.time)
         return PayRequest(
             DEVICE_NUMBER, payEvent.tradeNo ?: TRADE_NO, payEvent.userId,
             payEvent.amount, payEvent.offline,

@@ -145,7 +145,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         val iw = mCameraHelper.previewSize.width
         val ih = mCameraHelper.previewSize.height
         val result = FaceServiceManager.getInstance()
-            .recognizeFacesByYuvData(byteArray, iw, ih, 1, 0.7f, users)
+            .recognizeFacesByYuvData(byteArray, iw, ih, 1, 0.8f, users)
         if (result == 1 && users.isNotEmpty()) {
             log("识别成功!$users[0]", TAG = FaceDetectActivity::class.java.simpleName)
             finishWithUserId(users[0])
