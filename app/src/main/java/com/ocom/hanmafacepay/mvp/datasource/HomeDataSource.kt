@@ -204,7 +204,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
 
     fun updateStatus() {
         addSubscription(
-            mAPIWrapper.updateStatus(UpdateStatusRequest(DEVICE_NUMBER))
+            mAPIWrapper.updateStatus(UpdateStatusRequest(DEVICE_NUMBER, sign = SIGN))
                 .ioToMain().subscribe({
                     log("update status success")
                     log("downloadSoft complete start install")
@@ -212,7 +212,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                     InstallUtil().installAppSilent(File(filePath), null, true)
                     mDownloadUrl = ""
                 },
-                    { log("下载失败"); it.printStackTrace() })
+                    { log("更新状态失败"); it.printStackTrace() })
         )
     }
 
