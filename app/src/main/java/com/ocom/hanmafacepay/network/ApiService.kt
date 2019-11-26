@@ -45,7 +45,7 @@ interface ApiService {
      * 7.风控拉取接口（当风控标识为1时调用）
      */
 
-    @POST("/api/Ocom/http_fk_info")
+    @POST("api/Ocom/http_fk_info")
     fun fkInfo(@Body body: RequestBody):Observable<RiskControlResponse>
 
     /**

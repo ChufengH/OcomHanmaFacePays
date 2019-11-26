@@ -2,6 +2,7 @@ package com.ocom.hanmafacepay.util;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -17,13 +18,18 @@ public class EncodeUtil {
             byte[] array = md.digest(md5.getBytes("UTF-8"));
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
             }
             return sb.toString();
         } catch (java.security.NoSuchAlgorithmException e) {
-        } catch(UnsupportedEncodingException ex){
+        } catch (UnsupportedEncodingException ex) {
         }
         return null;
+    }
+
+    public static String getSign(String deviceNo, String timeStamp,  String secretKey) throws SignatureException {
+        String temp = deviceNo + timeStamp + secretKey;
+        return EncodeUtil.hashMac(temp, secretKey);
     }
 
     /**
@@ -53,6 +59,7 @@ public class EncodeUtil {
                     "error building signature, invalid key " + HASH_ALGORITHM);
         }
     }
+
     private static final String HASH_ALGORITHM = "HmacSHA256";
 
     public static String toHexString(byte[] bytes) {
