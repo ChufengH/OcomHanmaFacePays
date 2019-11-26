@@ -87,8 +87,11 @@ data class MealLimit(
 data class PolicyLimit(
     @PrimaryKey(autoGenerate = false)
     val policy: Int,
+    //离线消费总额度
     val amount: String,
+    //离线消费最大允许金额
     var order_amount: Int,
+    //离线消费限制次数
     var order_num: Int,
     //实际消费的金额
     var real_amount: Int = 0,

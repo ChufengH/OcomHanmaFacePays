@@ -52,10 +52,14 @@ class ApiWrapper : BaseApiWrapper() {
             .ioToMain()
     }
 
-    fun downloadFileWithDynamicUrlSync(fileUrl: String) = this.getService(ApiService::class.java)
+    fun downloadFileWithDynamicUrlSync(
+        listener: DownloadResponseBody.DownloadListener,
+        fileUrl: String
+    ) = RetrofitManagement.getINSTANCES()
+        .getDownloadRetrofit(listener).create(ApiService::class.java)
         .downloadFileWithDynamicUrlSync(fileUrl)
 
-    fun updateStatus(request:UpdateStatusRequest) = this.getService(ApiService::class.java)
+    fun updateStatus(request: UpdateStatusRequest) = this.getService(ApiService::class.java)
         .updateStatus(request.autoBody())
 
 }

@@ -9,6 +9,7 @@ import com.ocom.hanmafacepay.mvp.base.AbstractDataSource
 import com.ocom.hanmafacepay.mvp.base.BaseView
 import com.ocom.hanmafacepay.mvp.base.CallbackWrapper
 import com.ocom.hanmafacepay.network.ApiWrapper
+import com.ocom.hanmafacepay.network.DownloadResponseBody
 import com.ocom.hanmafacepay.network.RetrofitManagement
 import com.ocom.hanmafacepay.network.entity.*
 import com.ocom.hanmafacepay.util.InstallUtil
@@ -23,7 +24,7 @@ import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
 
 class HomeDataSource(val mIHomeView: IHomeView) :
-    AbstractDataSource<ApiWrapper>(ApiWrapper.INSTANCE) {
+    AbstractDataSource<ApiWrapper>(ApiWrapper.INSTANCE), DownloadResponseBody.DownloadListener {
 
     fun startHeartBeat() {
         addSubscription(Observable.interval(0, 30, TimeUnit.SECONDS)
@@ -46,6 +47,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                     }
 
                     override fun onSuccess(it: HeartBeatResponse?) {
+                        log("收到心跳${it}")
                         //心跳成功,则关闭离线模式
                         OFFLINE_MODE = false
                         mIHomeView.onUploadOfflineOrder()
@@ -210,7 +212,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                     InstallUtil().installAppSilent(File(filePath), null, true)
                     mDownloadUrl = ""
                 },
-                    { it.printStackTrace() })
+                    { log("下载失败"); it.printStackTrace() })
         )
     }
 
@@ -220,12 +222,12 @@ class HomeDataSource(val mIHomeView: IHomeView) :
             return
         if (!path.startsWith("http")) {
             mDownloadUrl = "http://$path"
-        }else{
+        } else {
             mDownloadUrl = path
         }
         log("开始下载${mDownloadUrl}")
         addSubscription(
-            mAPIWrapper.downloadFileWithDynamicUrlSync(mDownloadUrl)
+            mAPIWrapper.downloadFileWithDynamicUrlSync(this, mDownloadUrl)
                 .map { body ->
                     var inputStream: InputStream? = null
                     var outputStream: OutputStream? = null
@@ -257,6 +259,18 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                         mDownloadUrl = ""
                     })
         )
+    }
+
+    override fun onStartDownload(length: Long) {
+        log("开始下载,总长度: ${length.toString()}")
+    }
+
+    override fun onProgress(progress: Int) {
+        log("下载进度:$progress")
+    }
+
+    override fun onFail(errorInfo: String) {
+        log("下载失败$errorInfo")
     }
 }
 

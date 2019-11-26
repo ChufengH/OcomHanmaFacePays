@@ -21,11 +21,14 @@ val DEVICE_NUMBER by DeviceNoDelegate()
 /**
  * 标记是否是离线模式
  */
-var OFFLINE_MODE by Preference("offline_mode",false)
+var OFFLINE_MODE by Preference("offline_mode", false)
 
-var LAST_CLEAR_ORDER_DATE by Preference("LAST_CLEAR_ORDER_DATE",System.currentTimeMillis().toString())
+var LAST_CLEAR_ORDER_DATE by Preference(
+    "LAST_CLEAR_ORDER_DATE",
+    System.currentTimeMillis().toString()
+)
 //自动关门时间
-var AUTO_CLOSE_DELAY by Preference("AUTO_CLOSE_DELAY",2)
+var AUTO_CLOSE_DELAY by Preference("AUTO_CLOSE_DELAY", 2)
 
 /**
  * 时间戳
@@ -48,8 +51,11 @@ val TRADE_NO: String
  */
 val SIGN: String
     get() {
-        val text = "${DEVICE_NUMBER + TIME_STAMP}vally@ocom+123"
-        return EncodeUtil.hashMac(text, "vally@ocom+123")
+        return EncodeUtil.getSign(
+            DEVICE_NUMBER,
+            System.currentTimeMillis().toString(),
+            "vally@ocom+123"
+        )
     }
 
 /**

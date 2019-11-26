@@ -34,7 +34,7 @@ public final class RetrofitManagement {
     private boolean DEBUG = false;
     private Retrofit retrofit;
     private HttpCallback mHttpCallback;
-    public static final String DEFAULT_BASE_HOST = "http://fzshkj.wicp.net:33922/mall/";
+    public static final String DEFAULT_BASE_HOST = "http://27503g423t.qicp.vip:58257/mall/";
     private static String baseUrl = DEFAULT_BASE_HOST;
     //测试用,每10次请求切换一次base以模拟离线模式
     private static int mOfflineCount = 0;
@@ -69,32 +69,56 @@ public final class RetrofitManagement {
     public void changeBaseUrl(String url) {
         SharedPreferences preferences = FacePayApplication.INSTANCE.getSharedPreferences("temp_file", Context.MODE_PRIVATE);
         baseUrl = url;
-        service.put(ApiService.class,getRetrofit(baseUrl).create(ApiService.class));
+        service.put(ApiService.class, getRetrofit(baseUrl).create(ApiService.class));
         preferences.edit().putString("sp_setting_base_host", url).commit();
     }
 
     public void resetDefaultBaseUrl() {
         SharedPreferences preferences = FacePayApplication.INSTANCE.getSharedPreferences("temp_file", Context.MODE_PRIVATE);
         baseUrl = DEFAULT_BASE_HOST;
-        service.put(ApiService.class,getRetrofit(baseUrl).create(ApiService.class));
+        service.put(ApiService.class, getRetrofit(baseUrl).create(ApiService.class));
         preferences.edit().putString("sp_setting_base_host", DEFAULT_BASE_HOST).commit();
+    }
+
+    /**
+     * 设置okhttp各项参数
+     */
+    private OkHttpClient getDownloadOkHttpClient(DownloadResponseBody.DownloadListener downloadListener) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(new DownloadInterceptor(downloadListener))
+                .connectTimeout(60L, TimeUnit.SECONDS)
+                .readTimeout(60L, TimeUnit.SECONDS)
+                .writeTimeout(60L, TimeUnit.SECONDS)
+                .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER) //设置所有证书通过 不安全
+                .build();
+    }
+
+    public Retrofit getDownloadRetrofit(DownloadResponseBody.DownloadListener downloadListener) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(DEFAULT_BASE_HOST)
+                .client(getDownloadOkHttpClient(downloadListener))
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        return retrofit;
+
     }
 
 
     private Retrofit getRetrofit(String url) {
 //        if (retrofit == null) {
-            ParamsInterceptor paramsInterceptor = new ParamsInterceptor();
-            final OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .readTimeout(10000, TimeUnit.MILLISECONDS)
-                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                    .addInterceptor(paramsInterceptor);
-            OkHttpClient client = builder.build();
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
+        ParamsInterceptor paramsInterceptor = new ParamsInterceptor();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .readTimeout(10000, TimeUnit.MILLISECONDS)
+                .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                .addInterceptor(paramsInterceptor);
+        OkHttpClient client = builder.build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
 //        }
         return retrofit;
     }
