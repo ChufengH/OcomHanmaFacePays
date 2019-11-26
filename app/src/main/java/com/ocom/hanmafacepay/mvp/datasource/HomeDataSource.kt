@@ -204,7 +204,13 @@ class HomeDataSource(val mIHomeView: IHomeView) :
 
     fun updateStatus() {
         addSubscription(
-            mAPIWrapper.updateStatus(UpdateStatusRequest(DEVICE_NUMBER, sign = SIGN))
+            mAPIWrapper.updateStatus(
+                UpdateStatusRequest(
+                    DEVICE_NUMBER,
+                    timestamp = TIME_STAMP,
+                    sign = SIGN
+                )
+            )
                 .ioToMain().subscribe({
                     log("update status success")
                     log("downloadSoft complete start install")

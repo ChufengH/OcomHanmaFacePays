@@ -1,6 +1,7 @@
 package com.ocom.hanmafacepay.network.entity
 
 import com.ocom.hanmafacepay.network.AutoField
+import com.ocom.hanmafacepay.util.EncodeUtil
 
 //@Body device_no: String,//设备号
 //@Body trade_no: String,//支付订单号（每笔支付订单号唯一）
@@ -18,8 +19,12 @@ data class PayRequest(
     @AutoField("offline") val offline: Int,
     @AutoField("trade_date") val trade_date: String,
     @AutoField("timestamp") val timestamp: String,
-    @AutoField("sign") val sign: String
-)
+    @AutoField("sign") var sign: String
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
 
 //@Body device_no:String,//设备号
@@ -28,10 +33,23 @@ data class PayRequest(
 //@Body sign:String//SHA256(device_no+timestamp +秘钥)钥)
 data class OrderStatusRequest(
     val device_no: String, val trade_no: String,
-    val timestamp: String, val sign: String, val userid: String = ""
-)
+    val timestamp: String, var sign: String, val userid: String = ""
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
-data class UpdateStatusRequest(val device_no: String, val status: Int = 0, val sign: String)
+data class UpdateStatusRequest(
+    val device_no: String,
+    val status: Int = 0,
+    var sign: String,
+    val timestamp: String
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
 
 //@Body device_no: String,//设备号
@@ -41,14 +59,21 @@ data class UpdateStatusRequest(val device_no: String, val status: Int = 0, val s
 //@Body sign: String//SHA256(device_no+timestamp +秘钥)
 data class CancelOrderRequest(
     val device_no: String, val trade_no: String,
-    val userid: String, val timestamp: String, val sign: String
-)
-
+    val userid: String, val timestamp: String, var sign: String
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
 //@Body device_no:String,//设备号
 //@Body timestamp:String,//时间戳，如1552640337
 //@Body sign:String//SHA256(device_no+timestamp +秘钥)
-data class UserInfoRequest(val device_no: String, val timestamp: String, val sign: String)
+data class UserInfoRequest(val device_no: String, val timestamp: String, var sign: String) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
 //@Body device_no:String,//设备号
 //@Body timestamp:String,//时间戳，如1552640337
@@ -56,5 +81,9 @@ data class UserInfoRequest(val device_no: String, val timestamp: String, val sig
 data class HeartBeatRequest(
     @AutoField("device_no") val device_no: String,
     @AutoField("timestamp") val timestamp: String,
-    @AutoField("sign") val sign: String
-)
+    @AutoField("sign") var sign: String
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
