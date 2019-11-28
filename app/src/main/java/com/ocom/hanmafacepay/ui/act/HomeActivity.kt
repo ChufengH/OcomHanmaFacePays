@@ -56,13 +56,14 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
 
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
+        mCameraHelper ?: return
         p0 ?: return
         p1 ?: return
         if (!mIsWaitingFaceDetect) return
         if (CommonProcess.getSettingIsUseConstantMoney()) {
             val users = mutableListOf<String>()
-            val iw = mCameraHelper.previewSize.width
-            val ih = mCameraHelper.previewSize.height
+            val iw = mCameraHelper?.previewSize?.width ?: 640
+            val ih = mCameraHelper?.previewSize?.height ?: 480
             val result = FaceServiceManager.getInstance()
                 .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
             if (result == 1 && users.isNotEmpty()) {
@@ -473,7 +474,7 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                     data?.getParcelableExtra<PayEvent>(TencentPayInputActivity.KEY_PAY_EVENT)
 
                 if (TextUtils.isEmpty(payEvent?.userId)) {
-                    readTTs("扫脸支付失败")
+                    readTTs("支付失败")
                 } else {
                     payEvent?.run {
                         TencentPayActivity.jump4PayFace(
@@ -489,7 +490,7 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                 //截取人脸照片
                 val user_id = data?.getStringExtra(KEY_USER_ID)
                 if (TextUtils.isEmpty(user_id)) {
-                    readTTs("扫脸支付失败")
+                    readTTs("支付失败")
                 } else {
                     TencentPayActivity.jump4PayFace(this@HomeActivity, moneyInt, user_id!!)
                     moneyStr = ""

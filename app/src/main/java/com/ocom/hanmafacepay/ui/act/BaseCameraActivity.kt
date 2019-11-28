@@ -38,23 +38,24 @@ abstract class BaseCameraActivity : BaseKeybroadActivity() {
                 camera_ori_front = 180
                 RealandApplication.reverse_180 = true
             }
-            previewFrameListener = PreviewFrameListener.apply { mActivity = WeakReference(this@BaseCameraActivity) }
+            previewFrameListener =
+                PreviewFrameListener.apply { mActivity = WeakReference(this@BaseCameraActivity) }
         }
     }
 
-    lateinit var mCameraHelper: CameraHelper
+    var mCameraHelper: CameraHelper? = null
 
     /**
      * 预览Surface
      */
     private val mCameraPreviewView by lazy { findViewById<SurfaceView>(R.id.camera_preview) }
-    val mFaceRectView: FaceRectView by lazy {findViewById<FaceRectView>(R.id.face_rect_view)}
+    val mFaceRectView: FaceRectView by lazy { findViewById<FaceRectView>(R.id.face_rect_view) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.run { addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
         hideBottomMenuUI()
-        requestPermissionsEx(*PERMISSIONS){ mCameraHelper = CameraHelper(this, mCameraParams) }
+        requestPermissionsEx(*PERMISSIONS) { mCameraHelper = CameraHelper(this, mCameraParams) }
     }
 
     /**
@@ -86,9 +87,13 @@ abstract class BaseCameraActivity : BaseKeybroadActivity() {
         Manifest.permission.CAMERA
     )
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode== REQUEST_ALL_PERMISSION) {
+        if (requestCode == REQUEST_ALL_PERMISSION) {
             if (hasPermissions(*PERMISSIONS))
                 mCameraHelper = CameraHelper(this, mCameraParams)
             else

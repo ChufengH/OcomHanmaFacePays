@@ -77,8 +77,9 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
         p1 ?: return
+        mCameraHelper ?: return
         val faces = FaceServiceManager.getInstance().getFacesDrawByYuvData(
-            p0, mCameraHelper.previewSize.width, mCameraHelper.previewSize.height
+            p0, mCameraHelper?.previewSize?.width ?: 640, mCameraHelper?.previewSize?.height ?: 480
         )
         if (faces == null) {
             tv_description.text = mContantHint ?: "检测中...."
@@ -119,7 +120,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCameraHelper.stopCamera()
+        mCameraHelper?.stopCamera()
         disposable.dispose()
         mTTS.shutdown()
     }
@@ -166,8 +167,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         //判断是否已经在机器里面注册,如果已经注册,那就直接认证成功
         mIsRegistering = true
         val users = mutableListOf<String>()
-        val iw = mCameraHelper.previewSize.width
-        val ih = mCameraHelper.previewSize.height
+        val iw = mCameraHelper?.previewSize?.width ?: 640
+        val ih = mCameraHelper?.previewSize?.height ?: 480
         val result = FaceServiceManager.getInstance()
             .recognizeFacesByYuvData(byteArray, iw, ih, 1, 0.8f, users)
         if (result == 1 && users.isNotEmpty()) {
