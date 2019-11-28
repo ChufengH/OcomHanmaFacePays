@@ -98,7 +98,7 @@ class UserDaoTest {
         database.userDao().insertData(
             User(
                 "", "122",
-                "Jack", "0", 0, 1, card = "123456"
+                "Jack", "0", 0, 1, card_no = "123456"
             )
         ).blockingAwait()
 

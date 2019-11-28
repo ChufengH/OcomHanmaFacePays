@@ -70,8 +70,9 @@ class UserViewModel(
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.count()) ?: return@async
         val rgbBytes = BitMapUtil.getRGBFromBMP(bitmap)
         FaceServiceManager.getInstance().addRunnable {
-            FaceServiceManager.getInstance()
+            val ret = FaceServiceManager.getInstance()
                 .registerUserByImage(userId, rgbBytes, bitmap.width, bitmap.height)
+            println("注册用户结束${ret}")
         }
     }
 

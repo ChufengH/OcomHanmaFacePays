@@ -22,7 +22,7 @@ interface UserDao{
             insertDatas(it).blockingAwait()}
     }
 
-    @Query("SELECT * FROM Users WHERE card = :card_no")
+    @Query("SELECT * FROM Users WHERE card_no = :card_no")
     fun getUserByCard(card_no: String): Maybe<User>
 
     @Query("SELECT * FROM Users WHERE userid = :id")

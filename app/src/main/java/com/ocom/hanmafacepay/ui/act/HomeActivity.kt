@@ -32,6 +32,7 @@ import com.ocom.hanmafacepay.receiver.NetStateChangeReceiver
 import com.ocom.hanmafacepay.ui.service.BackForegroundService
 import com.ocom.hanmafacepay.ui.widget.LoadingDialog
 import com.ocom.hanmafacepay.util.*
+import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.extension.showToast
 import com.ocom.hanmafacepay.util.keyboard.Keyboard3
