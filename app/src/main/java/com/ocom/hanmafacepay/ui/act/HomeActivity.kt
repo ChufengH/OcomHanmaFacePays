@@ -43,6 +43,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import java.io.IOException
+import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -65,13 +66,12 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                 .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
             if (result == 1 && users.isNotEmpty()) {
                 if (!mIsWaitingFaceDetect) return
-                FaceDetectActivity.start(this,payhome_amountTv.text.toString())
+                FaceDetectActivity.start(this, payhome_amountTv.text.toString())
                 mIsWaitingFaceDetect = false
 
             }
         }
     }
-
 
 
     private val job = SupervisorJob()
@@ -721,7 +721,12 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
             moneyStr = moneyStr!!.substring(0, moneyStr!!.length - 1)
         }
 
-        moneyInt = BigDecimalUtils.mul(moneyStr!!, "100").toInt()
+        try {
+            moneyInt = BigDecimalUtils.mul(moneyStr!!, "100").toInt()
+        } catch (ex: Exception) {
+            ToastUtil.showLongToast("输入金额不正确")
+            return false
+        }
         if (moneyInt == 0) {
             ToastUtil.showLongToast("输入金额必须大于0")
             return false
