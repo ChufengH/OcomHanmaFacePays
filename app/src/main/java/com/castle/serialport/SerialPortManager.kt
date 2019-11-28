@@ -1,13 +1,14 @@
 package com.castle.serialport
 
 import android.util.Log
+import com.ocom.hanmafacepay.const.SERIAL_PORT_NAME_CARD_READER
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.Executors
 
 object SerialPortManager {
 
-    val mPublishSubscribe = PublishSubject.create<Pair<String, Array<out String>>>()
+    private val mPublishSubscribe = PublishSubject.create<Pair<String, Array<out String>>>()
 
     init {
         Log.d("SerialPortManager", "开始加载库")
@@ -24,6 +25,7 @@ object SerialPortManager {
 
 
     fun closeAll() {
+        closeSerialPort(SERIAL_PORT_NAME_CARD_READER)
     }
 
 

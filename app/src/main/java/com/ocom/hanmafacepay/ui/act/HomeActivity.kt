@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ServiceUtils
+import com.castle.serialport.SerialPortManager
 import com.example.android.observability.Injection
 import com.google.gson.Gson
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
@@ -250,6 +251,7 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
         disposable.dispose()
         NetStateChangeReceiver.unRegisterObserver(this@HomeActivity)
         NetStateChangeReceiver.unRegisterReceiver(this@HomeActivity)
+        SerialPortManager.closeAll()
 //        mDataSource.mIHomeView = null
     }
 
