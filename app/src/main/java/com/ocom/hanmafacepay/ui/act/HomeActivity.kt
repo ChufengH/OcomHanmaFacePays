@@ -57,6 +57,7 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
         p0 ?: return
+        p1 ?: return
         if (!mIsWaitingFaceDetect) return
         if (CommonProcess.getSettingIsUseConstantMoney()) {
             val users = mutableListOf<String>()
