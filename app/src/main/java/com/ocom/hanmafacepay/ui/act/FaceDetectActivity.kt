@@ -39,6 +39,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         const val REQUEST_FACE_DETECT = 0x1004
         const val ACTION_SHUT_DOWN = "ACTION_SHUT_DOWN"
         const val ACTION_CHANGE_HINT = "ACTION_CHANGE_HINT"
+        const val ACTION_CARD_NO_SCANNED = "ACTION_CARD_NO_SCANNED"
         const val KEY_CONSTANT_HINT = "KEY_CONSTANT_HINT"
         fun start(context: Context, constantHint: String) {
             val intent = Intent(context, FaceDetectActivity::class.java).apply {
@@ -87,7 +88,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onStart() {
         super.onStart()
         com.hanma.fcd.CameraUtil.turnOnLight()
-//        mCameraHelper.startPreview()
+        registerBroadcast()
         if (mContantHint.isNullOrEmpty()) {
             disposable.add(Maybe.timer(10, TimeUnit.SECONDS)
                 .ioToMain()
@@ -100,13 +101,13 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onStop() {
         com.hanma.fcd.CameraUtil.turnOffLight()
+        unregisterReceiver(mBroadcastReceiver)
 //        mCameraHelper.stopPreview()
         super.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(mBroadcastReceiver)
         mCameraHelper.stopCamera()
         disposable.dispose()
     }
@@ -157,13 +158,16 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         override fun onReceive(context: Context?, intent: Intent?) {
             context ?: return
             intent ?: return
-            log("收到广播")
             when (intent.action) {
                 ACTION_SHUT_DOWN -> {
                     this@FaceDetectActivity.finish()
                 }
                 ACTION_CHANGE_HINT -> {
                     this@FaceDetectActivity.mContantHint = intent.getStringExtra(KEY_CONSTANT_HINT)
+                }
+                ACTION_CARD_NO_SCANNED -> {
+                    val card_no = intent.getStringExtra(KEY_CONSTANT_HINT)
+                    log("收到卡号广播${card_no}")
                 }
             }
         }
@@ -178,9 +182,12 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
         tv_description.text = mContantHint ?: "检测中...."
-        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
-            addAction(ACTION_SHUT_DOWN)
+    }
+
+    private fun registerBroadcast() {
+        val filter = IntentFilter(ACTION_SHUT_DOWN).apply {
             addAction(ACTION_CHANGE_HINT)
+            addAction(ACTION_CARD_NO_SCANNED)
         }
         registerReceiver(mBroadcastReceiver, filter)
     }

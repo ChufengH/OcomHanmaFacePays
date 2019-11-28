@@ -7,6 +7,8 @@ import com.ocom.hanmafacepay.util.Installation
 import com.ocom.hanmafacepay.util.extension.Preference
 import kotlin.reflect.KProperty
 
+const val SERIAL_PORT_NAME_CARD_READER = "/dev/ttyS4"
+const val SERIAL_PORT_BAUDRATE_CARD_READER = 19200
 
 //用于储存userId的key
 const val KEY_USER_ID = "KEY_USER_ID"
