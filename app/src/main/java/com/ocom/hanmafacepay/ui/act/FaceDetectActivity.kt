@@ -8,15 +8,24 @@ import android.content.IntentFilter
 import android.hardware.Camera
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.text.TextUtils
+import androidx.lifecycle.ViewModelProviders
+import com.example.android.observability.Injection
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.const.KEY_USER_ID
+import com.ocom.hanmafacepay.util.TTSUtils
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.ioToMain
+import com.ocom.hanmafacepay.viewmodel.UserViewModel
+import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
 import io.reactivex.Maybe
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_face_detect.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,6 +61,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         }
     }
 
+    private lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: UserViewModel
     private val disposable = CompositeDisposable()
     //标记是否是定值消费模式
     private var mContantHint: String? = null;
@@ -110,6 +121,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         super.onDestroy()
         mCameraHelper.stopCamera()
         disposable.dispose()
+        mTTS.shutdown()
     }
 
     private var mIsRegistering = false
@@ -120,6 +132,16 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         mIsPaying = false;
     }
 
+    private fun readTTs(text: String) {
+        disposable.add(
+            Maybe.timer(800, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    TTSUtils.startAuto(mTTS, text)
+                }
+        )
+    }
     private fun finishWithUserId(userId: String) {
         //如果定值消费,那么直接跳消费
         if (mContantHint != null) {
@@ -166,11 +188,29 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                     this@FaceDetectActivity.mContantHint = intent.getStringExtra(KEY_CONSTANT_HINT)
                 }
                 ACTION_CARD_NO_SCANNED -> {
-                    val card_no = intent.getStringExtra(KEY_CONSTANT_HINT)
-                    log("收到卡号广播${card_no}")
+                    onCardNoScanned(intent.getStringExtra(KEY_CONSTANT_HINT));
                 }
             }
         }
+    }
+
+    private lateinit var mTTS: TextToSpeech
+
+    private fun onCardNoScanned(card_no: String?) {
+        if (card_no.isNullOrEmpty()) {
+            readTTs("请重新刷卡")
+            return
+        }
+        readTTs("刷卡成功")
+        disposable.add(
+            viewModel.getUserByCardNo(card_no)
+                .subscribeOn(Schedulers.io())
+                .observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe {
+                    finishWithUserId(it.userid)
+                })
+
     }
 
     override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
@@ -182,6 +222,9 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
         tv_description.text = mContantHint ?: "检测中...."
+        viewModelFactory = Injection.provideViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+        mTTS = TTSUtils.creatTextToSpeech(this)
     }
 
     private fun registerBroadcast() {

@@ -92,6 +92,23 @@ class UserDaoTest {
     }
 
     @Test
+    fun insertAndGetUserByCardNo() {
+        // When inserting a new user in the data source
+        database.userDao().insertData(USER).blockingAwait()
+        database.userDao().insertData(
+            User(
+                "", "122",
+                "Jack", "0", 0, 1, card = "123456"
+            )
+        ).blockingAwait()
+
+        // When subscribing to the emissions of the user
+        database.userDao().getUserByCard("123456")
+            .test()
+            .assertValue{it.name == "Jcak" && it.userid == "122"}
+    }
+
+    @Test
     fun insertAndGetUser() {
         // When inserting a new user in the data source
         database.userDao().insertData(USER).blockingAwait()
@@ -166,7 +183,7 @@ class UserDaoTest {
                     log("执行到onComplete")
                 }
                 .subscribe {
-                    if (it.substring(it.lastIndex,it.length).toInt()>4){
+                    if (it.substring(it.lastIndex, it.length).toInt() > 4) {
                         disposable.dispose()
                     }
                     log("next 结果$it")

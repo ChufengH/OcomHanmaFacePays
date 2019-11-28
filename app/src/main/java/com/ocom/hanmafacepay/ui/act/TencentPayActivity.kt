@@ -142,7 +142,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private var countdonwDispose: Disposable? = null
 
 
-    private var jumpCountdown = 3L //倒计时
+    private var jumpCountdown = 5L //倒计时
 
     private lateinit var mTTS: TextToSpeech
 

@@ -124,7 +124,8 @@ data class User(
     val name: String,
     val job_number: String,
     val flag: Int,//标记更新或者删除
-    val policy: Int
+    val policy: Int,
+    val card:String=""
 ) {
     fun needInsertOrUpdate() = flag == 0
     fun needDelete() = flag == 1

@@ -31,7 +31,7 @@ import com.ocom.hanmafacepay.network.entity.User
 @Database(
     entities = [User::class, PolicyLimit::class, MealLimit::class, Order::class],
     exportSchema = false,
-    version = 4
+    version = 5
 )
 abstract class UsersDatabase : RoomDatabase() {
 

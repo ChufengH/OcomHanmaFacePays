@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.SparseArray;
+
 import com.hanma.faceservice.FaceRecoService;
 import com.hanma.faceservice.RealandApplication;
 import com.hanma.faceservice.aidl.Face;
@@ -24,7 +25,6 @@ public class FaceServiceManager {
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder service) {
             FaceServiceManager.this.IFaceRecoServiceApi = FaceRecoServiceApi.Stub.asInterface(service);
-
             try {
                 String version = FaceServiceManager.this.IFaceRecoServiceApi.getVersionName();
                 System.out.print("api version = " + version);
@@ -68,11 +68,11 @@ public class FaceServiceManager {
         return this.IFaceRecoServiceApi;
     }
 
-    public void addRunnable(Runnable runnable){
-        if (this.IFaceRecoServiceApi!=null){
+    public void addRunnable(Runnable runnable) {
+        if (this.IFaceRecoServiceApi != null) {
             runnable.run();
-        }else{
-            mRunnableList.put(mRunnableList.size(),runnable);
+        } else {
+            mRunnableList.put(mRunnableList.size(), runnable);
         }
     }
 

@@ -153,4 +153,8 @@ class UserViewModel(
             .flatMap { policyDao.getPolicy(it.policy) }
     }
 
+    fun getUserByCardNo(cardNo: String): Maybe<User> {
+        return dataSource.getUserByCard(cardNo)
+    }
+
 }
