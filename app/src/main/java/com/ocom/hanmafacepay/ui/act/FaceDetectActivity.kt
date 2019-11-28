@@ -76,7 +76,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
         FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
-        mCameraHelper ?: return
+        p1 ?: return
         val faces = FaceServiceManager.getInstance().getFacesDrawByYuvData(
             p0, mCameraHelper.previewSize.width, mCameraHelper.previewSize.height
         )
@@ -142,6 +142,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                 }
         )
     }
+
     private fun finishWithUserId(userId: String) {
         //如果定值消费,那么直接跳消费
         if (mContantHint != null) {
