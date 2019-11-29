@@ -34,6 +34,7 @@ import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -70,9 +71,8 @@ class UserViewModel(
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.count()) ?: return@async
         val rgbBytes = BitMapUtil.getRGBFromBMP(bitmap)
         FaceServiceManager.getInstance().addRunnable {
-            val ret = FaceServiceManager.getInstance()
+            FaceServiceManager.getInstance()
                 .registerUserByImage(userId, rgbBytes, bitmap.width, bitmap.height)
-            println("注册用户结束${ret}")
         }
     }
 
@@ -154,7 +154,7 @@ class UserViewModel(
             .flatMap { policyDao.getPolicy(it.policy) }
     }
 
-    fun getUserByCardNo(cardNo: String): Maybe<User> {
+    fun getUserByCardNo(cardNo: String): Single<User> {
         return dataSource.getUserByCard(cardNo)
     }
 
