@@ -17,6 +17,7 @@ import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.const.KEY_USER_ID
 import com.ocom.hanmafacepay.util.TTSUtils
+import com.ocom.hanmafacepay.util.ToastUtil
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.ioToMain
 import com.ocom.hanmafacepay.viewmodel.UserViewModel
@@ -203,15 +204,17 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
             readTTs("请重新刷卡")
             return
         }
+        ToastUtil.showLongToast("识别到卡号$card_no")
         readTTs("刷卡成功")
         disposable.add(
             viewModel.getUserByCardNo(card_no)
                 .subscribeOn(Schedulers.io())
                 .observeOn(
                     AndroidSchedulers.mainThread()
-                ).subscribe {
+                ).subscribe({
                     finishWithUserId(it.userid)
-                })
+                }, { readTTs("没有对应用户") })
+        )
 
     }
 

@@ -41,23 +41,23 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
         GlobalScope.launch(Dispatchers.IO) {
-            SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
-                SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
-                    override fun onDataReceived(msg: ByteArray) {
-                        val cardNo = HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))
-                        val intent =
-                            Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
-                        intent.putExtra(
-                            FaceDetectActivity.KEY_CONSTANT_HINT,
-                            cardNo
-                        )
-                        sendBroadcast(intent)
-                        println(
-                            "收到卡号${HexUtils.getScanCard2Number( HexUtils.bytesToHexString(msg)
-                            )}"
-                        )
-                    }
-                })
+//            SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
+//                SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
+//                    override fun onDataReceived(msg: ByteArray) {
+//                        val cardNo = HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))
+//                        val intent =
+//                            Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
+//                        intent.putExtra(
+//                            FaceDetectActivity.KEY_CONSTANT_HINT,
+//                            cardNo
+//                        )
+//                        sendBroadcast(intent)
+//                        println(
+//                            "收到卡号${HexUtils.getScanCard2Number( HexUtils.bytesToHexString(msg)
+//                            )}"
+//                        )
+//                    }
+//                })
             FaceServiceManager.getInstance().Init(this@FacePayApplication)
         }
         initBugly()
