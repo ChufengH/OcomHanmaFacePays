@@ -34,6 +34,7 @@ import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -153,7 +154,7 @@ class UserViewModel(
             .flatMap { policyDao.getPolicy(it.policy) }
     }
 
-    fun getUserByCardNo(cardNo: String): Maybe<User> {
+    fun getUserByCardNo(cardNo: String): Single<User> {
         return dataSource.getUserByCard(cardNo)
     }
 

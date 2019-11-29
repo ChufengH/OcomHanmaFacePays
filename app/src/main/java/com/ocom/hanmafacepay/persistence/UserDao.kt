@@ -2,10 +2,7 @@ package com.ocom.hanmafacepay.persistence
 
 import androidx.room.*
 import com.ocom.hanmafacepay.network.entity.User
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.Observable
+import io.reactivex.*
 
 /**
  * Data Access Object for the users table.
@@ -23,7 +20,7 @@ interface UserDao{
     }
 
     @Query("SELECT * FROM Users WHERE card = :card_no")
-    fun getUserByCard(card_no: String): Maybe<User>
+    fun getUserByCard(card_no: String): Single<User>
 
     @Query("SELECT * FROM Users WHERE userid = :id")
     fun getUserById(id: String): Maybe<User>
