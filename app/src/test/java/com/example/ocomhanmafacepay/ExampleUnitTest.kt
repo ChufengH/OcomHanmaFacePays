@@ -44,7 +44,8 @@ class ExampleUnitTest {
     @Test
     fun testCardNo() {
         val origin = "07D1E766"
-        val answer = Integer.valueOf(origin,16).toString()
+        val answer = origin.toLong(16).toString()
+//        val answer = Integer.valueOf(origin,16).toString()
         assertEquals(answer, "131196774")
     }
 

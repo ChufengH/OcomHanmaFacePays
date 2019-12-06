@@ -195,9 +195,7 @@ public class HexUtils {
         try {
             int startIndex = message.indexOf("1901");
             int cardNoLength = Integer.parseInt(message.substring(startIndex + 4, startIndex + 6)) - 2;
-            return Integer.valueOf(message.substring(startIndex + 10,
-                    startIndex + 10 + cardNoLength * 2),
-                    16).toString();
+            return message.substring(startIndex + 10, startIndex + 10 + cardNoLength * 2);
         } catch (Exception e) {
             return "";
         }

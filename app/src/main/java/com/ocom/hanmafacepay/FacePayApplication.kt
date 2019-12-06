@@ -49,11 +49,12 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
                             Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
                         intent.putExtra(
                             FaceDetectActivity.KEY_CONSTANT_HINT,
-                            cardNo
+                            cardNo.toLong(16).toString()
                         )
                         sendBroadcast(intent)
                         println(
-                            "收到卡号${HexUtils.getScanCard2Number( HexUtils.bytesToHexString(msg)
+                            "收到卡号${HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))}转换后${cardNo.toLong(
+                                16
                             )}"
                         )
                     }
