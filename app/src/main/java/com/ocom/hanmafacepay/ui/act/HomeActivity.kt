@@ -152,7 +152,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
                                 tempText
-                            if (hasStartFaceDetect) {
+                            if (!hasStartFaceDetect) {
                                 FaceDetectActivity.start(this, payhome_amountTv.text.toString())
                                 hasStartFaceDetect = true
                             } else {
