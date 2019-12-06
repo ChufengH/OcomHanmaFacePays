@@ -232,6 +232,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
         mTTS = TTSUtils.creatTextToSpeech(this)
+        btn_back.setOnClickListener { onBackPressed() }
     }
 
     private fun registerBroadcast() {
