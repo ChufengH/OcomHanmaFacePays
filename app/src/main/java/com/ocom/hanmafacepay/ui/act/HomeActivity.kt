@@ -20,6 +20,7 @@ import com.blankj.utilcode.util.ServiceUtils
 import com.castle.serialport.SerialPortManager
 import com.example.android.observability.Injection
 import com.google.gson.Gson
+import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
@@ -29,6 +30,7 @@ import com.ocom.hanmafacepay.mvp.datasource.IHomeView
 import com.ocom.hanmafacepay.network.entity.*
 import com.ocom.hanmafacepay.receiver.NetStateChangeObserver
 import com.ocom.hanmafacepay.receiver.NetStateChangeReceiver
+import com.ocom.hanmafacepay.ui.base.BaseActivity
 import com.ocom.hanmafacepay.ui.service.BackForegroundService
 import com.ocom.hanmafacepay.ui.widget.LoadingDialog
 import com.ocom.hanmafacepay.util.*
@@ -53,29 +55,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateChangeObserver {
-
-    override fun onAnalysisFrame(p0: ByteArray?, p1: Camera?) {
-        FaceServiceManager.getInstance().iFaceRecoServiceApi ?: return
-        mCameraHelper ?: return
-        p0 ?: return
-        p1 ?: return
-        if (!mIsWaitingFaceDetect) return
-        if (CommonProcess.getSettingIsUseConstantMoney()) {
-            val users = mutableListOf<String>()
-            val iw = mCameraHelper?.previewSize?.width ?: 640
-            val ih = mCameraHelper?.previewSize?.height ?: 480
-            val result = FaceServiceManager.getInstance()
-                .recognizeFacesByYuvData(p0, iw, ih, 1, 0.7f, users)
-            if (result == 1 && users.isNotEmpty()) {
-                if (!mIsWaitingFaceDetect) return
-                FaceDetectActivity.start(this, payhome_amountTv.text.toString())
-                mIsWaitingFaceDetect = false
-
-            }
-        }
-    }
-
+class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetStateChangeObserver {
 
     private val job = SupervisorJob()
 
@@ -89,9 +69,6 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
     private val disposable = CompositeDisposable()
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
-//        if (!SystemUtils.isApkInDebug(this@HomeActivity)) {
-//            mCrashHandler.init(this@HomeActivity)
-//        }
         startAllServices()//添加应用返回到前台监听
         initViews()
         initData()
@@ -149,11 +126,12 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
         } else {
             ll_refund.visibility = GONE
         }
+        hasStartFaceDetect = false
         updateConstantPayHint()
         super.onResume()
     }
 
-    private var mIsWaitingFaceDetect = false
+    private var hasStartFaceDetect = false
 
     private fun updateConstantPayHint() {
         if (CommonProcess.getSettingIsUseConstantMoney()) {
@@ -165,19 +143,28 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                         val limit = it.find { it.isInRange(it.amount) }
                         if (limit != null) {
                             val tempText = "${limit.meal_section}消费: ${limit.amount / 100f}元"
-                            if (TextUtils.equals(tempText, payhome_amountTv.text.toString()))
+                            if (TextUtils.equals(
+                                    tempText,
+                                    payhome_amountTv.text.toString()
+                                ) && hasStartFaceDetect
+                            )
                                 return@subscribe
                             CommonProcess.setSettingConstantMoney(limit.amount)
                             payhome_amountTv.text =
                                 tempText
-                            val intent =
-                                Intent().apply { action = FaceDetectActivity.ACTION_CHANGE_HINT }
-                            intent.putExtra(
-                                FaceDetectActivity.KEY_CONSTANT_HINT,
-                                payhome_amountTv.text.toString()
-                            )
-                            sendBroadcast(intent)
-                            mIsWaitingFaceDetect = true
+                            if (hasStartFaceDetect) {
+                                FaceDetectActivity.start(this, payhome_amountTv.text.toString())
+                                hasStartFaceDetect = true
+                            } else {
+                                val intent = Intent().apply {
+                                    action = FaceDetectActivity.ACTION_CHANGE_HINT
+                                }
+                                intent.putExtra(
+                                    FaceDetectActivity.KEY_CONSTANT_HINT,
+                                    payhome_amountTv.text.toString()
+                                )
+                                sendBroadcast(intent)
+                            }
                         } else {
                             payhome_amountTv.text = "不在指定时间段, 暂停消费"
                             val intent =
@@ -187,7 +174,6 @@ class HomeActivity : BaseCameraActivity(), IHomeView, CoroutineScope, NetStateCh
                     }
             )
         } else {
-            mIsWaitingFaceDetect = false
             payhome_amountTv.visibility = GONE
         }
     }
