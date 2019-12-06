@@ -93,7 +93,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         } else {
             //不在支付的时候才识别
             if (!mIsPaying) {
-                mFaceRectView.drawFaceRect(faces, 640, 640)
+                mFaceRectView.drawFaceRect(faces, 640, 480)
                 tv_description.text = "检测到人脸,请稍等"
                 p0?.run {
                     if (!mIsRegistering)
@@ -173,10 +173,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         //判断是否已经在机器里面注册,如果已经注册,那就直接认证成功
         mIsRegistering = true
         val users = mutableListOf<String>()
-        val iw = mCameraHelper?.previewSize?.width ?: 640
-        val ih = mCameraHelper?.previewSize?.height ?: 480
         val result = FaceServiceManager.getInstance()
-            .recognizeFacesByYuvData(byteArray, iw, ih, 1, 0.6f, users)
+            .recognizeFacesByYuvData(byteArray, 640, 480, 1, 0.6f, users)
         if (result == 1 && users.isNotEmpty()) {
             log("识别成功!$users[0]", TAG = FaceDetectActivity::class.java.simpleName)
             finishWithUserId(users[0])
