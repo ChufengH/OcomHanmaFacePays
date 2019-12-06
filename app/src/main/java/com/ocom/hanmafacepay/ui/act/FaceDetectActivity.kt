@@ -247,10 +247,10 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         return R.layout.activity_face_detect;
     }
 
-    override fun onBackPressed() {
-        if (!TextUtils.isEmpty(mContantHint)) {
-            return
-        }
-        super.onBackPressed()
-    }
+//    override fun onBackPressed() {
+//        if (!TextUtils.isEmpty(mContantHint)) {
+//            return
+//        }
+//        super.onBackPressed()
+//    }
 }
