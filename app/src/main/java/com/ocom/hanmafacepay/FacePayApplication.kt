@@ -44,7 +44,11 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
             SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
                 SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
                     override fun onDataReceived(msg: ByteArray) {
+                        if (msg.isEmpty())
+                            return
                         val cardNo = HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))
+                        if (cardNo.isEmpty())
+                            return
                         val intent =
                             Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
                         intent.putExtra(

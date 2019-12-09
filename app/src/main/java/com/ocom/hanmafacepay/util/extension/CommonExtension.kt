@@ -23,14 +23,19 @@ fun String.base64ToByteArray(): ByteArray? {
     if (this.isEmpty()) {
         return null
     }
-    val file = File(FacePayApplication.INSTANCE.filesDir, this)
-    val stream = FileInputStream(file)
-    val b = ByteArray(stream.available())
-    stream.read(b)
-    val content = b.toString(Charset.forName("UTF-8"))
-    stream.close()
-    val imgBase64 = content.replaceFirst("data:image/jpeg;base64,", "")
-    return Base64.decode(imgBase64, Base64.DEFAULT)
+    return try {
+        val file = File(FacePayApplication.INSTANCE.filesDir, this)
+        val stream = FileInputStream(file)
+        val b = ByteArray(stream.available())
+        stream.read(b)
+        val content = b.toString(Charset.forName("UTF-8"))
+        stream.close()
+        val imgBase64 = content.replaceFirst("data:image/jpeg;base64,", "")
+        Base64.decode(imgBase64, Base64.DEFAULT)
+    } catch (e: Throwable) {
+        e.printStackTrace()
+        null
+    }
 }
 
 fun InputStream.toFileAsync(path: String) = GlobalScope.async {
@@ -48,15 +53,14 @@ fun InputStream.toFileAsync(path: String) = GlobalScope.async {
 /**
  * 直接转为json格式
  */
-inline fun <reified T> T.autoBody():RequestBody{
+inline fun <reified T> T.autoBody(): RequestBody {
     val json = Gson().toJson(this, T::class.java)
 //    log("请求json: $json")
-    return RequestBody.create(MediaType.parse("application/json"),
+    return RequestBody.create(
+        MediaType.parse("application/json"),
         json
     );
 }
-
-
 
 
 /**
@@ -83,7 +87,12 @@ inline fun <reified T> T.autoPart(): List<MultipartBody.Part>? {
                             if (annotation != null) {
                                 val enumValue = enumField.get(value)
                                 if (enumValue != null) {
-                                    parts.add(MultipartBody.Part.createFormData(key, enumValue.toString()))
+                                    parts.add(
+                                        MultipartBody.Part.createFormData(
+                                            key,
+                                            enumValue.toString()
+                                        )
+                                    )
                                     break
                                 }
                             }

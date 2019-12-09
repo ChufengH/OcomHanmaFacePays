@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#962F56</color>
 
+<!--    <color name="colorPrimary">#111</color>-->
+<!--    <color name="colorPrimaryDark">#FFF</color>-->
+<!--    <color name="colorAccent">#ea3732</color>-->
+    <color name="contact_name">#333333</color>
+    <color name="contact_number">#8c8c8c</color>
+
     <color name="app_theme">#03A9F4</color>
 
     <color name="shadow80">#80808080</color>
