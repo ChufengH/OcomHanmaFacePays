@@ -3,6 +3,7 @@ package com.ocom.hanmafacepay
 import android.app.Application
 import android.content.Intent
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.blankj.utilcode.util.ShellUtils
 import com.castle.serialport.SerialPortManager
 import com.ocom.hanmafacepay.const.Constant
@@ -40,6 +41,7 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         GlobalScope.launch(Dispatchers.IO) {
             SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
                 SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_tencent_setting.*
 
 class TencentSettingActivity : BaseActivity() {
     private var currentIndex = 0
-    private var itemFragments = arrayOfNulls<BaseFragment>(4)//页面容器
+    private var itemFragments = arrayOfNulls<BaseFragment>(5)//页面容器
     private val mToolbar by lazy { findViewById<Toolbar>(R.id.toolbar_settings) }
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
@@ -61,6 +61,18 @@ class TencentSettingActivity : BaseActivity() {
                             }
                             showHideFragment(itemFragments[1]!!, itemFragments[currentIndex]!!)
                             currentIndex = 1
+                        }
+                        true
+                    }
+                    R.id.menu_setting_userBtn -> {//用户列表
+                        if (currentIndex != 4) {
+                            if (itemFragments[4] == null) {
+                                itemFragments[4] = TradeHistoryFragment()
+                                supportFragmentManager.beginTransaction()
+                                    .add(R.id.setting_container, itemFragments[4]!!).commit()
+                            }
+                            showHideFragment(itemFragments[4]!!, itemFragments[currentIndex]!!)
+                            currentIndex = 4
                         }
                         true
                     }
