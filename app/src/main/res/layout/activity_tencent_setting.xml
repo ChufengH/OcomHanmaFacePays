@@ -38,8 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|left"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             android:background="#567777"
+            app:layout_insetEdge="bottom"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_tencent_setting" />
 
