@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import com.ocom.faceidentification.module.setting.tradeHistory.TradeHistoryFragment
+import com.ocom.faceidentification.module.setting.tradeHistory.UserListFragment
 import com.ocom.faceidentification.module.tencent.setting.settings.TencentSettingsFragment
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.ui.act.setting.about.TencentAboutFragment
@@ -67,7 +68,7 @@ class TencentSettingActivity : BaseActivity() {
                     R.id.menu_setting_userBtn -> {//用户列表
                         if (currentIndex != 4) {
                             if (itemFragments[4] == null) {
-                                itemFragments[4] = TradeHistoryFragment()
+                                itemFragments[4] = UserListFragment.newInstance()
                                 supportFragmentManager.beginTransaction()
                                     .add(R.id.setting_container, itemFragments[4]!!).commit()
                             }

@@ -25,10 +25,10 @@ import java.util.*
  */
 class UsersAdapter(
     private val context: Context,
-    private val contactList: List<User>,
+    private val contactList: MutableList<User>,
     private val listener: ContactsAdapterListener
 ) : RecyclerView.Adapter<MyViewHolder>(), Filterable {
-    private var contactListFiltered: List<User>
+    private var contactListFiltered: MutableList<User>
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView
@@ -103,6 +103,12 @@ class UsersAdapter(
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun switchData(users: List<User>) {
+        contactList.clear()
+        contactList.addAll(users)
+        notifyDataSetChanged()
     }
 
     interface ContactsAdapterListener {
