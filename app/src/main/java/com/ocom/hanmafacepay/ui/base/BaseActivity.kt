@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.ocom.hanmafacepay.R
+import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
 import com.ocom.hanmafacepay.util.StatusBarCompat
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -36,6 +37,16 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
         onActivityCreat(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        UpdateDialogManager.register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        UpdateDialogManager.unregister(this)
     }
 
 
