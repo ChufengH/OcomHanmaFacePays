@@ -45,6 +45,7 @@ object UpdateDialogManager {
             mProgressDialog?.progress = progress
             if (progress >= 100) {
                 mProgressDialog?.setMessage("正在安装, 请稍等")
+                mProgressDialog?.setCancelable(true)
             }
         }
     }
