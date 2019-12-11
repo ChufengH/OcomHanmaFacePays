@@ -19,7 +19,7 @@
 
     <TextView
             android:id="@+id/name"
-            style="@style/TextAppearance.AppCompat.Title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/thumbnail"
@@ -41,6 +41,7 @@
             android:layout_toRightOf="@id/thumbnail"
             android:textColor="@color/contact_number"
             android:textSize="@dimen/contact_number"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="ID: 刘某某" />
 
     <TextView
@@ -52,6 +53,7 @@
             android:layout_toRightOf="@id/thumbnail"
             android:textColor="@color/contact_number"
             android:textSize="@dimen/contact_number"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="卡号:123456789" />
 
 <!--    <View-->
