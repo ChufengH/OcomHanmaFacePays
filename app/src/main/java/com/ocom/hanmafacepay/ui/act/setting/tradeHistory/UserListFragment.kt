@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 class UserListFragment : BaseFragment(), UsersAdapter.ContactsAdapterListener {
 
     private val mAdapter: UsersAdapter by lazy {
-        UsersAdapter(context!!, mutableListOf(),this)
+        UsersAdapter(context!!, mutableListOf(), this)
     }
 
     private lateinit var mPresenter: ITradeHistoryConstract.ITradeHistoryPresenter
@@ -98,6 +98,10 @@ class UserListFragment : BaseFragment(), UsersAdapter.ContactsAdapterListener {
     override fun onDestroy() {
         super.onDestroy()
         disposable.dispose()
+    }
+
+    fun filter(userName: String) {
+       mAdapter.filter.filter(userName)
     }
 
     override fun onContactSelected(contact: User?) {

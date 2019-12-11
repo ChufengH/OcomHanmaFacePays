@@ -1,5 +1,6 @@
 package com.ocom.hanmafacepay.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.ocom.hanmafacepay.network.entity.User
 import com.ocom.hanmafacepay.ui.adapter.UsersAdapter.MyViewHolder
 import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import java.util.*
+import kotlin.text.toLowerCase as toLowerCase1
 
 /**
  * Created by ravi on 16/11/17.
@@ -71,6 +73,7 @@ class UsersAdapter(
 
     override fun getFilter(): Filter {
         return object : Filter() {
+            @SuppressLint("DefaultLocale")
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 contactListFiltered = if (charString.isEmpty()) {
@@ -78,9 +81,8 @@ class UsersAdapter(
                 } else {
                     val filteredList: MutableList<User> =
                         ArrayList()
-                    for (row in contactList) { // name match condition. this might differ depending on your requirement
-// here we are looking for name or phone number match
-                        if (row.name.toLowerCase().contains(charString.toLowerCase()) || row.userid.contains(
+                    for (row in contactList) {
+                        if (row.name.toLowerCase1().contains(charString.toLowerCase1()) || row.userid.contains(
                                 charSequence
                             )
                         ) {

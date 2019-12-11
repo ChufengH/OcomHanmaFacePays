@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
@@ -128,10 +129,16 @@ class TencentSettingActivity : BaseActivity() {
         // listening to search query text change
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if (currentIndex == 4 && !TextUtils.isEmpty(query)) {
+                    (itemFragments[4] as UserListFragment).filter(query!!)
+                }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (currentIndex == 4 && !TextUtils.isEmpty(newText)) {
+                    (itemFragments[4] as UserListFragment).filter(newText!!)
+                }
                 return false
             }
         })
@@ -144,6 +151,7 @@ class TencentSettingActivity : BaseActivity() {
             true
         } else super.onOptionsItemSelected(item)
     }
+
 
     /**
      * 设置各个界面模块
