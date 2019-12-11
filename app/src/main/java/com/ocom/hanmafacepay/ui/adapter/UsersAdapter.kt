@@ -32,6 +32,7 @@ class UsersAdapter(
     private var contactListFiltered: MutableList<User>
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var mAvatar: String = ""
         var name: TextView = view.findViewById(R.id.name)
         var phone: TextView = view.findViewById(R.id.id_tv)
         var cardNo: TextView = view.findViewById(R.id.card_no_tv)
@@ -53,16 +54,19 @@ class UsersAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val (_, userid, name) = contactListFiltered[position]
+        if (holder.mAvatar == userid)
+            return
         holder.name.text = "姓名: ${name}"
         holder.phone.text = "ID: ${userid}"
         if (contactListFiltered[position].card.isNotEmpty()) {
             holder.cardNo.text = "卡号: ${contactListFiltered[position].card}"
         }
         val byteArray = userid.base64ToByteArray() ?: byteArrayOf()
-        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+//        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         Glide
             .with(context)
-            .load(bitmap ?: R.drawable.icon_smile)
+            .asBitmap()
+            .load(byteArray)
             .apply(RequestOptions().circleCrop().error(R.drawable.icon_smile))
             .into(holder.thumbnail)
     }
