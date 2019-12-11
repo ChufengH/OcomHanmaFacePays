@@ -3,6 +3,7 @@ package com.ocom.hanmafacepay.ui.widget
 import android.app.Activity
 import android.app.ProgressDialog
 import com.ocom.hanmafacepay.R
+import io.reactivex.Maybe
 
 object UpdateDialogManager {
     var mContext: Activity? = null
@@ -12,9 +13,9 @@ object UpdateDialogManager {
     }
 
     fun unregister(context: Activity) {
+        mContext = null
         mProgressDialog?.dismiss()
         mProgressDialog = null
-        mContext = null
     }
 
     var mProgressDialog: ProgressDialog? = null

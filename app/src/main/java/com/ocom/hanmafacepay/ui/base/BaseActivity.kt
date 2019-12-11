@@ -44,8 +44,8 @@ abstract class BaseActivity : AppCompatActivity() {
         UpdateDialogManager.register(this)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         UpdateDialogManager.unregister(this)
     }
 
