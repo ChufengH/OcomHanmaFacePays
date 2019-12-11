@@ -12,6 +12,7 @@ import com.ocom.hanmafacepay.network.ApiWrapper
 import com.ocom.hanmafacepay.network.DownloadResponseBody
 import com.ocom.hanmafacepay.network.RetrofitManagement
 import com.ocom.hanmafacepay.network.entity.*
+import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
 import com.ocom.hanmafacepay.util.InstallUtil
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.ioToMain
@@ -233,6 +234,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
             mDownloadUrl = path
         }
         log("开始下载${mDownloadUrl}")
+        UpdateDialogManager.showProgressDialog()
         addSubscription(
             mAPIWrapper.downloadFileWithDynamicUrlSync(this, mDownloadUrl)
                 .map { body ->
@@ -268,12 +270,16 @@ class HomeDataSource(val mIHomeView: IHomeView) :
         )
     }
 
+    var totalLength: Long = 0L
+
     override fun onStartDownload(length: Long) {
-        log("开始下载,总长度: ${length.toString()}")
+        log("开始下载,总长度: $length")
+        totalLength = length
     }
 
     override fun onProgress(progress: Int) {
         log("下载进度:$progress")
+        UpdateDialogManager.setProgress((progress / totalLength).toInt() * 100)
     }
 
     override fun onFail(errorInfo: String) {
