@@ -62,10 +62,11 @@ class UsersAdapter(
             holder.cardNo.text = "卡号: ${contactListFiltered[position].card}"
         }
         val byteArray = userid.base64ToByteArray() ?: byteArrayOf()
-        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+//        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         Glide
             .with(context)
-            .load(bitmap ?: R.drawable.icon_smile)
+            .asBitmap()
+            .load(byteArray)
             .apply(RequestOptions().circleCrop().error(R.drawable.icon_smile))
             .into(holder.thumbnail)
     }
