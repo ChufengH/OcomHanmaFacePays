@@ -2,6 +2,7 @@ package com.ocom.hanmafacepay.ui.widget
 
 import android.app.Activity
 import android.app.ProgressDialog
+import com.ocom.hanmafacepay.R
 
 object UpdateDialogManager {
     var mContext: Activity? = null
@@ -20,20 +21,30 @@ object UpdateDialogManager {
 
     fun showProgressDialog() {
         mContext ?: return
-        mProgressDialog = ProgressDialog(mContext).apply {
-            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-            setTitle("有新的可用升级")
-            setMessage("升级中")
-            max = 100
-            setCancelable(false)
+        mContext?.runOnUiThread {
+            mProgressDialog = ProgressDialog(mContext, R.style.lightDialog).apply {
+                setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+                setTitle("有新的可用升级")
+                setMessage("升级中")
+                max = 100
+                setCancelable(false)
+            }
+            mProgressDialog?.show()
         }
-        mProgressDialog?.show()
+    }
+
+    fun setProgressMessage(msg: String) {
+        mContext?.runOnUiThread {
+            mProgressDialog?.setMessage(msg)
+        }
     }
 
     fun setProgress(progress: Int) {
-        mProgressDialog?.progress = progress
-        if (progress >= 100) {
-            mProgressDialog?.setMessage("正在安装, 请稍等")
+        mContext?.runOnUiThread {
+            mProgressDialog?.progress = progress
+            if (progress >= 100) {
+                mProgressDialog?.setMessage("正在安装, 请稍等")
+            }
         }
     }
 }

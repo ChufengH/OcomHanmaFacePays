@@ -40,10 +40,11 @@ class DownloadResponseBody(private val responseBody: ResponseBody, private val d
             override fun read(sink: Buffer, byteCount: Long): Long {
                 val bytesRead = super.read(sink, byteCount)
                 totalBytesRead += if (bytesRead != -1L) bytesRead else 0
-                Log.e("download", "read: " + (totalBytesRead * 100 / responseBody.contentLength()).toInt())
+                val progress = (totalBytesRead * 100 / responseBody.contentLength()).toInt()
+                Log.e("download", "read: $progress")
                 if (null != downloadListener) {
                     if (bytesRead != -1L) {
-                        downloadListener.onProgress(totalBytesRead.toInt())
+                        downloadListener.onProgress(progress)
                     }
                 }
                 return bytesRead

@@ -34,7 +34,7 @@ public final class RetrofitManagement {
     private boolean DEBUG = false;
     private Retrofit retrofit;
     private HttpCallback mHttpCallback;
-    public static final String DEFAULT_BASE_HOST = "http://guojfwx230.picp.io:22391/mall/";
+    public static final String DEFAULT_BASE_HOST = "http://61.129.251.161:6006/";
     private static String baseUrl = DEFAULT_BASE_HOST;
     //测试用,每10次请求切换一次base以模拟离线模式
     private static int mOfflineCount = 0;

@@ -23,6 +23,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 class HomeDataSource(val mIHomeView: IHomeView) :
     AbstractDataSource<ApiWrapper>(ApiWrapper.INSTANCE), DownloadResponseBody.DownloadListener {
@@ -217,6 +218,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                     log("update status success")
                     log("downloadSoft complete start install")
                     val filePath = "storage/emulated/0/com.ocom.hanamafacepay"
+                    UpdateDialogManager.setProgressMessage("开始安装软件,请稍等")
                     InstallUtil().installAppSilent(File(filePath), null, true)
                     mDownloadUrl = ""
                 },
@@ -265,12 +267,13 @@ class HomeDataSource(val mIHomeView: IHomeView) :
                 },
                     { e ->
                         e.printStackTrace()
+                        UpdateDialogManager.setProgressMessage("下载失败,请重新升级!")
                         mDownloadUrl = ""
                     })
         )
     }
 
-    var totalLength: Long = 0L
+    var totalLength: Long = 0
 
     override fun onStartDownload(length: Long) {
         log("开始下载,总长度: $length")
@@ -278,8 +281,7 @@ class HomeDataSource(val mIHomeView: IHomeView) :
     }
 
     override fun onProgress(progress: Int) {
-        log("下载进度:$progress")
-        UpdateDialogManager.setProgress((progress / totalLength).toInt() * 100)
+        UpdateDialogManager.setProgress(progress)
     }
 
     override fun onFail(errorInfo: String) {

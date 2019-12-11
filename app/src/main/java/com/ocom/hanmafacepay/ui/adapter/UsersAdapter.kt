@@ -58,8 +58,8 @@ class UsersAdapter(
             return
         holder.name.text = "姓名: ${name}"
         holder.phone.text = "ID: ${userid}"
-        if (contactListFiltered[position].card_no.isNotEmpty()) {
-            holder.cardNo.text = "卡号: ${contactListFiltered[position].card_no}"
+        if (contactListFiltered[position].card.isNotEmpty()) {
+            holder.cardNo.text = "卡号: ${contactListFiltered[position].card}"
         }
         val byteArray = userid.base64ToByteArray() ?: byteArrayOf()
 //        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)

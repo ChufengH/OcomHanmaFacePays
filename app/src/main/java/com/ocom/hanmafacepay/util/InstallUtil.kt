@@ -4,6 +4,7 @@ import android.content.Context
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ShellUtils
 import com.ocom.hanmafacepay.FacePayApplication
+import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
 import com.ocom.hanmafacepay.util.extension.log
 import timber.log.Timber
 import java.io.File
@@ -29,17 +30,22 @@ class InstallUtil {
 
         val commandResult = ShellUtils.execCmd(command, isRooted)
         //再启动
-        return if (commandResult.successMsg != null && commandResult.successMsg.toLowerCase().contains("success")) {
+        return if (commandResult.successMsg != null && commandResult.successMsg.toLowerCase().contains(
+                "success"
+            )
+        ) {
             log(
                 "installAppSilent successMsg: " + commandResult.successMsg +
                         ", errorMsg: " + commandResult.errorMsg
             )
+            UpdateDialogManager.setProgressMessage("安装成功,即将重新启动")
             true
         } else {
             log(
                 "installAppSilent successMsg: " + commandResult.successMsg
                         + ", errorMsg: " + commandResult.errorMsg
             )
+            UpdateDialogManager.setProgressMessage("安装失败: " + commandResult.errorMsg)
             false
         }
     }
