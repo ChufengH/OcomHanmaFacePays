@@ -42,6 +42,14 @@ class ExampleUnitTest {
         }
 
     @Test
+    fun testCardNo() {
+        val origin = "07D1E766"
+        val answer = origin.toLong(16).toString()
+//        val answer = Integer.valueOf(origin,16).toString()
+        assertEquals(answer, "131196774")
+    }
+
+    @Test
     fun testTradeNo() {
         DEVICE_NUMBER = "a1331a"
         TIME_STAMP = "1574673285808"

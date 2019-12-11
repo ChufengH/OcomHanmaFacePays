@@ -3,6 +3,7 @@ package com.ocom.hanmafacepay
 import android.app.Application
 import android.content.Intent
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.blankj.utilcode.util.ShellUtils
 import com.castle.serialport.SerialPortManager
 import com.ocom.hanmafacepay.const.Constant
@@ -40,24 +41,30 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         GlobalScope.launch(Dispatchers.IO) {
-//            SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
-//                SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
-//                    override fun onDataReceived(msg: ByteArray) {
-//                        val cardNo = HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))
-//                        val intent =
-//                            Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
-//                        intent.putExtra(
-//                            FaceDetectActivity.KEY_CONSTANT_HINT,
-//                            cardNo
-//                        )
-//                        sendBroadcast(intent)
-//                        println(
-//                            "收到卡号${HexUtils.getScanCard2Number( HexUtils.bytesToHexString(msg)
-//                            )}"
-//                        )
-//                    }
-//                })
+            SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
+                SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
+                    override fun onDataReceived(msg: ByteArray) {
+                        if (msg.isEmpty())
+                            return
+                        val cardNo = HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))
+                        if (cardNo.isEmpty())
+                            return
+                        val intent =
+                            Intent().apply { action = FaceDetectActivity.ACTION_CARD_NO_SCANNED }
+                        intent.putExtra(
+                            FaceDetectActivity.KEY_CONSTANT_HINT,
+                            cardNo.toLong(16).toString()
+                        )
+                        sendBroadcast(intent)
+                        println(
+                            "收到卡号${HexUtils.getScanCard2Number(HexUtils.bytesToHexString(msg))}转换后${cardNo.toLong(
+                                16
+                            )}"
+                        )
+                    }
+                })
             FaceServiceManager.getInstance().Init(this@FacePayApplication)
         }
         initBugly()

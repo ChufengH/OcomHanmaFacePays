@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/Widget.MaterialComponents.CardView"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:minHeight="130dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="12dp">
+
+    <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="@dimen/thumbnail"
+            android:layout_height="@dimen/thumbnail"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="姓名: 刘某某"
+            android:ellipsize="end"
+            android:maxLength="15"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="108dp"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/contact_name"
+            android:textSize="@dimen/contact_name" />
+
+    <TextView
+            android:id="@+id/id_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="56dp"
+            android:layout_marginStart="108dp"
+            android:layout_toRightOf="@id/thumbnail"
+            tools:text="ID: 刘某某"
+            android:textColor="@color/contact_number"
+            android:textSize="@dimen/contact_number" />
+    <TextView
+            android:id="@+id/card_no_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="86dp"
+            android:layout_toRightOf="@id/thumbnail"
+            tools:text="卡号:123456789"
+            android:textColor="@color/contact_number"
+            android:textSize="@dimen/contact_number" />
+
+</com.google.android.material.card.MaterialCardView>

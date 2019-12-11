@@ -25,6 +25,11 @@
             android:icon="@drawable/selector_nav_about"
             android:title="关于本机"
             app:showAsAction="ifRoom" />
-
+    <item
+            android:id="@+id/menu_setting_userBtn"
+            android:enabled="true"
+            android:icon="@drawable/selector_nav_user"
+            android:title="用户列表"
+            app:showAsAction="ifRoom" />
 
 </menu>

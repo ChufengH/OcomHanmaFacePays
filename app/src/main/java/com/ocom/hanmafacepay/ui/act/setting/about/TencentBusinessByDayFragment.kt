@@ -1,12 +1,14 @@
 package com.ocom.hanmafacepay.ui.act.setting.about
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.observability.Injection
+import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.network.entity.MealLimit
 import com.ocom.hanmafacepay.network.entity.Order
 import com.ocom.hanmafacepay.network.entity.OrderSummary
@@ -43,6 +45,9 @@ class TencentBusinessByDayFragment : BaseFragment() {
     private var mRootView: View? = null
     override fun setLayout(): Any {
         mRootView = RecyclerView(context!!).apply {
+            setPadding(0, 0, 0, 38)
+            clipToPadding = false
+            setBackgroundColor(Color.parseColor("#567777"))
             layoutManager = LinearLayoutManager(context!!)
         }
         return mRootView!!
