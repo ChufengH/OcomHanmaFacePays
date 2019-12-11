@@ -1,5 +1,6 @@
 package com.ocom.faceidentification.module.setting.tradeHistory
 
+import android.graphics.Color
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.View
@@ -62,6 +63,7 @@ class UserListFragment : BaseFragment(), UsersAdapter.ContactsAdapterListener {
             it.layoutManager = LinearLayoutManager(context!!)
 
             it.itemAnimator = DefaultItemAnimator()
+            it.setBackgroundColor(Color.parseColor("#567777"))
             it.addItemDecoration(
                 DividerItemDecoration(
                     context!!,
