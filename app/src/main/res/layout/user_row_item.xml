@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/Widget.MaterialComponents.CardView"
         xmlns:tools="http://schemas.android.com/tools"
+        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="24dp"
-        android:minHeight="130dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="12dp">
+        android:layout_height="88dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:minHeight="88dp">
 
     <ImageView
             android:id="@+id/thumbnail"
@@ -18,44 +14,50 @@
             android:layout_height="@dimen/thumbnail"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             tools:src="@mipmap/ic_launcher" />
 
     <TextView
             android:id="@+id/name"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="姓名: 刘某某"
+            android:layout_alignTop="@id/thumbnail"
+            android:layout_marginStart="16dp"
+            android:layout_toRightOf="@id/thumbnail"
             android:ellipsize="end"
-            android:maxLength="15"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="108dp"
-            style="@style/TextAppearance.AppCompat.Title"
             android:fontFamily="sans-serif-medium"
+            android:maxLength="15"
             android:textColor="@color/contact_name"
-            android:textSize="@dimen/contact_name" />
+            android:textSize="@dimen/contact_name"
+            tools:text="姓名: 刘某某" />
 
     <TextView
             android:id="@+id/id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
-            android:layout_marginTop="56dp"
-            android:layout_marginStart="108dp"
+            android:layout_marginStart="16dp"
             android:layout_toRightOf="@id/thumbnail"
-            tools:text="ID: 刘某某"
             android:textColor="@color/contact_number"
-            android:textSize="@dimen/contact_number" />
+            android:textSize="@dimen/contact_number"
+            tools:text="ID: 刘某某" />
+
     <TextView
             android:id="@+id/card_no_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_marginStart="108dp"
-            android:layout_marginTop="86dp"
+            android:layout_below="@id/id_tv"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/thumbnail"
-            tools:text="卡号:123456789"
             android:textColor="@color/contact_number"
-            android:textSize="@dimen/contact_number" />
+            android:textSize="@dimen/contact_number"
+            tools:text="卡号:123456789" />
 
-</com.google.android.material.card.MaterialCardView>
+<!--    <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginLeft="56dp"-->
+<!--            android:background="@drawable/shape_divider" />-->
+</RelativeLayout>

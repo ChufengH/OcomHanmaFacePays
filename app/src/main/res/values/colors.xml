@@ -8,8 +8,8 @@
 <!--    <color name="colorPrimaryDark">#FFF</color>-->
 <!--    <color name="colorAccent">#ea3732</color>-->
 <!--    <color name="contact_name">#333333</color>-->
-    <color name="contact_name">@color/common_text_white</color>
-    <color name="contact_number">@color/common_text_subtitle</color>
+    <color name="contact_name">@color/common_text</color>
+    <color name="contact_number">@color/shadow80</color>
 
     <color name="app_theme">#03A9F4</color>
 

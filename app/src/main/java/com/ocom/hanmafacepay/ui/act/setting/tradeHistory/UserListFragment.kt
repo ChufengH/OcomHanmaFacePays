@@ -63,7 +63,7 @@ class UserListFragment : BaseFragment(), UsersAdapter.ContactsAdapterListener {
             it.layoutManager = LinearLayoutManager(context!!)
 
             it.itemAnimator = DefaultItemAnimator()
-            it.setBackgroundColor(Color.parseColor("#567777"))
+//            it.setBackgroundColor(Color.parseColor("#567777"))
             it.addItemDecoration(
                 DividerItemDecoration(
                     context!!,
