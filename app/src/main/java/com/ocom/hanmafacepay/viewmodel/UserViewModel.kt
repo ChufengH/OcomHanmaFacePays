@@ -30,12 +30,11 @@ import com.ocom.hanmafacepay.persistence.MealSectionDao
 import com.ocom.hanmafacepay.persistence.OrderDao
 import com.ocom.hanmafacepay.persistence.PolicyDao
 import com.ocom.hanmafacepay.persistence.UserDao
-import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
+import com.ocom.hanmafacepay.ui.widget.ActivityPartnerManager
 import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -106,7 +105,7 @@ class UserViewModel(
         dataSource.updataAllUsers(users)
         val d = Maybe.timer(5, TimeUnit.SECONDS)
             .subscribe {
-                UpdateDialogManager.dismissDialog()
+                ActivityPartnerManager.dismissDialog()
             }
     }
 

@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.hardware.Camera
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
@@ -22,7 +21,6 @@ import com.example.android.observability.Injection
 import com.google.gson.Gson
 import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
-import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.*
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
@@ -30,12 +28,10 @@ import com.ocom.hanmafacepay.mvp.datasource.IHomeView
 import com.ocom.hanmafacepay.network.entity.*
 import com.ocom.hanmafacepay.receiver.NetStateChangeObserver
 import com.ocom.hanmafacepay.receiver.NetStateChangeReceiver
-import com.ocom.hanmafacepay.ui.base.BaseActivity
 import com.ocom.hanmafacepay.ui.service.BackForegroundService
 import com.ocom.hanmafacepay.ui.widget.LoadingDialog
-import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
+import com.ocom.hanmafacepay.ui.widget.ActivityPartnerManager
 import com.ocom.hanmafacepay.util.*
-import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.extension.showToast
 import com.ocom.hanmafacepay.util.keyboard.Keyboard3
@@ -48,7 +44,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import java.io.IOException
-import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -210,16 +205,6 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         start(RefundOrderListActivity::class.java)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mTTS = TTSUtils.creatTextToSpeech(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        TTSUtils.shutDownAuto(mTTS)
-    }
-
     /**
      * 跳转到金额输入模块
      */
@@ -282,7 +267,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     if (mInputDialog?.isShowing == true) {
                         mInputTv?.setText("")
                         mInputDialog?.dismiss()
-                        TTSUtils.startAuto(mTTS, "已清零")
+                        readTTs("已清零")
                         launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
                     }
                 }
@@ -324,16 +309,16 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                 mInputTv?.setText(str.substring(0, str.length - 1))
                 str = mInputTv?.text.toString()
                 if (str.isNotEmpty()) {
-                    TTSUtils.startAuto(mTTS, str + "元")
+                    readTTs( str + "元")
                     launch(Dispatchers.IO) { reSendKeyboardNumber(str) }
                 } else {
                     // ToastUtil.showShortToast("0")
-                    TTSUtils.startAuto(mTTS, "已清零")
+                    readTTs( "已清零")
                     launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
                 }
 
             } else {
-                TTSUtils.startAuto(mTTS, "已清零")
+                readTTs( "已清零")
                 launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
             }
         }
@@ -404,7 +389,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     override fun onUpdateUsers(usersListResponse: UsersListResponse) {
         launch(Dispatchers.IO) {
             log("更新用户信息：$usersListResponse")
-            UpdateDialogManager.showAlertDialog("更新用户信息,请稍等")
+            ActivityPartnerManager.showAlertDialog("更新用户信息,请稍等")
             viewModel.updateUsers(usersListResponse.users)
         }
     }
@@ -412,7 +397,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     //更新风控信息
     override fun onUpdateRiskInfo(riskControlResponse: RiskControlResponse) {
         launch(Dispatchers.IO) {
-            UpdateDialogManager.showAlertDialog("更新风控信息...")
+            ActivityPartnerManager.showAlertDialog("更新风控信息...")
             log("更新风控信息:$riskControlResponse")
             viewModel.updateMealLimits(riskControlResponse.meal_section_para)
             riskControlResponse.policy_limit.forEach {
@@ -424,14 +409,12 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
             }
             viewModel.updatePolicys(riskControlResponse.policy_limit)
             delay(5000)
-            UpdateDialogManager.dismissDialog()
+            ActivityPartnerManager.dismissDialog()
         }
         updateConstantPayHint()
     }
 
     private val mLoadingDialog by lazy { LoadingDialog(this@HomeActivity) }
-
-    private lateinit var mTTS: TextToSpeech
 
     private fun getPayRequest(payEvent: PayEvent): PayRequest {
         val cal = Calendar.getInstance(Locale.CHINA)
@@ -440,16 +423,6 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
             DEVICE_NUMBER, payEvent.tradeNo ?: TRADE_NO, payEvent.userId,
             payEvent.amount, payEvent.offline,
             date, TIME_STAMP, SIGN
-        )
-    }
-
-    private fun readTTs(text: String) {
-        disposable.add(
-            Observable.timer(800, TimeUnit.MILLISECONDS)
-                .ioToMain()
-                .subscribe {
-                    TTSUtils.startAuto(mTTS, text)
-                }
         )
     }
 
@@ -735,7 +708,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
      * 获取人脸支付
      */
     private fun startFaceDetect() {
-        TTSUtils.startAuto(mTTS, "${moneyStr!!.trim()}元开始刷脸支付")
+        readTTs("${moneyStr!!.trim()}元开始刷脸支付")
         disposable.add(Observable.timer(800, TimeUnit.MILLISECONDS)
             .ioToMain()
             .subscribe {

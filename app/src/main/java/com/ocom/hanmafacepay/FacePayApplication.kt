@@ -2,6 +2,7 @@ package com.ocom.hanmafacepay
 
 import android.app.Application
 import android.content.Intent
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.blankj.utilcode.util.ShellUtils
@@ -13,13 +14,17 @@ import com.ocom.hanmafacepay.ui.act.FaceDetectActivity
 import com.ocom.hanmafacepay.ui.act.LauncherActivity
 import com.ocom.hanmafacepay.util.FileLogUtil
 import com.ocom.hanmafacepay.util.HexUtils
+import com.ocom.hanmafacepay.util.TTSUtils
 import com.ocom.hanmafacepay.util.extension.log
 import com.tencent.bugly.crashreport.CrashReport
+import io.reactivex.Maybe
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
@@ -37,8 +42,15 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         lateinit var INSTANCE: FacePayApplication
     }
 
+    fun readTTs(text: String) {
+        TTSUtils.startAuto(mTTS, text)
+    }
+
+    private lateinit var mTTS: TextToSpeech
+
     override fun onCreate() {
         super.onCreate()
+        mTTS = TTSUtils.creatTextToSpeech(this)
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

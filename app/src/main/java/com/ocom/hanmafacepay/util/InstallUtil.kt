@@ -4,9 +4,8 @@ import android.content.Context
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ShellUtils
 import com.ocom.hanmafacepay.FacePayApplication
-import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
+import com.ocom.hanmafacepay.ui.widget.ActivityPartnerManager
 import com.ocom.hanmafacepay.util.extension.log
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -38,14 +37,14 @@ class InstallUtil {
                 "installAppSilent successMsg: " + commandResult.successMsg +
                         ", errorMsg: " + commandResult.errorMsg
             )
-            UpdateDialogManager.setProgressMessage("安装成功,即将重新启动")
+            ActivityPartnerManager.setProgressMessage("安装成功,即将重新启动")
             true
         } else {
             log(
                 "installAppSilent successMsg: " + commandResult.successMsg
                         + ", errorMsg: " + commandResult.errorMsg
             )
-            UpdateDialogManager.setProgressMessage("安装失败: " + commandResult.errorMsg)
+            ActivityPartnerManager.setProgressMessage("安装失败: " + commandResult.errorMsg)
             false
         }
     }

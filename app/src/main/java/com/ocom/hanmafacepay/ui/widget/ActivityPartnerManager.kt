@@ -5,7 +5,10 @@ import android.app.ProgressDialog
 import com.ocom.hanmafacepay.R
 import io.reactivex.Maybe
 
-object UpdateDialogManager {
+/**
+ * 控制显示隐藏全局对话框
+ */
+object ActivityPartnerManager {
     var mContext: Activity? = null
 
     fun register(context: Activity) {

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.android.observability.Injection
 import com.google.gson.Gson
 import com.ocom.faceidentification.base.BaseKeybroadActivity
+import com.ocom.hanmafacepay.FacePayApplication
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.*
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
@@ -142,19 +143,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private var countdonwDispose: Disposable? = null
 
 
-    private var jumpCountdown = 5L //倒计时
-
-    private lateinit var mTTS: TextToSpeech
-
-    override fun onStart() {
-        super.onStart()
-        mTTS = TTSUtils.creatTextToSpeech(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        TTSUtils.shutDownAuto(mTTS)
-    }
+    private var jumpCountdown = 1L //倒计时
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         initData()
@@ -248,16 +237,6 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     }
 
     private val disposable = CompositeDisposable()
-    private fun readTTs(text: String) {
-        disposable.add(
-            Maybe.timer(800, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    TTSUtils.startAuto(mTTS, text)
-                }
-        )
-    }
 
     private fun onOfflinePaySuccess(order: Order) {
         runOnUiThread {
@@ -349,9 +328,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
 
 
     private fun back() {
-        TTSUtils.shutDownAuto(mTTS)
         countdonwDispose?.dispose()
-//        startWithFinish(HomeActivity::class.java)
         finish()
     }
 
@@ -368,7 +345,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             .map { t -> jumpCountdown - t }//倒计时
             .ioToMain()
             .doOnComplete { back() }
-            .subscribe {t->
+            .subscribe { t ->
                 if (t < 0) {
                     pay_reciprocal.text = " 返回（0)"
                 } else {
@@ -429,7 +406,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             Keyboard3.KEY_ESC -> {
                 if (isPaying) {
                     ToastUtil.showShortToast("正在支付，请等待...")
-                    TTSUtils.startAuto(mTTS, "正在支付，请等待")
+                    readTTs("正在支付，请等待...")
                 } else {
                     back()
                 }
@@ -437,7 +414,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             Keyboard3.KEY_PAY -> {
                 if (isPaying) {
                     ToastUtil.showShortToast("正在支付，请等待...")
-                    TTSUtils.startAuto(mTTS, "正在支付，请等待")
+                    readTTs("正在支付，请等待...")
                 } else {
                     back()
                 }

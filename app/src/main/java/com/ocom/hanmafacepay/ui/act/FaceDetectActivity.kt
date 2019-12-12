@@ -16,6 +16,7 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.observability.Injection
 import com.ocom.faceidentification.module.tencent.setting.TencentSettingActivity
+import com.ocom.hanmafacepay.FacePayApplication
 import com.ocom.hanmafacepay.FaceServiceManager
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.CommonProcess
@@ -128,7 +129,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         super.onDestroy()
         mCameraHelper?.stopCamera()
         disposable.dispose()
-        mTTS.shutdown()
     }
 
     private var mIsRegistering = false
@@ -137,17 +137,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onResume() {
         super.onResume()
         mIsPaying = false;
-    }
-
-    private fun readTTs(text: String) {
-        disposable.add(
-            Maybe.timer(800, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    TTSUtils.startAuto(mTTS, text)
-                }
-        )
     }
 
     private fun finishWithUserId(userId: String) {
@@ -200,7 +189,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         }
     }
 
-    private lateinit var mTTS: TextToSpeech
 
     private fun onCardNoScanned(card_no: String?) {
         if (card_no.isNullOrEmpty()) {
@@ -234,7 +222,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         tv_description.text = mContantHint ?: "检测中...."
         viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
-        mTTS = TTSUtils.creatTextToSpeech(this)
         btn_back.setOnClickListener { onBackPressed() }
         btn_setting.setOnClickListener {
             //设置
