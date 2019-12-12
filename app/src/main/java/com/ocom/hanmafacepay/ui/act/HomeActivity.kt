@@ -33,6 +33,7 @@ import com.ocom.hanmafacepay.receiver.NetStateChangeReceiver
 import com.ocom.hanmafacepay.ui.base.BaseActivity
 import com.ocom.hanmafacepay.ui.service.BackForegroundService
 import com.ocom.hanmafacepay.ui.widget.LoadingDialog
+import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
 import com.ocom.hanmafacepay.util.*
 import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
@@ -403,6 +404,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     override fun onUpdateUsers(usersListResponse: UsersListResponse) {
         launch(Dispatchers.IO) {
             log("更新用户信息：$usersListResponse")
+            UpdateDialogManager.showAlertDialog("更新用户信息,请稍等")
             viewModel.updateUsers(usersListResponse.users)
         }
     }
@@ -410,6 +412,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     //更新风控信息
     override fun onUpdateRiskInfo(riskControlResponse: RiskControlResponse) {
         launch(Dispatchers.IO) {
+            UpdateDialogManager.showAlertDialog("更新风控信息...")
             log("更新风控信息:$riskControlResponse")
             viewModel.updateMealLimits(riskControlResponse.meal_section_para)
             riskControlResponse.policy_limit.forEach {
@@ -420,6 +423,8 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                 }
             }
             viewModel.updatePolicys(riskControlResponse.policy_limit)
+            delay(5000)
+            UpdateDialogManager.dismissDialog()
         }
         updateConstantPayHint()
     }

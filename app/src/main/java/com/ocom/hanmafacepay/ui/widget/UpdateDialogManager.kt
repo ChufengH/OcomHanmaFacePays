@@ -20,6 +20,24 @@ object UpdateDialogManager {
 
     var mProgressDialog: ProgressDialog? = null
 
+    fun showAlertDialog(msg: String) {
+        mContext?.runOnUiThread {
+            if (mProgressDialog?.isShowing == true)
+                return@runOnUiThread
+            mProgressDialog = ProgressDialog(mContext, R.style.lightDialog).apply {
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                setTitle("请稍等")
+                setMessage(msg)
+                setCancelable(false)
+            }
+            mProgressDialog?.show()
+        }
+    }
+
+    fun dismissDialog() {
+        mProgressDialog?.dismiss()
+    }
+
     fun showProgressDialog() {
         mContext ?: return
         mContext?.runOnUiThread {

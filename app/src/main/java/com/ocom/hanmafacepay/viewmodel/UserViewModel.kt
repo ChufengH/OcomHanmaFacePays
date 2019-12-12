@@ -30,10 +30,12 @@ import com.ocom.hanmafacepay.persistence.MealSectionDao
 import com.ocom.hanmafacepay.persistence.OrderDao
 import com.ocom.hanmafacepay.persistence.PolicyDao
 import com.ocom.hanmafacepay.persistence.UserDao
+import com.ocom.hanmafacepay.ui.widget.UpdateDialogManager
 import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +44,7 @@ import kotlinx.coroutines.async
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.charset.Charset
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -101,6 +104,10 @@ class UserViewModel(
             registerInLocalAsync(it.userid)
         }
         dataSource.updataAllUsers(users)
+        val d = Maybe.timer(5, TimeUnit.SECONDS)
+            .subscribe {
+                UpdateDialogManager.dismissDialog()
+            }
     }
 
     fun updateMealLimits(list: List<MealLimit>) {
