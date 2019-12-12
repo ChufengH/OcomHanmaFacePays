@@ -202,7 +202,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                 .observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
-                    readTTs("刷卡成功")
+//                    readTTs("刷卡成功")
                     finishWithUserId(it.userid)
                 }, {
                     readTTs("请重新刷卡")
