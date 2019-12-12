@@ -143,7 +143,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private var countdonwDispose: Disposable? = null
 
 
-    private var jumpCountdown = 1L //倒计时
+    private var jumpCountdown = 5L //倒计时
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         initData()
@@ -155,9 +155,12 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
 
     @SuppressLint("SetTextI18n")
     private fun initViews() {
+        setSupportActionBar(toolbar_pay)
+        supportActionBar?.title = "支付结果"
+
         as_status.loadLoading()
         pay_moneyTv.text =
-            "￥" + BigDecimalUtils.div(mMoney.toString(), "100") //设置显示出来的金额，当前金额单位是分 需要除100
+            "消费金额: ￥" + BigDecimalUtils.div(mMoney.toString(), "100") //设置显示出来的金额，当前金额单位是分 需要除100
         when (mRequestPayType) {
             REQUEST_CODE_PAY_FACE -> {
                 val byteArray = faceImgBase64?.base64ToByteArray() ?: byteArrayOf()
@@ -346,11 +349,11 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             .ioToMain()
             .doOnComplete { back() }
             .subscribe { t ->
-                if (t < 0) {
-                    pay_reciprocal.text = " 返回（0)"
-                } else {
-                    pay_reciprocal.text = " 返回（" + t.toInt() + ")"
-                }
+                //                if (t < 0) {
+//                    pay_reciprocal.text = " 返回（0)"
+//                } else {
+//                    pay_reciprocal.text = " 返回（" + t.toInt() + ")"
+//                }
             }
     }
 
@@ -451,9 +454,15 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     override fun onPaySuccess(response: PayResponse, order: Order) {
         as_status.loadSuccess()
         pay_statusTv.text = getString(R.string.pay_success)
+        if (response.subsidy_account > 0) {
+            sub_remainTv.text = "补贴余额: ${response.subsidy_account / 100f}元"
+        }
+        cash_remainTv.text = "现金余额: ${response.cash_account / 100f}元"
+        total_remainTv.text = "总余额: ${(response.cash_account + response.subsidy_account) / 100f}元"
+
         if (order.offline == 0) {
             readTTs("支付成功!实际消费${response.amount / 100f}元")
-            showToast("支付成功!实际消费${response.amount / 100f}元")
+            showToast("支付成功!实际消费${response.amount / 100f}元, 总余额${(response.cash_account + response.subsidy_account) / 100f}元")
         }
         val data = order.copy(
             offline = 0
@@ -482,15 +491,16 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             )
         }
         com.hanma.fcd.DoolLockUtil.Instance().openDoorDelay(AUTO_CLOSE_DELAY * 1000L)
-        ToastUtil.showLongToastCenter("开门成功${AUTO_CLOSE_DELAY}秒后关门")
+//        ToastUtil.showto("开门成功${AUTO_CLOSE_DELAY}秒后关门")
         setCountDown()
     }
 
     fun commonNetError() {
         if (!OFFLINE_MODE)
             readTTs("网络请求失败,稍后再试")
-        as_status.loadFailure()
-        setCountDown()
+        onPayFailed("网络异常")
+//        as_status.loadFailure()
+//        setCountDown()
     }
 
     override fun onNetworkError() {

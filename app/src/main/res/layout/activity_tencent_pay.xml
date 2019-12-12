@@ -1,105 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-    <RelativeLayout
-            android:id="@+id/pay_title"
-            android:background="@color/app_theme"
+        android:orientation="vertical"
+        tools:context=".ui.act.TencentPayActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize">
-        <TextView
-                android:textSize="22sp"
-                android:textColor="@android:color/white"
-                android:layout_centerInParent="true"
-                android:text="@string/pay_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-        <TextView
-                android:id="@+id/pay_reciprocal"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:text="@string/back"
-                android:textColor="@android:color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-    </RelativeLayout>
-
-
-    <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_pay"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/pay_userImg"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="@color/app_theme"
-                    app:civ_border_overlay="true"/>
+                android:layout_height="?attr/actionBarSize"
+                android:background="#567777"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/Theme.AppCompat.Light" />
 
-        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 
-        <TextView
-                android:layout_marginTop="10dp"
-                android:background="@color/common_clip_line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pay_userImg"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="120dp"
+            app:civ_border_color="@color/app_theme"
+            app:civ_border_overlay="true"
+            app:civ_border_width="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
 
-        <LinearLayout
-                android:layout_marginTop="80dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <com.ocom.hanmafacepay.ui.widget.CustomStatusView
-                    android:id="@+id/as_status"
-                    android:padding="3dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    app:load_failure_color="@color/load_failure"
-                    app:load_success_color="@color/load_success"
-                    app:progress_color="@color/load_success"
-                    app:progress_radius="82dp"
-                    app:progress_width="3dp"/>
-            <TextView
-                    android:id="@+id/pay_statusTv"
-                    android:layout_marginTop="15dp"
-                    android:textSize="28sp"
-                    android:text="@string/paying"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <TextView
-                android:id="@+id/pay_moneyTv"
-                android:layout_marginTop="10dp"
-                android:textSize="34sp"
-                android:textColor="@color/common_text_white"
+    <com.ocom.hanmafacepay.ui.widget.CustomStatusView
+            android:id="@+id/as_status"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:padding="3dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pay_userImg"
+            app:load_failure_color="@color/load_failure"
+            app:load_success_color="@color/load_success"
+            app:progress_color="@color/load_success"
+            app:progress_radius="36dp"
+            app:progress_width="3dp" />
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:id="@+id/pay_failReasonTv"
-                android:layout_marginTop="5dp"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/pay_statusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/paying"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toTopOf="@id/pay_userImg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-    </LinearLayout>
+    <TextView
+            android:id="@+id/pay_moneyTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/common_text"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/as_status"
+            tools:text="消费金额: 10.0元" />
+
+    <TextView
+            android:id="@+id/pay_failReasonTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/common_text_subtitle"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="@id/pay_moneyTv"
+            app:layout_constraintRight_toRightOf="@id/pay_moneyTv"
+            app:layout_constraintTop_toBottomOf="@id/pay_moneyTv"
+            app:layout_goneMarginTop="8dp"
+            tools:text="失败原因: 没有这个用户" />
 
 
-</LinearLayout>
+    <TextView
+            android:id="@+id/sub_remainTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/common_text"
+            android:textSize="32sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pay_failReasonTv"
+            tools:text="补贴余额: 10.0元" />
+
+    <TextView
+            android:id="@+id/cash_remainTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/common_text"
+            android:textSize="32sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sub_remainTv"
+            tools:text="现金余额: 10.0元" />
+
+    <TextView
+            android:id="@+id/total_remainTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/common_text"
+            android:textSize="32sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cash_remainTv"
+            tools:text="合计余额: 10.0元" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,11 @@ open class BaseResponse(
  * 支付响应
  * @param amount 实际消费金额
  * @param queryCount 查询次数
+ * @param cash_account 现金余额
+ * @param subsidy_account 补贴余额
  */
-data class PayResponse(val amount: Int) : BaseResponse()
+data class PayResponse(val amount: Int, val cash_account: Int = 0, val subsidy_account: Int = 0) :
+    BaseResponse()
 
 /**
  * 心跳响应
@@ -125,7 +128,7 @@ data class User(
     val job_number: String,
     val flag: Int,//标记更新或者删除
     val policy: Int,
-    val card_no:String=""
+    val card_no: String = ""
 ) {
     fun needInsertOrUpdate() = flag == 0
     fun needDelete() = flag == 1
