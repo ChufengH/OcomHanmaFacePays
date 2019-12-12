@@ -333,7 +333,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private fun back() {
         countdonwDispose?.dispose()
         finish()
-        readTTs("开始输入消费金额")
+        readTTs("输入消费金额")
     }
 
 

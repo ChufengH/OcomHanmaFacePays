@@ -202,7 +202,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                 .observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
-//                    readTTs("刷卡成功")
+                    //                    readTTs("刷卡成功")
                     finishWithUserId(it.userid)
                 }, {
                     readTTs("请重新刷卡")
@@ -212,6 +212,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     }
 
     override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
+        finish()
+        readTTs("输入消费金额")
     }
 
     override fun onKeybroadKeyUp(keyCode: Int, keyName: String) {
