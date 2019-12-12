@@ -3,8 +3,7 @@ package com.ocom.hanmafacepay.ui.act
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
@@ -25,6 +24,8 @@ import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.*
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
 import com.ocom.hanmafacepay.mvp.datasource.IHomeView
+import com.ocom.hanmafacepay.network.ApiService
+import com.ocom.hanmafacepay.network.ApiWrapper
 import com.ocom.hanmafacepay.network.entity.*
 import com.ocom.hanmafacepay.receiver.NetStateChangeObserver
 import com.ocom.hanmafacepay.receiver.NetStateChangeReceiver
@@ -39,6 +40,7 @@ import com.ocom.hanmafacepay.viewmodel.UserViewModel
 import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
@@ -309,22 +311,30 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                 mInputTv?.setText(str.substring(0, str.length - 1))
                 str = mInputTv?.text.toString()
                 if (str.isNotEmpty()) {
-                    readTTs( str + "元")
+                    readTTs(str + "元")
                     launch(Dispatchers.IO) { reSendKeyboardNumber(str) }
                 } else {
                     // ToastUtil.showShortToast("0")
-                    readTTs( "已清零")
+                    readTTs("已清零")
                     launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
                 }
 
             } else {
-                readTTs( "已清零")
+                readTTs("已清零")
                 launch(Dispatchers.IO) { reSendKeyboardNumber("0") }
             }
         }
     }
 
     override fun onKeybroadKeyUp(keyCode: Int, keyName: String) {
+    }
+
+    override fun onQueryAccountSuccess(response: PayResponse) {
+        showToast("总余额${(response.cash_account + response.subsidy_account) / 100f}元, 现金余额: ${response.cash_account / 100f}元, 补贴余额: ${response.subsidy_account / 100f}元")
+    }
+
+    override fun onQueryAccountFailed(msg: String) {
+        showToast("查询余额失败: ${msg}")
     }
 
     //支付成功
@@ -798,6 +808,26 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerBroadcast()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mBroadcastReceiver)
+    }
+
+    private val mBroadcastReceiver = HomeBroadcastReceiver()
+
+    private fun registerBroadcast() {
+        val filter = IntentFilter(FaceDetectActivity.ACTION_SHUT_DOWN).apply {
+            addAction(FaceDetectActivity.ACTION_CHANGE_HINT)
+            addAction(FaceDetectActivity.ACTION_CARD_NO_SCANNED)
+        }
+        registerReceiver(mBroadcastReceiver, filter)
+    }
+
     override fun onNetDisconnected() {
         OFFLINE_MODE = true
     }
@@ -814,4 +844,42 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
 
     override fun onWifiPasswordError() {}
 
+    private fun onCardNoScanned(card_no: String?) {
+        if (card_no.isNullOrEmpty()) {
+            readTTs("请重新刷卡")
+            return
+        }
+
+        disposable.add(
+            viewModel.getUserByCardNo(card_no)
+                .subscribeOn(Schedulers.io())
+                .observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe({
+                    readTTs("开始查询余额")
+                    mDataSource.queryAccount(
+                        AccountQueryRequest(
+                            DEVICE_NUMBER,
+                            it.userid,
+                            TIME_STAMP,
+                            SIGN
+                        )
+                    )
+                }, {
+                    readTTs("请重新刷卡")
+                })
+        )
+    }
+
+    private inner class HomeBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            context ?: return
+            intent ?: return
+            when (intent.action) {
+                FaceDetectActivity.ACTION_CARD_NO_SCANNED -> {
+                    onCardNoScanned(intent.getStringExtra(FaceDetectActivity.KEY_CONSTANT_HINT))
+                }
+            }
+        }
+    }
 }

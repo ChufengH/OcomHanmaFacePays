@@ -333,6 +333,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private fun back() {
         countdonwDispose?.dispose()
         finish()
+        readTTs("开始输入消费金额")
     }
 
 
@@ -341,6 +342,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
      */
     @SuppressLint("SetTextI18n")
     private fun setCountDown() {
+        isPaying = false
         countdonwDispose?.dispose()
         countdonwDispose = Observable
             .interval(0, 1, TimeUnit.SECONDS)
@@ -404,26 +406,35 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
 //
 //    }
 
+    /**
+     * 按任意键如果不在支付就返回首页
+     */
     override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
-        when (keyName) {
-            Keyboard3.KEY_ESC -> {
-                if (isPaying) {
-                    ToastUtil.showShortToast("正在支付，请等待...")
-                    readTTs("正在支付，请等待...")
-                } else {
-                    back()
-                }
-            }
-            Keyboard3.KEY_PAY -> {
-                if (isPaying) {
-                    ToastUtil.showShortToast("正在支付，请等待...")
-                    readTTs("正在支付，请等待...")
-                } else {
-                    back()
-                }
-            }
-
+        if (isPaying) {
+            ToastUtil.showShortToast("正在支付，请等待...")
+            readTTs("正在支付，请等待...")
+        } else {
+            back()
         }
+//        when (keyName) {
+//            Keyboard3.KEY_ESC -> {
+//                if (isPaying) {
+//                    ToastUtil.showShortToast("正在支付，请等待...")
+//                    readTTs("正在支付，请等待...")
+//                } else {
+//                    back()
+//                }
+//            }
+//            Keyboard3.KEY_PAY -> {
+//                if (isPaying) {
+//                    ToastUtil.showShortToast("正在支付，请等待...")
+//                    readTTs("正在支付，请等待...")
+//                } else {
+//                    back()
+//                }
+//            }
+//
+//        }
     }
 
 

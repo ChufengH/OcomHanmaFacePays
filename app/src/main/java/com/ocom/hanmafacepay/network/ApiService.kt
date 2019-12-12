@@ -62,6 +62,12 @@ interface ApiService {
     @POST("api/Ocom/http_user_info")
     fun userInfo( @Body device_no: RequestBody):Observable<UsersListResponse>
 
+    /**
+     * 查询卡余额
+     */
+
+    @POST("api/Ocom/http_query_account")
+    fun queryAccount( @Body device_no: RequestBody):Observable<PayResponse>
 
     /**
      * 下载文件

@@ -1,6 +1,7 @@
 package com.ocom.hanmafacepay.mvp.datasource
 
 import android.text.TextUtils
+import com.google.gson.Gson
 import com.ocom.hanmafacepay.const.DEVICE_NUMBER
 import com.ocom.hanmafacepay.const.OFFLINE_MODE
 import com.ocom.hanmafacepay.const.SIGN
@@ -167,6 +168,26 @@ class HomeDataSource(val mIHomeView: IHomeView) :
         )
     }
 
+    fun queryAccount(request: AccountQueryRequest) {
+        log("开始查询余额${Gson().toJson(request)}")
+        addSubscription(
+            mAPIWrapper.queryAccount(request)
+                .subscribeWith(
+                    object : CallbackWrapper<PayResponse>(mIHomeView) {
+                        override fun onSuccess(t: PayResponse?) {
+                            t?.run {
+                                mIHomeView.onQueryAccountSuccess(t)
+                            }
+                        }
+
+                        override fun onApiError(e: RetrofitManagement.APIException?) {
+                            mIHomeView.onQueryAccountFailed(e?.localizedMessage ?: "查询失败")
+                        }
+                    }
+                )
+        )
+    }
+
     /**
      * 查询订单状态
      */
@@ -288,6 +309,14 @@ class HomeDataSource(val mIHomeView: IHomeView) :
 }
 
 interface IHomeView : BaseView {
+
+    fun onQueryAccountSuccess(response: PayResponse) {
+        log("Query account success $response")
+    }
+
+    fun onQueryAccountFailed(msg: String) {
+        log("Query account failed $msg")
+    }
 
     fun onPaySuccess(response: PayResponse, order: Order) {
         log("OnPaySuccess")

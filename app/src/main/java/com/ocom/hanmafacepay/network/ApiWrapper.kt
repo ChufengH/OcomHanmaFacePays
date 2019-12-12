@@ -52,6 +52,12 @@ class ApiWrapper : BaseApiWrapper() {
             .ioToMain()
     }
 
+    fun queryAccount(payRequest: AccountQueryRequest): Observable<PayResponse> {
+        return this.getService(ApiService::class.java)
+            .queryAccount(payRequest.autoBody())
+            .ioToMain()
+    }
+
     fun downloadFileWithDynamicUrlSync(
         listener: DownloadResponseBody.DownloadListener,
         fileUrl: String

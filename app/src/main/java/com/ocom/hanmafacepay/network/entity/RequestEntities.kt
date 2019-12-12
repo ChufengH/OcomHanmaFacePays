@@ -26,6 +26,16 @@ data class PayRequest(
     }
 }
 
+data class AccountQueryRequest(
+    @AutoField("device_no") val device_no: String,
+    @AutoField("userid") val userid: String,
+    @AutoField("timestamp") val timestamp: String,
+    @AutoField("sign") var sign: String
+) {
+    init {
+        sign = EncodeUtil.getSign(device_no, timestamp, "vally@ocom+123")
+    }
+}
 
 //@Body device_no:String,//设备号
 //@Body trade_no:String,//支付订单号（每笔支付订单号唯一）
