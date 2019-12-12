@@ -1,7 +1,6 @@
 package com.ocom.hanmafacepay.ui.act
 
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
@@ -10,26 +9,23 @@ import com.example.android.observability.Injection
 import com.google.gson.Gson
 import com.ocom.faceidentification.base.BaseKeybroadActivity
 import com.ocom.hanmafacepay.R
-import com.ocom.hanmafacepay.const.*
+import com.ocom.hanmafacepay.const.DEVICE_NUMBER
+import com.ocom.hanmafacepay.const.SIGN
+import com.ocom.hanmafacepay.const.TIME_STAMP
 import com.ocom.hanmafacepay.mvp.datasource.HomeDataSource
 import com.ocom.hanmafacepay.mvp.datasource.IHomeView
 import com.ocom.hanmafacepay.network.entity.CancelOrderRequest
 import com.ocom.hanmafacepay.network.entity.Order
 import com.ocom.hanmafacepay.ui.adapter.OrderListAdapter
 import com.ocom.hanmafacepay.ui.widget.LoadingDialog
-import com.ocom.hanmafacepay.util.TTSUtils
 import com.ocom.hanmafacepay.util.extension.log
-import com.ocom.hanmafacepay.util.ioToMain
 import com.ocom.hanmafacepay.util.keyboard.Keyboard3
 import com.ocom.hanmafacepay.viewmodel.UserViewModel
 import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
-import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_order_list.*
-import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlin.math.min
 
@@ -42,7 +38,6 @@ class RefundOrderListActivity : BaseKeybroadActivity(), IHomeView, OrderListAdap
     private lateinit var viewModel: UserViewModel
     private val disposable = CompositeDisposable()
 
-    private lateinit var mTTS: TextToSpeech
     private val mDataSource by lazy { HomeDataSource(this) }
 
     /**
@@ -189,26 +184,6 @@ class RefundOrderListActivity : BaseKeybroadActivity(), IHomeView, OrderListAdap
         mLoadingDialog.dismiss()
         super.onCancelOrderFailed(erroMsg)
         readTTs("退款失败$erroMsg")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mTTS = TTSUtils.creatTextToSpeech(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        TTSUtils.shutDownAuto(mTTS)
-    }
-
-    private fun readTTs(text: String) {
-        disposable.add(
-            Observable.timer(800, TimeUnit.MILLISECONDS)
-                .ioToMain()
-                .subscribe {
-                    TTSUtils.startAuto(mTTS, text)
-                }
-        )
     }
 
     private fun commonNetError(){
