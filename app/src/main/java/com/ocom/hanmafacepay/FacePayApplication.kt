@@ -20,6 +20,7 @@ import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
 
@@ -44,6 +45,22 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
 
     private lateinit var mTTS: TextToSpeech
 
+    private var mCardSeeker: Timer? = null
+
+    fun startSeekCard() {
+        mCardSeeker?.cancel()
+        mCardSeeker = fixedRateTimer("CardSeeker", true, 2000, 500) {
+            SerialPortManager.sendMessage(
+                SERIAL_PORT_NAME_CARD_READER,
+                arrayOf("7E010000020000037E")
+            )
+        }
+    }
+
+    fun stopSeekCard() {
+        mCardSeeker?.cancel()
+    }
+
     override fun onCreate() {
         super.onCreate()
         mTTS = TTSUtils.creatTextToSpeech(this)
@@ -52,12 +69,6 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         ReportLogcatModuleManager.startSystemLogcat()
         GlobalScope.launch(Dispatchers.IO) {
-            fixedRateTimer("CardSeeker", true, 2000, 500) {
-                SerialPortManager.sendMessage(
-                    SERIAL_PORT_NAME_CARD_READER,
-                    arrayOf("7E010000020000037E")
-                )
-            }
             SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
                 SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
                     override fun onDataReceived(msg: ByteArray) {

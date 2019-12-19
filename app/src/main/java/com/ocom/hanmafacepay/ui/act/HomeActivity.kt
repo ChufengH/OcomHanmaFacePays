@@ -127,6 +127,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
         }
         hasStartFaceDetect = false
         updateConstantPayHint()
+//        readTTs("输入消费金额")
         super.onResume()
     }
 

@@ -143,7 +143,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private var countdonwDispose: Disposable? = null
 
 
-    private var jumpCountdown = 5L //倒计时
+    private var jumpCountdown = 2L //倒计时
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         initData()
@@ -333,7 +333,6 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
     private fun back() {
         countdonwDispose?.dispose()
         finish()
-        readTTs("输入消费金额")
     }
 
 
@@ -453,9 +452,9 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         runOnUiThread {
             as_status.loadFailure()
             pay_statusTv.text = getString(R.string.pay_fail)
-            pay_moneyTv.visibility = View.GONE//
+//            pay_moneyTv.visibility = View.GONE//
             pay_failReasonTv.text = "失败原因：$errMsg"
-            pay_moneyTv.visibility = View.GONE//
+//            pay_moneyTv.visibility = View.GONE//
             readTTs("支付失败$errMsg")
             setCountDown()
         }

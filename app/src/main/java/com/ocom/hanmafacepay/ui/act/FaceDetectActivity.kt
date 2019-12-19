@@ -107,6 +107,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onStart() {
         super.onStart()
         com.hanma.fcd.CameraUtil.turnOnLight()
+        FacePayApplication.INSTANCE.startSeekCard()
         registerBroadcast()
         if (mContantHint.isNullOrEmpty()) {
             disposable.add(Maybe.timer(10, TimeUnit.SECONDS)
@@ -121,6 +122,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onStop() {
         com.hanma.fcd.CameraUtil.turnOffLight()
         unregisterReceiver(mBroadcastReceiver)
+        FacePayApplication.INSTANCE.stopSeekCard()
+        disposable.clear()
 //        mCameraHelper.stopPreview()
         super.onStop()
     }
@@ -224,7 +227,6 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onKeybroadKeyDown(keyCode: Int, keyName: String) {
         finish()
-        readTTs("输入消费金额")
     }
 
     override fun onKeybroadKeyUp(keyCode: Int, keyName: String) {

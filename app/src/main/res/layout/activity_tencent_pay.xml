@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:textColor="@color/common_text_subtitle"
+            android:textColor="@android:color/black"
             android:textSize="24sp"
             app:layout_constraintLeft_toLeftOf="@id/pay_moneyTv"
             app:layout_constraintRight_toRightOf="@id/pay_moneyTv"
