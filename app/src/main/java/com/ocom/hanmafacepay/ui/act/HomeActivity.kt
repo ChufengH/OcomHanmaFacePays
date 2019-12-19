@@ -331,10 +331,12 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
 
     override fun onQueryAccountSuccess(response: PayResponse) {
         showToast("总余额${(response.cash_account + response.subsidy_account) / 100f}元, 现金余额: ${response.cash_account / 100f}元, 补贴余额: ${response.subsidy_account / 100f}元")
+        card_busy = false
     }
 
     override fun onQueryAccountFailed(msg: String) {
         showToast("查询余额失败: ${msg}")
+        card_busy = false
     }
 
     //支付成功
@@ -843,12 +845,16 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
     }
 
     override fun onWifiPasswordError() {}
-
+    var card_busy = false
     private fun onCardNoScanned(card_no: String?) {
+        if (card_busy)
+            return
         if (card_no.isNullOrEmpty()) {
-            readTTs("请重新刷卡")
+//            readTTs("请重新刷卡")
+//            card_busy = false
             return
         }
+        card_busy = true
 
         disposable.add(
             viewModel.getUserByCardNo(card_no)
@@ -856,7 +862,6 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                 .observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
-                    readTTs("开始查询余额")
                     mDataSource.queryAccount(
                         AccountQueryRequest(
                             DEVICE_NUMBER,
@@ -866,7 +871,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                         )
                     )
                 }, {
-                    readTTs("请重新刷卡")
+                    onQueryAccountFailed("未查询到此卡相关余额")
                 })
         )
     }

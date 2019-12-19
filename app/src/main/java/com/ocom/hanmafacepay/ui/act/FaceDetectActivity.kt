@@ -137,6 +137,9 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
     override fun onResume() {
         super.onResume()
         mIsPaying = false
+        disposable.add(Maybe.timer(2, TimeUnit.SECONDS).subscribe {
+            mIsUsingCard = false
+        })
         readTTs("开始支付")
     }
 
@@ -190,12 +193,16 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         }
     }
 
+    private var mIsUsingCard = false
 
     private fun onCardNoScanned(card_no: String?) {
+        if (mIsUsingCard)
+            return
         if (card_no.isNullOrEmpty()) {
-            readTTs("请重新刷卡")
+//            readTTs("请重新刷卡")
             return
         }
+        mIsUsingCard = true
         ToastUtil.showLongToast("识别到卡号$card_no")
         disposable.add(
             viewModel.getUserByCardNo(card_no)
@@ -207,6 +214,9 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
                     finishWithUserId(it.userid)
                 }, {
                     readTTs("请重新刷卡")
+                    disposable.add(Maybe.timer(2, TimeUnit.SECONDS).subscribe {
+                        mIsUsingCard = false
+                    })
                 })
         )
 

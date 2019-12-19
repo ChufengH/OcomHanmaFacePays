@@ -54,6 +54,13 @@ object SerialPortManager {
     external fun closeSerialPort(path: String)
 
     /**
+     * 设置读串口的周期时间,越长的周期可以处理越长的数据,同时响应也会变慢,此方法需要在串口开启后调用,否则将不起任何作用
+     * 此方法可以临时在读数据前调用以灵活调整响应时间
+     * @param timeinterval 轮循读串口的时间,单位为纳秒 参考时间(键盘-100, 短码扫码头-5000, 长码扫玛头-50000)
+     * @param path 串口路径,通常为/dev/tty*开头
+     */
+    external fun setReadTimeInterval(path: String, timeInterval: Int)
+    /**
      * 发送消息给指定串口, 底层已经为串口读写专门开启线程,上层可以直接调用,无需切换线程
      * @param path 串口路径,通常为/dev/tty*开头
      * @param msg 要发送给串口的消息, 直接传入hexString即可, 底层会将其转换成为16进制byte数组

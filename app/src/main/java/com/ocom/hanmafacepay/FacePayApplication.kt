@@ -5,7 +5,6 @@ import android.content.Intent
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import com.blankj.utilcode.util.ShellUtils
 import com.castle.serialport.SerialPortManager
 import com.ocom.hanmafacepay.const.Constant
 import com.ocom.hanmafacepay.const.SERIAL_PORT_BAUDRATE_CARD_READER
@@ -18,14 +17,10 @@ import com.ocom.hanmafacepay.util.ReportLogcatModuleManager
 import com.ocom.hanmafacepay.util.TTSUtils
 import com.ocom.hanmafacepay.util.extension.log
 import com.tencent.bugly.crashreport.CrashReport
-import io.reactivex.Maybe
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
+import kotlin.concurrent.fixedRateTimer
 
 
 class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
@@ -57,6 +52,12 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         ReportLogcatModuleManager.startSystemLogcat()
         GlobalScope.launch(Dispatchers.IO) {
+            fixedRateTimer("CardSeeker", true, 2000, 500) {
+                SerialPortManager.sendMessage(
+                    SERIAL_PORT_NAME_CARD_READER,
+                    arrayOf("7E010000020000037E")
+                )
+            }
             SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
                 SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {
                     override fun onDataReceived(msg: ByteArray) {
@@ -79,6 +80,14 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
                         )
                     }
                 })
+            SerialPortManager.setReadTimeInterval(SERIAL_PORT_NAME_CARD_READER, 750)
+//            SerialPortManager.sendMessage(
+//                SERIAL_PORT_NAME_CARD_READER,
+////                arrayOf("7E000000010300047E")
+//                //读取机器号
+////                        arrayOf("7E000000010100027E")
+//                arrayOf("7E010000020000037E")
+//            )
             FaceServiceManager.getInstance().Init(this@FacePayApplication)
         }
         initBugly()

@@ -194,10 +194,29 @@ public class HexUtils {
     public static String getScanCard2Number(String message) {
         try {
             int startIndex = message.indexOf("1901");
-            int cardNoLength = Integer.parseInt(message.substring(startIndex + 4, startIndex + 6)) - 2;
-            return message.substring(startIndex + 10, startIndex + 10 + cardNoLength * 2);
+            if (startIndex > 0) {
+                //这是一次放卡
+                int cardNoLength = Integer.parseInt(message.substring(startIndex + 4, startIndex + 6)) - 2;
+                return message.substring(startIndex + 10, startIndex + 10 + cardNoLength * 2);
+            } else {
+                startIndex = message.indexOf("0d01");
+                if (startIndex <= 0) return "";
+                int cardNoLength = Integer.parseInt(message.substring(startIndex + 6, startIndex + 8));
+                return toLittleEndian(message.substring(startIndex + 8, startIndex + 8 + cardNoLength * 2));
+
+            }
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static String toLittleEndian(final String hex) {
+        if (hex.length() % 2 != 0)
+            return "";
+        StringBuilder hexLittleEndian = new StringBuilder();
+        for (int i = hex.length() - 2; i >= 0; i -= 2) {
+            hexLittleEndian.append(hex.substring(i, i + 2));
+        }
+        return hexLittleEndian.toString();
     }
 }
