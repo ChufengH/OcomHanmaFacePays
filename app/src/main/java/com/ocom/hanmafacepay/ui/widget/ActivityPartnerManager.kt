@@ -3,7 +3,6 @@ package com.ocom.hanmafacepay.ui.widget
 import android.app.Activity
 import android.app.ProgressDialog
 import com.ocom.hanmafacepay.R
-import io.reactivex.Maybe
 
 /**
  * 控制显示隐藏全局对话框
@@ -15,7 +14,7 @@ object ActivityPartnerManager {
         mContext = context
     }
 
-    fun unregister(context: Activity) {
+    fun unregister() {
         mContext = null
         mProgressDialog?.dismiss()
         mProgressDialog = null

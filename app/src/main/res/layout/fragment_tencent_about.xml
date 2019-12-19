@@ -20,7 +20,7 @@
             style="@style/TextAppearance.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="360dp"
             android:layout_below="@id/iv_logo"
             android:layout_centerHorizontal="true"
             android:background="@drawable/shape_pay_btn"

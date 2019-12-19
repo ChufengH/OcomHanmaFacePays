@@ -14,6 +14,7 @@ import com.ocom.hanmafacepay.ui.act.FaceDetectActivity
 import com.ocom.hanmafacepay.ui.act.LauncherActivity
 import com.ocom.hanmafacepay.util.FileLogUtil
 import com.ocom.hanmafacepay.util.HexUtils
+import com.ocom.hanmafacepay.util.ReportLogcatModuleManager
 import com.ocom.hanmafacepay.util.TTSUtils
 import com.ocom.hanmafacepay.util.extension.log
 import com.tencent.bugly.crashreport.CrashReport
@@ -54,6 +55,7 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
         INSTANCE = this
         Thread.setDefaultUncaughtExceptionHandler(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        ReportLogcatModuleManager.startSystemLogcat()
         GlobalScope.launch(Dispatchers.IO) {
             SerialPortManager.openSerialPort(SERIAL_PORT_NAME_CARD_READER,
                 SERIAL_PORT_BAUDRATE_CARD_READER, object : SerialPortManager.OnReadListener {

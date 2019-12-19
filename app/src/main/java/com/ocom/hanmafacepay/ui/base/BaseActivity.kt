@@ -47,7 +47,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        ActivityPartnerManager.unregister(this)
+        ActivityPartnerManager.unregister()
     }
 
 
