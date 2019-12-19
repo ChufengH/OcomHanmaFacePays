@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 object ReportLogcatModuleManager {
 
-    const val TEXT_SENDING = "上报中,禁止返回"
+    const val TEXT_SENDING = "上报中...."
     const val TEXT_SEND_FINISHED = "上报完成"
     const val TEXT_SEND_FAILED = "上报失败"
 
@@ -49,7 +49,7 @@ object ReportLogcatModuleManager {
     }
 
     fun reportLogcat() {
-        ActivityPartnerManager.showAlertDialog("发送日志")
+        ActivityPartnerManager.showAlertDialog("发送日志中")
         val d = Maybe.timer(1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
@@ -104,7 +104,6 @@ object ReportLogcatModuleManager {
                 else
                     updateStatus(TEXT_SEND_FAILED)
                 ActivityPartnerManager.dismissDialog()
-                ToastUtil.showShortToast("日志发送完毕")
                 log("日志发送完毕")
             }
     }
