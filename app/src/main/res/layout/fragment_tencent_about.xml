@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#003333"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
     <ImageView
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_launcher_background"
+            android:id="@+id/iv_logo"
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            android:src="@mipmap/ic_launcher" />
+
+    <Button
+            android:id="@+id/btn_report"
+            style="@style/TextAppearance.AppCompat.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="260dp"
+            android:layout_below="@id/iv_logo"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_pay_btn"
+            android:padding="16dp"
+            android:text="上报日志"
+            android:textColor="@color/common_text_white"
+            android:textSize="28sp" />
+
 
     <LinearLayout
-            android:layout_marginBottom="80dp"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="80dp"
+            android:orientation="vertical">
+
         <TextView
-                android:textSize="26sp"
-                android:text="OCOM人脸支付"
-                android:textColor="@color/common_text_white"
-                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:gravity="center"
+                android:text="OCOM人脸支付"
+                android:textColor="@color/common_text_white"
+                android:textSize="26sp" />
 
         <TextView
                 android:id="@+id/about_deviceTv"
-                android:layout_marginTop="5dp"
-                android:textSize="20sp"
-                android:textColor="@color/common_text_white"
-                android:gravity="center"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:textColor="@color/common_text_white"
+                android:textSize="20sp" />
 
         <TextView
                 android:id="@+id/about_versionTv"
-                android:layout_marginTop="5dp"
-                android:textSize="20sp"
-                android:textColor="@color/common_text_white"
-                android:gravity="center"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:textColor="@color/common_text_white"
+                android:textSize="20sp" />
     </LinearLayout>
 
 </RelativeLayout>

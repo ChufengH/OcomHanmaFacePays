@@ -464,7 +464,7 @@ class TencentPayInputActivity : BaseKeybroadActivity(), View.OnClickListener {
      * 获取人脸支付
      */
     private fun startFaceDetect() {
-        TTSUtils.startAuto(mTTS,"开始支付")
+//        TTSUtils.startAuto(mTTS,"开始支付")
         startActivityForResult(Intent(this, FaceDetectActivity::class.java), FaceDetectActivity.REQUEST_FACE_DETECT)
     }
 

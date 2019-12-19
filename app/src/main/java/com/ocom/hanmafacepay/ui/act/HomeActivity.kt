@@ -718,7 +718,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
      * 获取人脸支付
      */
     private fun startFaceDetect() {
-        readTTs("${moneyStr!!.trim()}元开始支付")
+//        readTTs("${moneyStr!!.trim()}元开始支付")
         disposable.add(Observable.timer(800, TimeUnit.MILLISECONDS)
             .ioToMain()
             .subscribe {

@@ -136,7 +136,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onResume() {
         super.onResume()
-        mIsPaying = false;
+        mIsPaying = false
+        readTTs("开始支付")
     }
 
     private fun finishWithUserId(userId: String) {
