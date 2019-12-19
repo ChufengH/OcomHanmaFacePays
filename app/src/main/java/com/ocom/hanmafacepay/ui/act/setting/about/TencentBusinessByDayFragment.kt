@@ -76,7 +76,7 @@ class TencentBusinessByDayFragment : BaseFragment() {
                         }.ioToMain().subscribe { result ->
                             val adapter = OrderHistoryByDayAdapter(
                                 result,
-                                mealLimits.sortedBy { m -> m.start_time })
+                                mealLimits.sortedBy { m -> m.id })
                             (mRootView as RecyclerView).adapter = adapter
                         })
                     }

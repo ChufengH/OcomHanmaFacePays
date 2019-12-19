@@ -11,6 +11,7 @@ import com.ocom.hanmafacepay.network.entity.Order
 import com.ocom.hanmafacepay.network.entity.OrderSummary
 import com.ocom.hanmafacepay.util.BigDecimalUtils
 import java.util.*
+import kotlin.math.max
 
 class OrderHistoryByDayAdapter(
     val dataList: List<OrderSummary>,
@@ -46,13 +47,13 @@ class OrderHistoryByDayAdapter(
                 val amountInTimeRange = calAmountInTimeRange(summary.orders, startTime, endTime)
                 "${it.meal_section}(${it.start_time}至${it.end_time}): ${amountInTimeRange / 100f}元"
             })
-            val remainAmount = summary.orders.sumBy { it.amount } -
+            val remainAmount = max(summary.orders.sumBy { it.amount } -
                     list.sumBy {
                         BigDecimalUtils.mul(
                             it.substring(it.lastIndexOf(": ") + 2, it.lastIndex),
                             "100"
                         ).toInt()
-                    }
+                    }, 0)
             list.add("其余时间消费: ${remainAmount / 100f}元")
             holder.bindOrder(summary.orders, summary.title, list)
         }
