@@ -74,7 +74,7 @@ class OrderHistoryByDayAdapter(
                 calendar.set(Calendar.MINUTE, endMin)
                 val endTime = calendar.timeInMillis
                 val amountInTimeRange = calAmountInTimeRange(summary.orders, startTime, endTime)
-                "${it.meal_section}(${it.start_time}至${it.end_time}): ${amountInTimeRange / 100f}元"
+                "${it.meal_section}(${startHour}:${startMin}至${endHour}:${endMin}): ${amountInTimeRange / 100f}元"
             })
             val remainAmount = max(summary.orders.sumBy { it.amount } -
                     list.sumBy {
