@@ -44,11 +44,12 @@ class CommonSettingFragemnt : BaseFragment() {
     private lateinit var viewModel: UserViewModel
     private val disposable = CompositeDisposable()
 
-    private var mealLimits: List<MealLimit> = mutableListOf(
-        MealLimit(0L, "未定义", "09:00", "07:00", 100, null, null, null),
-        MealLimit(1L, "未定义", "09:00", "07:00", 100, null, null, null),
-        MealLimit(2L, "未定义", "09:00", "07:00", 100, null, null, null),
-        MealLimit(3L, "未定义", "09:00", "07:00", 100, null, null, null)
+    private var mealLimits: MutableList<MealLimit> = mutableListOf()
+    private val defaultMealLimitsList: List<MealLimit> = mutableListOf(
+        MealLimit(0L, "早餐", "09:00", "07:00", 100, null, null, null),
+        MealLimit(1L, "午餐", "12:00", "14:00", 100, null, null, null),
+        MealLimit(2L, "晚餐", "16:00", "19:00", 100, null, null, null),
+        MealLimit(3L, "夜宵", "20:00", "22:00", 100, null, null, null)
     )
 
     override fun onBindView(rootView: View, savedInstanceState: Bundle?) {
@@ -56,7 +57,8 @@ class CommonSettingFragemnt : BaseFragment() {
         viewModelFactory = Injection.provideViewModelFactory(context!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
         disposable.add(viewModel.getAllMealLimits().subscribeOn(Schedulers.io()).subscribe({
-            mealLimits = it
+            mealLimits.clear()
+            mealLimits.addAll(it)
         }, { it.printStackTrace() }))
     }
 
@@ -112,8 +114,11 @@ class CommonSettingFragemnt : BaseFragment() {
         constantMoneyBtn.setOnClickListener {
             when (CommonProcess.getSettingIsUseConstantMoney()) {
                 true -> {
+                    if (mealLimits.isEmpty()) {
+                        mealLimits.clear()
+                        mealLimits.addAll(defaultMealLimitsList)
+                    }
                     mSettingDialog.show()
-//                    comfrimEdtMoney()
                 }
                 false -> {
                     ToastUtil.showShortToast("请先开启定值消费")
@@ -205,10 +210,15 @@ class CommonSettingFragemnt : BaseFragment() {
     private val timeRegex = Regex("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):([0-5][0-9]|[0-9])\$")
 
     private fun String.isValidTime(): Boolean {
-        if (this.isEmpty())
+        log("开始判断时间是否正确${this}")
+        if (this.isEmpty()) {
+            log("${this}非法")
             return false
-        if (!this.matches(timeRegex))
+        }
+        if (!this.matches(timeRegex)) {
+            log("${this}非法")
             return false
+        }
         return try {
             val hour = this.substring(0, this.indexOf(":")).toInt()
             val minute = this.substring(this.indexOf(":") + 1, this.length).toInt()
