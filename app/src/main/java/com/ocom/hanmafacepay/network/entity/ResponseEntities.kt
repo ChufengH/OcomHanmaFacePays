@@ -81,7 +81,7 @@ data class MealLimit(
 
     //根据当前时间和消费金额判断当前是否能够进行消费
     fun isInRange(amount: Int): Boolean {
-        return compareTime() && amount <= this.amount
+        return compareTime() && ((local_amount != null && amount <= this.local_amount!!) || amount <= this.amount)
     }
 }
 

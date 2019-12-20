@@ -140,16 +140,18 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     .ioToMain()
                     .doOnSubscribe { payhome_amountTv.visibility = VISIBLE }
                     .subscribe { it ->
-                        val limit = it.find { it.isInRange(it.amount) }
+                        val limit = it.find { it.isInRange(0) }
                         if (limit != null) {
-                            val tempText = "${limit.meal_section}消费: ${limit.amount / 100f}元"
+                            val amount =
+                                if (limit.local_amount != null) limit.local_amount else limit.amount
+                            val tempText = "${limit.meal_section}消费: ${amount!! / 100f}元"
                             if (TextUtils.equals(
                                     tempText,
                                     payhome_amountTv.text.toString()
                                 ) && hasStartFaceDetect
                             )
                                 return@subscribe
-                            CommonProcess.setSettingConstantMoney(limit.amount)
+                            CommonProcess.setSettingConstantMoney(amount)
                             payhome_amountTv.text =
                                 tempText
                             if (!hasStartFaceDetect) {
