@@ -1,5 +1,6 @@
 package com.ocom.hanmafacepay.network.entity
 
+import android.text.TextUtils
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -59,10 +60,34 @@ data class MealLimit(
     private fun compareTime(): Boolean {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
-        val startHour = start_time.substring(0, 2).toInt()
-        val startMin = start_time.substring(3, 5).toInt()
-        val endHour = end_time.substring(0, 2).toInt()
-        val endMin = end_time.substring(3, 5).toInt()
+        val startHour =
+            if (!TextUtils.isEmpty(this.local_start_time))
+                local_start_time!!.substring(0, local_start_time!!.indexOf(":")).toInt()
+            else
+                start_time.substring(0, 2).toInt()
+        val startMin =
+            if (!TextUtils.isEmpty(this.local_start_time))
+                local_start_time!!.substring(
+                    local_start_time!!.indexOf(":") + 1,
+                    local_start_time!!.length
+                ).toInt()
+            else
+                start_time.substring(3, 5).toInt()
+
+        val endHour =
+            if (!TextUtils.isEmpty(this.local_end_time))
+                local_end_time!!.substring(0, local_end_time!!.indexOf(":")).toInt()
+            else
+                end_time.substring(0, 2).toInt()
+
+        val endMin =
+            if (!TextUtils.isEmpty(this.local_end_time))
+                local_end_time!!.substring(
+                    local_end_time!!.indexOf(":") + 1,
+                    local_end_time!!.length
+                ).toInt()
+            else
+                end_time.substring(3, 5).toInt()
         //有可能过夜
         if (startHour < endHour || (startHour == endHour && startMin < endMin)) {
             if (currentHour > startHour || (currentHour == startHour && currentMinute >= startMin)) {
@@ -129,7 +154,7 @@ data class User(
     val job_number: String,
     val flag: Int,//标记更新或者删除
     val policy: Int,
-    val card:String=""
+    val card: String = ""
 ) {
     fun needInsertOrUpdate() = flag == 0
     fun needDelete() = flag == 1
