@@ -81,7 +81,7 @@ data class MealLimit(
 
     //根据当前时间和消费金额判断当前是否能够进行消费
     fun isInRange(amount: Int): Boolean {
-        return compareTime() && ((local_amount != null && amount <= this.local_amount!!) || amount <= this.amount)
+        return compareTime() && amount <= this.amount
     }
 }
 
@@ -129,7 +129,7 @@ data class User(
     val job_number: String,
     val flag: Int,//标记更新或者删除
     val policy: Int,
-    val card_no: String = ""
+    val card:String=""
 ) {
     fun needInsertOrUpdate() = flag == 0
     fun needDelete() = flag == 1

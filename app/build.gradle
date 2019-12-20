@@ -49,8 +49,8 @@ android {
     applicationVariants.all { variant ->
         if (variant.buildType.name.equals('release')) {
             variant.outputs.all { output ->
-                def buildName = "KaKaPay"
-//                def type = variant.buildType.name
+                def buildName = "OcomHanmaFacePay"
+                def type = variant.buildType.name
                 def date = new Date()
 //                def formattedDate = date.format('yyyy年MM月dd日HH点mm分')
                 def releaseApkName = buildName + "_" + versionName + '.apk'

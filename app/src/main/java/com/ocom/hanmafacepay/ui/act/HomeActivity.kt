@@ -815,12 +815,12 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
 
     override fun onStart() {
         super.onStart()
-        registerBroadcast()
+//        registerBroadcast()
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(mBroadcastReceiver)
+//        unregisterReceiver(mBroadcastReceiver)
     }
 
     private val mBroadcastReceiver = HomeBroadcastReceiver()
