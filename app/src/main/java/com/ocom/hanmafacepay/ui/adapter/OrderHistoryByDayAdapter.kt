@@ -1,5 +1,6 @@
 package com.ocom.hanmafacepay.ui.adapter
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +26,38 @@ class OrderHistoryByDayAdapter(
             val summary = dataList[position]
             val list = mutableListOf<String>()
             list.addAll(mealLimits.map {
-                val startHour = it.start_time.substring(0, 2).toInt()
-                val startMin = it.start_time.substring(3, 5).toInt()
-                val endHour = it.end_time.substring(0, 2).toInt()
-                val endMin = it.end_time.substring(3, 5).toInt()
+
+                val startHour =
+                    if (!TextUtils.isEmpty(it.local_start_time))
+                        it.local_start_time!!.substring(
+                            0,
+                            it.local_start_time!!.indexOf(":")
+                        ).toInt()
+                    else
+                        it.start_time.substring(0, 2).toInt()
+                val startMin =
+                    if (!TextUtils.isEmpty(it.local_start_time))
+                        it.local_start_time!!.substring(
+                            it.local_start_time!!.indexOf(":") + 1,
+                            it.local_start_time!!.length
+                        ).toInt()
+                    else
+                        it.start_time.substring(3, 5).toInt()
+
+                val endHour =
+                    if (!TextUtils.isEmpty(it.local_end_time))
+                        it.local_end_time!!.substring(0, it.local_end_time!!.indexOf(":")).toInt()
+                    else
+                        it.end_time.substring(0, 2).toInt()
+
+                val endMin =
+                    if (!TextUtils.isEmpty(it.local_end_time))
+                        it.local_end_time!!.substring(
+                            it.local_end_time!!.indexOf(":") + 1,
+                            it.local_end_time!!.length
+                        ).toInt()
+                    else
+                        it.end_time.substring(3, 5).toInt()
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = summary.orders[0].timestamp.toLong()
                 calendar.set(Calendar.HOUR_OF_DAY, startHour)
@@ -45,7 +74,7 @@ class OrderHistoryByDayAdapter(
                 calendar.set(Calendar.MINUTE, endMin)
                 val endTime = calendar.timeInMillis
                 val amountInTimeRange = calAmountInTimeRange(summary.orders, startTime, endTime)
-                "${it.meal_section}(${it.start_time}至${it.end_time}): ${amountInTimeRange / 100f}元"
+                "${it.meal_section}(${startHour}:${startMin}至${endHour}:${endMin}): ${amountInTimeRange / 100f}元"
             })
             val remainAmount = max(summary.orders.sumBy { it.amount } -
                     list.sumBy {
