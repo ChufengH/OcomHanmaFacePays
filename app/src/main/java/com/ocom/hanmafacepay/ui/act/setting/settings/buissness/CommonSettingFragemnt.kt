@@ -202,16 +202,16 @@ class CommonSettingFragemnt : BaseFragment() {
         return true
     }
 
+    private val timeRegex = Regex("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):([0-5][0-9]|[0-9])\$")
+
     private fun String.isValidTime(): Boolean {
-        if (this.length != 5) {
+        if (this.isEmpty())
             return false
-        }
-        if (this.indexOf(":") != 2) {
+        if (!this.matches(timeRegex))
             return false
-        }
         return try {
-            val hour = this.substring(0, 2).toInt()
-            val minute = this.substring(3, 5).toInt()
+            val hour = this.substring(0, this.indexOf(":")).toInt()
+            val minute = this.substring(this.indexOf(":") + 1, this.length).toInt()
             hour in 0..23 && minute in 0..59
         } catch (e: Throwable) {
             e.printStackTrace()
