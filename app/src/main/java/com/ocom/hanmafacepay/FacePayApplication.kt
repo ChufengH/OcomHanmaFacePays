@@ -49,7 +49,7 @@ class FacePayApplication : Application(), Thread.UncaughtExceptionHandler {
 
     fun startSeekCard() {
         mCardSeeker?.cancel()
-        mCardSeeker = fixedRateTimer("CardSeeker", true, 2000, 500) {
+        mCardSeeker = fixedRateTimer("CardSeeker", true, 2000, 50) {
             SerialPortManager.sendMessage(
                 SERIAL_PORT_NAME_CARD_READER,
                 arrayOf("7E010000020000037E")
