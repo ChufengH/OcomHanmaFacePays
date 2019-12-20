@@ -50,7 +50,8 @@ data class HeartBeatResponse(
 data class MealLimit(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val meal_section: String, val end_time: String, val start_time: String, val amount: Int
+    val meal_section: String, val end_time: String, val start_time: String, val amount: Int,
+    var local_start_time: String?, var local_end_time: String?, var local_amount: Int?
 ) {
     /**
      * 判断开始时间和结束时间

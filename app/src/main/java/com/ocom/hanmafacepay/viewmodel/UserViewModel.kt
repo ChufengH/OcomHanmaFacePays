@@ -113,6 +113,8 @@ class UserViewModel(
         mealSectionDao.updateAllMealLimits(list)
     }
 
+    fun insertMealLimits(list:List<MealLimit>)=mealSectionDao.insertDatas(list)
+
     fun insertPolicy(policy: PolicyLimit) = policyDao.insertData(policy)
 
 

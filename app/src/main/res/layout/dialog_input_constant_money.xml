@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tv_first_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="餐段"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/tv_second_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="开始时间"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_first_title"
+            app:layout_constraintTop_toTopOf="@id/tv_first_title" />
+
+    <TextView
+            android:id="@+id/tv_third_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="结束时间"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_second_title"
+            app:layout_constraintTop_toTopOf="@id/tv_second_title" />
+
+    <TextView
+            android:id="@+id/tv_fourth_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="金额(元)"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_third_title"
+            app:layout_constraintTop_toTopOf="@id/tv_third_title" />
+
+    <TextView
+            android:id="@+id/tv_1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="早餐"
+            android:textColor="@color/common_text_subtitle"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_first_title"
+            app:layout_constraintRight_toRightOf="@id/tv_first_title"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_1_2" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="开始"
+            android:inputType="time"
+            android:maxLength="5"
+            android:text="06:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_second_title"
+            app:layout_constraintRight_toRightOf="@id/tv_second_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_second_title" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="结束"
+            android:inputType="time"
+            android:maxLength="5"
+            android:text="16:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_third_title"
+            app:layout_constraintRight_toRightOf="@id/tv_third_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_third_title" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_1_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="金额"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_fourth_title"
+            app:layout_constraintRight_toRightOf="@id/tv_fourth_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_fourth_title" />
+
+    <TextView
+            android:id="@+id/tv_2_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="午餐"
+            android:textColor="@color/common_text_subtitle"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_1_1"
+            app:layout_constraintRight_toRightOf="@id/tv_1_1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_2_2" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_2_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="开始"
+            android:inputType="time"
+            android:maxLength="5"
+            android:text="06:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_1_2"
+            app:layout_constraintRight_toRightOf="@id/tv_1_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_1_2" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_2_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="结束"
+            android:inputType="time"
+            android:text="16:30"
+            android:maxLength="5"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_1_3"
+            app:layout_constraintRight_toRightOf="@id/tv_1_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_1_3" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_2_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="金额"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_1_4"
+            app:layout_constraintRight_toRightOf="@id/tv_1_4"
+            app:layout_constraintTop_toBottomOf="@id/tv_1_4" />
+    <TextView
+            android:id="@+id/tv_3_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="晚餐"
+            android:textColor="@color/common_text_subtitle"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_2_1"
+            app:layout_constraintRight_toRightOf="@id/tv_2_1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_3_2"
+            />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_3_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="开始"
+            android:inputType="time"
+            android:maxLength="5"
+            android:text="06:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_2_2"
+            app:layout_constraintRight_toRightOf="@id/tv_2_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_2_2" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_3_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="结束"
+            android:inputType="time"
+            android:maxLength="5"
+            android:text="16:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_2_3"
+            app:layout_constraintRight_toRightOf="@id/tv_2_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_2_3" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_3_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="金额"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_2_4"
+            app:layout_constraintRight_toRightOf="@id/tv_2_4"
+            app:layout_constraintTop_toBottomOf="@id/tv_2_4" />
+
+    <TextView
+            android:id="@+id/tv_4_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="晚餐"
+            android:textColor="@color/common_text_subtitle"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_3_1"
+            app:layout_constraintRight_toRightOf="@id/tv_3_1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_4_2"
+            />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_4_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:maxLength="5"
+            android:hint="开始"
+            android:inputType="time"
+            android:text="06:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_3_2"
+            app:layout_constraintRight_toRightOf="@id/tv_3_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_3_2" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_4_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:maxLength="5"
+            android:hint="结束"
+            android:inputType="time"
+            android:text="16:30"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_3_3"
+            app:layout_constraintRight_toRightOf="@id/tv_3_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_3_3" />
+
+    <AutoCompleteTextView
+            android:id="@+id/tv_4_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="金额"
+            android:maxLength="5"
+            android:inputType="numberDecimal"
+            android:textColor="@color/common_text"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_3_4"
+            app:layout_constraintRight_toRightOf="@id/tv_3_4"
+            app:layout_constraintTop_toBottomOf="@id/tv_3_4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

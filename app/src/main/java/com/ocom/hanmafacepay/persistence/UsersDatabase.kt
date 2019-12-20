@@ -20,6 +20,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ocom.hanmafacepay.network.entity.MealLimit
 import com.ocom.hanmafacepay.network.entity.Order
 import com.ocom.hanmafacepay.network.entity.PolicyLimit
@@ -31,7 +33,7 @@ import com.ocom.hanmafacepay.network.entity.User
 @Database(
     entities = [User::class, PolicyLimit::class, MealLimit::class, Order::class],
     exportSchema = false,
-    version = 6
+    version = 7
 )
 abstract class UsersDatabase : RoomDatabase() {
 
@@ -42,6 +44,13 @@ abstract class UsersDatabase : RoomDatabase() {
 
     companion object {
 
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE meal_limit ADD COLUMN local_start_time TEXT")
+                database.execSQL("ALTER TABLE meal_limit ADD COLUMN local_end_time TEXT")
+                database.execSQL("ALTER TABLE meal_limit ADD COLUMN local_amount INTEGER")
+            }
+        }
         @Volatile
         private var INSTANCE: UsersDatabase? = null
 
@@ -55,7 +64,7 @@ abstract class UsersDatabase : RoomDatabase() {
                 context.applicationContext,
                 UsersDatabase::class.java, "Users.db"
             )
-                .fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_6_7)
                 .build()
     }
 }

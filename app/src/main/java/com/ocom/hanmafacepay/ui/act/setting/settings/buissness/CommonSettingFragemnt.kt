@@ -1,28 +1,63 @@
 package com.ocom.hanmafacepay.ui.act.setting.settings.buissness
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import com.example.android.observability.Injection
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.AUTO_CLOSE_DELAY
 import com.ocom.hanmafacepay.const.CommonProcess
+import com.ocom.hanmafacepay.network.entity.MealLimit
+import com.ocom.hanmafacepay.network.entity.OrderSummary
+import com.ocom.hanmafacepay.ui.adapter.OrderHistoryByDayAdapter
 import com.ocom.hanmafacepay.ui.base.BaseFragment
 import com.ocom.hanmafacepay.util.BigDecimalUtils
-import com.ocom.hanmafacepay.util.EditTextUtils
 import com.ocom.hanmafacepay.util.ToastUtil
+import com.ocom.hanmafacepay.util.extension.log
+import com.ocom.hanmafacepay.util.extension.showToast
+import com.ocom.hanmafacepay.util.ioToMain
+import com.ocom.hanmafacepay.viewmodel.UserViewModel
+import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_tecent_buissness.*
 
 class CommonSettingFragemnt : BaseFragment() {
+
     companion object {
         fun newInstance(): CommonSettingFragemnt {
             return CommonSettingFragemnt()
         }
     }
 
+    private lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: UserViewModel
+    private val disposable = CompositeDisposable()
+
+    private var mealLimits: List<MealLimit> = mutableListOf(
+        MealLimit(0L, "未定义", "09:00", "07:00", 100, null, null, null),
+        MealLimit(1L, "未定义", "09:00", "07:00", 100, null, null, null),
+        MealLimit(2L, "未定义", "09:00", "07:00", 100, null, null, null),
+        MealLimit(3L, "未定义", "09:00", "07:00", 100, null, null, null)
+    )
+
     override fun onBindView(rootView: View, savedInstanceState: Bundle?) {
         initViews()
+        viewModelFactory = Injection.provideViewModelFactory(context!!)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+        disposable.add(viewModel.getAllMealLimits().subscribeOn(Schedulers.io()).subscribe({
+            mealLimits = it
+        }, { it.printStackTrace() }))
     }
 
     override fun setLayout(): Any = R.layout.fragment_tecent_buissness
@@ -51,11 +86,9 @@ class CommonSettingFragemnt : BaseFragment() {
 //                    CommonProcess.getSettingConstantMoney().toString(),
 //                    "100"
 //                )}）"
-            constantMoneyEdt.isEnabled = true
         } else {
             constantMoneySwitch.isChecked = false
             constantMoneyTv.text = "定值消费（已关闭）"
-            constantMoneyEdt.isEnabled = false
         }
         constantMoneySwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             when (isChecked) {
@@ -67,25 +100,20 @@ class CommonSettingFragemnt : BaseFragment() {
 //                            CommonProcess.getSettingConstantMoney().toString(),
 //                            "100"
 //                        )}）"
-                    constantMoneyEdt.isEnabled = true
 
                 }
                 false -> { //关闭定值消费
                     CommonProcess.setSettingIsUseConstantMoney(false)
                     constantMoneyTv.text = "定值消费（已关闭）"
-                    constantMoneyEdt.isEnabled = false
                 }
             }
         }
 
-        EditTextUtils.afterDotTwo(constantMoneyEdt)//设置小数限制
-
-
         constantMoneyBtn.setOnClickListener {
             when (CommonProcess.getSettingIsUseConstantMoney()) {
                 true -> {
-                    comfrimEdtMoney()
-                    constantMoneyEdt.text.clear()//清屏
+                    mSettingDialog.show()
+//                    comfrimEdtMoney()
                 }
                 false -> {
                     ToastUtil.showShortToast("请先开启定值消费")
@@ -112,72 +140,216 @@ class CommonSettingFragemnt : BaseFragment() {
             }
         }
 
-        //-----------------------------------------------------------------------------人脸注册
-
-//        quickPayRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-//            when (checkedId) {
-//                R.id.facePayRadioButton -> {//人脸支付
-//                    CommonProcess.setSettingQuickPay(0)
-//                    quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
-//                }
-//                R.id.cardPayRadioButton -> {
-//                    CommonProcess.setSettingQuickPay(1)
-//                    quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
-//                }
-//                R.id.qrCodePayRadioButton -> {
-//                    CommonProcess.setSettingQuickPay(2)
-//                    quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
-//                }
-//            }
-//        }
-//        when (CommonProcess.getSettingQuickPay()) {
-//            0 -> { //人脸支付
-//                facePayRadioButton.isChecked = true
-//                quickPayTv.text = "键盘支付按键绑定支付（当前：人脸支付）"
-//            }
-//            1 -> {//刷卡支付
-//                cardPayRadioButton.isChecked = true
-//                quickPayTv.text = "键盘支付按键绑定支付（当前：刷卡支付）"
-//            }
-//            2 -> {//扫码支付
-//                qrCodePayRadioButton.isChecked = true
-//                quickPayTv.text = "键盘支付按键绑定支付（当前：二维码支付）"
-//            }
-//        }
-
         settingBtn.setOnClickListener {
             //打开设置
             startActivity(Intent(Settings.ACTION_SETTINGS))
         }
     }
 
-    /**
-     * 检查输入的金额
-     */
-    @SuppressLint("SetTextI18n")
-    private fun comfrimEdtMoney() {
-        var moneyStr = constantMoneyEdt.text.toString() //设置金额
-        if (moneyStr.isEmpty()) {
-            ToastUtil.showLongToast("必须输入金额")
-            return
+    private fun applyConstantChange(
+        firstLine: Array<String>, secondLine: Array<String>,
+        thirdLine: Array<String>, fourthLine: Array<String>
+    ): Boolean {
+        for (i in 0..1) {
+            if (!firstLine[i].isValidTime()
+                || !secondLine[i].isValidTime()
+                || !thirdLine[i].isValidTime()
+                || !fourthLine[i].isValidTime()
+            ) {
+                activity?.showToast("时间格式不正确,请重新输入!")
+                return false
+            }
         }
-
-        if (moneyStr.endsWith(".")) { //如果最后一位有小数点则去除小数点
-            moneyStr = moneyStr.substring(0, moneyStr.length - 1)
+        if (firstLine[2].isEmpty() || secondLine[2].isEmpty()
+            || thirdLine[2].isEmpty() || fourthLine[2].isEmpty()
+        ) {
+            activity?.showToast("金额不能为空,请重新输入!")
+            return false
         }
-
-        val moneyInt = BigDecimalUtils.mul(moneyStr, "100").toInt()
-        if (moneyInt == 0) {
-            ToastUtil.showLongToast("输入金额必须大于0")
-            return
+        if (firstLine[2].toFloat() <= 0 || secondLine[2].toFloat() <= 0
+            || thirdLine[2].toFloat() <= 0 || fourthLine[2].toFloat() <= 0
+        ) {
+            activity?.showToast("金额不能为空,请重新输入!")
+            return false
         }
+        if (mealLimits.size != 4)
+            return false
+        mealLimits[0].local_start_time = firstLine[0]
+        mealLimits[0].local_end_time = firstLine[1]
+        mealLimits[0].local_amount = BigDecimalUtils.mul(firstLine[2], "100").toInt()
 
-        CommonProcess.setSettingConstantMoney(moneyInt)//先设置本地金额
-        constantMoneyTv.text =
-            "定值消费（当前定额：￥${BigDecimalUtils.div(
-                CommonProcess.getSettingConstantMoney().toString(),
-                "100"
-            )}）"
+        mealLimits[1].local_start_time = secondLine[0]
+        mealLimits[1].local_end_time = secondLine[1]
+        mealLimits[1].local_amount = BigDecimalUtils.mul(secondLine[2], "100").toInt()
+
+        mealLimits[2].local_start_time = thirdLine[0]
+        mealLimits[2].local_end_time = thirdLine[1]
+        mealLimits[2].local_amount = BigDecimalUtils.mul(thirdLine[2], "100").toInt()
+
+        mealLimits[3].local_start_time = fourthLine[0]
+        mealLimits[3].local_end_time = fourthLine[1]
+        mealLimits[3].local_amount = BigDecimalUtils.mul(fourthLine[2], "100").toInt()
+
+        disposable.add(
+            viewModel.insertMealLimits(mealLimits).subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribe({
+                log("更新风控成功")
+                activity?.showToast("更新定值策略成功")
+            }, { it.printStackTrace() })
+        )
+
+        return true
     }
 
+    private fun String.isValidTime(): Boolean {
+        if (this.length != 5) {
+            return false
+        }
+        if (this.indexOf(":") != 2) {
+            return false
+        }
+        return try {
+            val hour = this.substring(0, 2).toInt()
+            val minute = this.substring(3, 5).toInt()
+            hour in 0..23 && minute in 0..59
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private val mSettingDialog: AlertDialog by lazy { createConstantSettingDialog() }
+
+    //修改定值消费用到的textView...
+    private var tv_1_1: TextView? = null
+    private var tv_1_2: AutoCompleteTextView? = null
+    private var tv_1_3: AutoCompleteTextView? = null
+    private var tv_1_4: AutoCompleteTextView? = null
+
+    private var tv_2_1: TextView? = null
+    private var tv_2_2: AutoCompleteTextView? = null
+    private var tv_2_3: AutoCompleteTextView? = null
+    private var tv_2_4: AutoCompleteTextView? = null
+
+    private var tv_3_1: TextView? = null
+    private var tv_3_2: AutoCompleteTextView? = null
+    private var tv_3_3: AutoCompleteTextView? = null
+    private var tv_3_4: AutoCompleteTextView? = null
+
+    private var tv_4_1: TextView? = null
+    private var tv_4_2: AutoCompleteTextView? = null
+    private var tv_4_3: AutoCompleteTextView? = null
+    private var tv_4_4: AutoCompleteTextView? = null
+
+    private fun createConstantSettingDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(context!!, R.style.lightDialog)
+        builder.setTitle("修改定值消费策略")
+        val viewInflated =
+            LayoutInflater.from(context!!)
+                .inflate(R.layout.dialog_input_constant_money, null)
+        builder.setView(viewInflated)
+        initDialogTextView(viewInflated)
+
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            val success = applyConstantChange(
+                arrayOf(tv_1_2?.text.toString(), tv_1_3?.text.toString(), tv_1_4?.text.toString()),
+                arrayOf(tv_2_2?.text.toString(), tv_2_3?.text.toString(), tv_2_4?.text.toString()),
+                arrayOf(tv_3_2?.text.toString(), tv_3_3?.text.toString(), tv_3_4?.text.toString()),
+                arrayOf(tv_4_2?.text.toString(), tv_4_3?.text.toString(), tv_4_4?.text.toString())
+            )
+            if (success) {
+                mSettingDialog.dismiss()
+            }
+        }
+        builder.setNegativeButton(
+            android.R.string.cancel
+        ) { dialog, which -> dialog.cancel() }
+        return builder.create()
+    }
+
+    private fun initDialogTextView(viewInflated: View) {
+        if (mealLimits.size != 4)
+            return
+        tv_1_1 = viewInflated.findViewById(R.id.tv_1_1)
+        tv_1_2 = viewInflated.findViewById(R.id.tv_1_2)
+        tv_1_3 = viewInflated.findViewById(R.id.tv_1_3)
+        tv_1_4 = viewInflated.findViewById(R.id.tv_1_4)
+
+        tv_1_1?.setText(mealLimits[0].meal_section)
+        tv_1_2?.setText(
+            if (mealLimits[0].local_start_time.isNullOrEmpty())
+                mealLimits[0].start_time else mealLimits[0].local_start_time
+        )
+        tv_1_3?.setText(
+            if (mealLimits[0].local_end_time.isNullOrEmpty())
+                mealLimits[0].end_time else mealLimits[0].local_end_time
+        )
+        tv_1_4?.setText((mealLimits[0].amount / 100f).toString())
+        mealLimits[0].local_amount?.let {
+            tv_1_4?.setText((it / 100f).toString())
+        }
+
+        tv_2_1 = viewInflated.findViewById(R.id.tv_2_1)
+        tv_2_2 = viewInflated.findViewById(R.id.tv_2_2)
+        tv_2_3 = viewInflated.findViewById(R.id.tv_2_3)
+        tv_2_4 = viewInflated.findViewById(R.id.tv_2_4)
+
+        tv_2_1?.setText(mealLimits[1].meal_section)
+        tv_2_2?.setText(
+            if (mealLimits[1].local_start_time.isNullOrEmpty())
+                mealLimits[1].start_time else mealLimits[1].local_start_time
+        )
+        tv_2_3?.setText(
+            if (mealLimits[1].local_end_time.isNullOrEmpty())
+                mealLimits[1].end_time else mealLimits[1].local_end_time
+        )
+        tv_2_4?.setText((mealLimits[1].amount / 100f).toString())
+        mealLimits[1].local_amount?.let {
+            tv_2_4?.setText((it / 100f).toString())
+        }
+
+        tv_3_1 = viewInflated.findViewById(R.id.tv_3_1)
+        tv_3_2 = viewInflated.findViewById(R.id.tv_3_2)
+        tv_3_3 = viewInflated.findViewById(R.id.tv_3_3)
+        tv_3_4 = viewInflated.findViewById(R.id.tv_3_4)
+
+        tv_3_1?.setText(mealLimits[2].meal_section)
+        tv_3_2?.setText(
+            if (mealLimits[2].local_start_time.isNullOrEmpty())
+                mealLimits[2].start_time else mealLimits[2].local_start_time
+        )
+        tv_3_3?.setText(
+            if (mealLimits[2].local_end_time.isNullOrEmpty())
+                mealLimits[2].end_time else mealLimits[2].local_end_time
+        )
+        tv_3_4?.setText((mealLimits[2].amount / 100f).toString())
+        mealLimits[2].local_amount?.let {
+            tv_3_4?.setText((it / 100f).toString())
+        }
+
+        tv_4_1 = viewInflated.findViewById(R.id.tv_4_1)
+        tv_4_2 = viewInflated.findViewById(R.id.tv_4_2)
+        tv_4_3 = viewInflated.findViewById(R.id.tv_4_3)
+        tv_4_4 = viewInflated.findViewById(R.id.tv_4_4)
+
+        tv_4_1?.setText(mealLimits[3].meal_section)
+        tv_4_2?.setText(
+            if (mealLimits[3].local_start_time.isNullOrEmpty())
+                mealLimits[3].start_time else mealLimits[3].local_start_time
+        )
+        tv_4_3?.setText(
+            if (mealLimits[3].local_end_time.isNullOrEmpty())
+                mealLimits[3].end_time else mealLimits[3].local_end_time
+        )
+        tv_4_4?.setText((mealLimits[3].amount / 100f).toString())
+        mealLimits[3].local_amount?.let {
+            tv_4_4?.setText((it / 100f).toString())
+        }
+    }
+
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
+    }
 }
