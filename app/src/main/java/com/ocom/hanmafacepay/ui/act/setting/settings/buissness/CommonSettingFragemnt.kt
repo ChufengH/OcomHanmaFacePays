@@ -59,6 +59,7 @@ class CommonSettingFragemnt : BaseFragment() {
         disposable.add(viewModel.getAllMealLimits().subscribeOn(Schedulers.io()).subscribe({
             mealLimits.clear()
             mealLimits.addAll(it)
+            log("刷新mealLimits...")
         }, { it.printStackTrace() }))
     }
 
@@ -279,8 +280,10 @@ class CommonSettingFragemnt : BaseFragment() {
     }
 
     private fun initDialogTextView(viewInflated: View) {
-        if (mealLimits.size != 4)
-            return
+        if (mealLimits.size != 4) {
+            mealLimits.clear()
+            mealLimits.addAll(defaultMealLimitsList)
+        }
         tv_1_1 = viewInflated.findViewById(R.id.tv_1_1)
         tv_1_2 = viewInflated.findViewById(R.id.tv_1_2)
         tv_1_3 = viewInflated.findViewById(R.id.tv_1_3)
