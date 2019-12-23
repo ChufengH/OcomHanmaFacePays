@@ -140,7 +140,7 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
                     .ioToMain()
                     .doOnSubscribe { payhome_amountTv.visibility = VISIBLE }
                     .subscribe { it ->
-                        val limit = it.find { it.isInRange(0) }
+                      val limit = it.find { it.isInRange(0) }
                         if (limit != null) {
                             val amount =
                                 if (limit.local_amount != null) limit.local_amount else limit.amount

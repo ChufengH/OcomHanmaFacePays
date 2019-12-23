@@ -8,25 +8,21 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AutoCompleteTextView
-import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.example.android.observability.Injection
 import com.ocom.hanmafacepay.R
 import com.ocom.hanmafacepay.const.AUTO_CLOSE_DELAY
 import com.ocom.hanmafacepay.const.CommonProcess
 import com.ocom.hanmafacepay.network.entity.MealLimit
-import com.ocom.hanmafacepay.network.entity.OrderSummary
-import com.ocom.hanmafacepay.ui.adapter.OrderHistoryByDayAdapter
 import com.ocom.hanmafacepay.ui.base.BaseFragment
 import com.ocom.hanmafacepay.util.BigDecimalUtils
 import com.ocom.hanmafacepay.util.ToastUtil
 import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.extension.showToast
-import com.ocom.hanmafacepay.util.ioToMain
 import com.ocom.hanmafacepay.viewmodel.UserViewModel
 import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -46,20 +42,25 @@ class CommonSettingFragemnt : BaseFragment() {
 
     private var mealLimits: MutableList<MealLimit> = mutableListOf()
     private val defaultMealLimitsList: List<MealLimit> = mutableListOf(
-        MealLimit(0L, "早餐", "09:00", "07:00", 100, null, null, null),
-        MealLimit(1L, "午餐", "12:00", "14:00", 100, null, null, null),
-        MealLimit(2L, "晚餐", "16:00", "19:00", 100, null, null, null),
-        MealLimit(3L, "夜宵", "20:00", "22:00", 100, null, null, null)
+        MealLimit(1L, "早餐", "09:00", "07:00", 100, null, null, null),
+        MealLimit(2L, "午餐", "14:00", "12:00", 100, null, null, null),
+        MealLimit(3L, "晚餐", "19:00", "16:00", 100, null, null, null),
+        MealLimit(4L, "夜宵", "22:00", "20:00", 100, null, null, null)
     )
 
     override fun onBindView(rootView: View, savedInstanceState: Bundle?) {
         initViews()
         viewModelFactory = Injection.provideViewModelFactory(context!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+        refreshMealLimits()
+    }
+
+    private fun refreshMealLimits() {
         disposable.add(viewModel.getAllMealLimits().subscribeOn(Schedulers.io()).subscribe({
             mealLimits.clear()
             mealLimits.addAll(it)
-            log("刷新mealLimits...")
+            initDialogTextView(null)
+            log("刷新mealLimits...${mealLimits}")
         }, { it.printStackTrace() }))
     }
 
@@ -197,12 +198,14 @@ class CommonSettingFragemnt : BaseFragment() {
         mealLimits[3].local_amount = BigDecimalUtils.mul(fourthLine[2], "100").toInt()
 
         disposable.add(
-            viewModel.insertMealLimits(mealLimits).subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            ).subscribe({
-                log("更新风控成功")
-                activity?.showToast("更新定值策略成功")
-            }, { it.printStackTrace() })
+            viewModel.insertMealLimits(mealLimits)
+                .subscribeOn(Schedulers.io()).observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe({
+                    log("更新风控成功")
+                    refreshMealLimits()
+                    activity?.showToast("更新定值策略成功")
+                }, { it.printStackTrace() })
         )
 
         return true
@@ -279,15 +282,29 @@ class CommonSettingFragemnt : BaseFragment() {
         return builder.create()
     }
 
-    private fun initDialogTextView(viewInflated: View) {
+    private fun initDialogTextView(viewInflated: View? = null) {
         if (mealLimits.size != 4) {
             mealLimits.clear()
             mealLimits.addAll(defaultMealLimitsList)
         }
-        tv_1_1 = viewInflated.findViewById(R.id.tv_1_1)
-        tv_1_2 = viewInflated.findViewById(R.id.tv_1_2)
-        tv_1_3 = viewInflated.findViewById(R.id.tv_1_3)
-        tv_1_4 = viewInflated.findViewById(R.id.tv_1_4)
+        viewInflated?.run {
+            tv_1_1 = viewInflated.findViewById(R.id.tv_1_1)
+            tv_1_2 = viewInflated.findViewById(R.id.tv_1_2)
+            tv_1_3 = viewInflated.findViewById(R.id.tv_1_3)
+            tv_1_4 = viewInflated.findViewById(R.id.tv_1_4)
+            tv_2_1 = viewInflated.findViewById(R.id.tv_2_1)
+            tv_2_2 = viewInflated.findViewById(R.id.tv_2_2)
+            tv_2_3 = viewInflated.findViewById(R.id.tv_2_3)
+            tv_2_4 = viewInflated.findViewById(R.id.tv_2_4)
+            tv_3_1 = viewInflated.findViewById(R.id.tv_3_1)
+            tv_3_2 = viewInflated.findViewById(R.id.tv_3_2)
+            tv_3_3 = viewInflated.findViewById(R.id.tv_3_3)
+            tv_3_4 = viewInflated.findViewById(R.id.tv_3_4)
+            tv_4_1 = viewInflated.findViewById(R.id.tv_4_1)
+            tv_4_2 = viewInflated.findViewById(R.id.tv_4_2)
+            tv_4_3 = viewInflated.findViewById(R.id.tv_4_3)
+            tv_4_4 = viewInflated.findViewById(R.id.tv_4_4)
+        }
 
         tv_1_1?.setText(mealLimits[0].meal_section)
         tv_1_2?.setText(
@@ -303,11 +320,6 @@ class CommonSettingFragemnt : BaseFragment() {
             tv_1_4?.setText((it / 100f).toString())
         }
 
-        tv_2_1 = viewInflated.findViewById(R.id.tv_2_1)
-        tv_2_2 = viewInflated.findViewById(R.id.tv_2_2)
-        tv_2_3 = viewInflated.findViewById(R.id.tv_2_3)
-        tv_2_4 = viewInflated.findViewById(R.id.tv_2_4)
-
         tv_2_1?.setText(mealLimits[1].meal_section)
         tv_2_2?.setText(
             if (mealLimits[1].local_start_time.isNullOrEmpty())
@@ -322,10 +334,6 @@ class CommonSettingFragemnt : BaseFragment() {
             tv_2_4?.setText((it / 100f).toString())
         }
 
-        tv_3_1 = viewInflated.findViewById(R.id.tv_3_1)
-        tv_3_2 = viewInflated.findViewById(R.id.tv_3_2)
-        tv_3_3 = viewInflated.findViewById(R.id.tv_3_3)
-        tv_3_4 = viewInflated.findViewById(R.id.tv_3_4)
 
         tv_3_1?.setText(mealLimits[2].meal_section)
         tv_3_2?.setText(
@@ -341,10 +349,6 @@ class CommonSettingFragemnt : BaseFragment() {
             tv_3_4?.setText((it / 100f).toString())
         }
 
-        tv_4_1 = viewInflated.findViewById(R.id.tv_4_1)
-        tv_4_2 = viewInflated.findViewById(R.id.tv_4_2)
-        tv_4_3 = viewInflated.findViewById(R.id.tv_4_3)
-        tv_4_4 = viewInflated.findViewById(R.id.tv_4_4)
 
         tv_4_1?.setText(mealLimits[3].meal_section)
         tv_4_2?.setText(
