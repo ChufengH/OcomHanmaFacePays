@@ -23,24 +23,17 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class GMailSender extends javax.mail.Authenticator {
-
     private final String mailhost = "smtp.163.com";
-
     private final String user = "ocombugreport@163.com";
-
     private String password = "ocom123456";
-
     private Session session;
-
 
     private Multipart _multipart = new MimeMultipart();
 
     static {
-
         Security.addProvider(new JSSEProvider());
 
     }
-
 
     public GMailSender() {
 //        this.user = user;
@@ -54,16 +47,13 @@ public class GMailSender extends javax.mail.Authenticator {
 
     }
 
-
     protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(user, password);
     }
 
-
     public synchronized boolean sendMail(String subject, String body,
 
                                          String sender, String recipients) throws Exception {
-
         try {
             MimeMessage message = new MimeMessage(session);
             DataHandler handler = new DataHandler(new ByteArrayDataSource(
@@ -90,7 +80,6 @@ public class GMailSender extends javax.mail.Authenticator {
         }
     }
 
-
     public void addAttachment(String filename, String attachName) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
         DataSource source = new FileDataSource(filename);
@@ -98,7 +87,6 @@ public class GMailSender extends javax.mail.Authenticator {
         messageBodyPart.setFileName(attachName);
         _multipart.addBodyPart(messageBodyPart);
     }
-
 
     public class ByteArrayDataSource implements DataSource {
         private byte[] data;
@@ -110,17 +98,14 @@ public class GMailSender extends javax.mail.Authenticator {
             this.type = type;
         }
 
-
         public ByteArrayDataSource(byte[] data) {
             super();
             this.data = data;
         }
 
-
         public void setType(String type) {
             this.type = type;
         }
-
 
         public String getContentType() {
             if (type == null)
@@ -129,18 +114,13 @@ public class GMailSender extends javax.mail.Authenticator {
                 return type;
         }
 
-
         public InputStream getInputStream() throws IOException {
-
             return new ByteArrayInputStream(data);
-
         }
-
 
         public String getName() {
             return "ByteArrayDataSource";
         }
-
 
         public OutputStream getOutputStream() throws IOException {
             throw new IOException("Not Supported");

@@ -584,10 +584,10 @@ class HomeActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope, NetState
             })
         }
         if (isUploadOrder) return
-        isUploadOrder = true
         launch(Dispatchers.IO) {
             val allOfflineOrders = viewModel.getAllOfflineOrders().blockingFirst()
             if (allOfflineOrders.isEmpty()) return@launch
+            isUploadOrder = true
             log("查询到离线订单个数${allOfflineOrders.size}")
             repeat(allOfflineOrders.size) {
                 kotlinx.coroutines.delay(3000 + mHeartFailCount * 3000)
