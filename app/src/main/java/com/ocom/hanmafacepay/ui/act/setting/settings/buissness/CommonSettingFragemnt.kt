@@ -215,22 +215,11 @@ class CommonSettingFragemnt : BaseFragment() {
 
     private fun String.isValidTime(): Boolean {
         log("开始判断时间是否正确${this}")
-        if (this.isEmpty()) {
-            log("${this}非法")
-            return false
-        }
-        if (!this.matches(timeRegex)) {
-            log("${this}非法")
-            return false
-        }
-        return try {
-            val hour = this.substring(0, this.indexOf(":")).toInt()
-            val minute = this.substring(this.indexOf(":") + 1, this.length).toInt()
-            hour in 0..23 && minute in 0..59
-        } catch (e: Throwable) {
-            e.printStackTrace()
-            false
-        }
+//        if (this.isEmpty()) {
+//            log("${this}非法")
+//            return false
+//        }
+        return this.matches(timeRegex)
     }
 
     private val mSettingDialog: AlertDialog by lazy { createConstantSettingDialog() }
