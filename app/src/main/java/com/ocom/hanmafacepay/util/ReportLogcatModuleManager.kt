@@ -41,8 +41,11 @@ object ReportLogcatModuleManager {
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe({
-                if (FacePayApplication.INSTANCE.filesDir?.list()?.size ?: 0 > 4) {
-                    FileUtils.deleteAllInDir(FacePayApplication.INSTANCE.filesDir)
+                if (FacePayApplication.INSTANCE.filesDir?.list()?.filter { it.contains("system_log") }?.size ?: 0 > 10) {
+                    FacePayApplication.INSTANCE.filesDir?.list()
+                        ?.filter { it.contains("system_log") }?.forEach {
+                        FileUtils.delete(it)
+                    }
                 }
                 ShellUtils.execCmd(arrayOf("logcat > $path"), true)
             }) { e -> e.printStackTrace() }
