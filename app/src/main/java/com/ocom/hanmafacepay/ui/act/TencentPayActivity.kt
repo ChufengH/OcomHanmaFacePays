@@ -468,14 +468,20 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         pay_statusTv.text = getString(R.string.pay_success)
         if (response.subsidy_account > 0) {
             sub_remainTv.text = "补贴余额: ${response.subsidy_account / 100f}元"
-        }
-        cash_remainTv.text = "现金余额: ${response.cash_account / 100f}元"
-        total_remainTv.text = "总余额: ${(response.cash_account + response.subsidy_account) / 100f}元"
+            cash_remainTv.text = "现金余额: ${response.cash_account / 100f}元"
+            total_remainTv.text =
+                "总余额: ${(response.cash_account + response.subsidy_account) / 100f}元"
+            if (order.offline == 0) {
+                readTTs("支付成功!实际消费${response.amount / 100f}元")
+                showToast("支付成功!实际消费${response.amount / 100f}元, 总余额${(response.cash_account + response.subsidy_account) / 100f}元")
+            }
+        } else {
+            sub_remainTv.visibility = View.GONE
+            cash_remainTv.visibility = View.GONE
+            total_remainTv.visibility = View.GONE
 
-        if (order.offline == 0) {
-            readTTs("支付成功!实际消费${response.amount / 100f}元")
-            showToast("支付成功!实际消费${response.amount / 100f}元, 总余额${(response.cash_account + response.subsidy_account) / 100f}元")
         }
+
         val data = order.copy(
             offline = 0
         )
@@ -503,7 +509,7 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
             )
         }
         com.hanma.fcd.DoolLockUtil.Instance().openDoorDelay(AUTO_CLOSE_DELAY * 1000L)
-//        ToastUtil.showto("开门成功${AUTO_CLOSE_DELAY}秒后关门")
+        ToastUtil.showShortToast("开门成功${AUTO_CLOSE_DELAY}秒后关门")
         setCountDown()
     }
 
