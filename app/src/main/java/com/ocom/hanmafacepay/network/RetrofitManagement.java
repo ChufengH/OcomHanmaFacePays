@@ -109,10 +109,12 @@ public final class RetrofitManagement {
     private Retrofit getRetrofit(String url) {
 //        if (retrofit == null) {
         ParamsInterceptor paramsInterceptor = new ParamsInterceptor();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         final OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(10000, TimeUnit.MILLISECONDS)
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLoggingInterceptor())
+                .addInterceptor(loggingInterceptor)
                 .addInterceptor(paramsInterceptor);
         OkHttpClient client = builder.build();
         retrofit = new Retrofit.Builder()

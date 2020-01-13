@@ -50,8 +50,8 @@ android {
         if (variant.buildType.name.equals('release')) {
             variant.outputs.all { output ->
                 def buildName = "OcomHanmaFacePay"
-                def type = variant.buildType.name
-                def date = new Date()
+//                def type = variant.buildType.name
+//                def date = new Date()
 //                def formattedDate = date.format('yyyy年MM月dd日HH点mm分')
                 def releaseApkName = buildName + "_" + versionName + '.apk'
                 outputFileName = releaseApkName
@@ -79,9 +79,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     api "com.squareup.okhttp3:logging-interceptor:3.13.1"
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.5'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
     api "com.github.ybq:Android-SpinKit:1.2.0"
     api "de.hdodenhof:circleimageview:3.0.0"
