@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -111,6 +112,7 @@ public final class RetrofitManagement {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(10000, TimeUnit.MILLISECONDS)
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                .addInterceptor(new HttpLoggingInterceptor())
                 .addInterceptor(paramsInterceptor);
         OkHttpClient client = builder.build();
         retrofit = new Retrofit.Builder()

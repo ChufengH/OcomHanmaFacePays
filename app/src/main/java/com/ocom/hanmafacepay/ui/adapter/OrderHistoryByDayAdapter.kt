@@ -1,5 +1,6 @@
 package com.ocom.hanmafacepay.ui.adapter
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -123,6 +124,7 @@ class OrderHistoryByDayAdapter(
         private val mOtherTv: TextView by lazy { itemView.findViewById<TextView>(R.id.other_tv) }
         private val mTotalTv: TextView by lazy { itemView.findViewById<TextView>(R.id.total_tv) }
 
+        @SuppressLint("SetTextI18n")
         fun bindOrder(orders: List<Order>, title: String, detailList: List<String>) {
             mTitleTv.text = title
             mTotalTv.text = "合计消费: ${orders.sumBy { it.amount } / 100f}元"

@@ -11,6 +11,7 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.android.observability.Injection
 import com.google.gson.Gson
 import com.ocom.faceidentification.base.BaseKeybroadActivity
@@ -164,10 +165,11 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         when (mRequestPayType) {
             REQUEST_CODE_PAY_FACE -> {
                 val byteArray = faceImgBase64?.base64ToByteArray() ?: byteArrayOf()
-                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+//                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                 Glide
                     .with(this@TencentPayActivity)
-                    .load(bitmap ?: R.drawable.icon_smile)
+                    .load(byteArray)
+                    .apply(RequestOptions().error(R.drawable.icon_smile))
                     .into(pay_userImg)
             }
             REQUEST_CODE_PAY_CARD -> {

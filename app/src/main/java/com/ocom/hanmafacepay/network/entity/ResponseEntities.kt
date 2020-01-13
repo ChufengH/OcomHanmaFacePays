@@ -15,10 +15,10 @@ import java.util.*
  * @param device_no 机具号，应该与请求的机具号保持一致
  */
 open class BaseResponse(
-    val ret: Int = -1, val msg: String = "", val timestamp: String = "",
+    val ret: Int? = -1, val msg: String = "", val timestamp: String = "",
     val sign: String = "", val device_no: String = ""
 ) {
-    fun isSuccess() = ret == 0
+    fun isSuccess() = ret != null && ret == 0
 }
 
 /**
