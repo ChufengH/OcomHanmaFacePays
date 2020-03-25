@@ -143,7 +143,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
         disposable.add(Maybe.timer(2, TimeUnit.SECONDS).subscribe {
             mIsUsingCard = false
         })
-        readTTs("开始支付")
+        readTTs("开始验证")
     }
 
     private fun finishWithUserId(userId: String) {
