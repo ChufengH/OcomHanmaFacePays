@@ -234,7 +234,7 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
 
     override fun onActivityCreat(savedInstanceState: Bundle?) {
         mContantHint = intent?.getStringExtra(KEY_CONSTANT_HINT)
-        tv_description.text = mContantHint ?: "检测中...."
+//        tv_description.text = mContantHint ?: "检测中...."
         viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
         btn_back.setOnClickListener { onBackPressed() }

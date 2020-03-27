@@ -70,11 +70,9 @@ class TencentPayActivity : BaseKeybroadActivity(), IHomeView, CoroutineScope {
         private const val VALUE_MONEY = "value_money"//消费金额
         private const val VALUE_QRCODE = "value_qrcode"//二维码内容
 
-
         private var isPaying = true//正在支付标签
 
         private var faceImgBase64: String? = null//人脸图片base64码
-
 
         private class DelayHandler(
             private val textToSpeech: TextToSpeech,
