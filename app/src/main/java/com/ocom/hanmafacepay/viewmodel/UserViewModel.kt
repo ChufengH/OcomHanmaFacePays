@@ -35,7 +35,10 @@ import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -61,32 +64,25 @@ class UserViewModel(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private fun deleteInLocalAsync(userId: String) = async(Dispatchers.IO) {
+    private fun deleteInLocalAsync(userId: String) {
         FaceServiceManager.getInstance().addRunnable {
             FaceServiceManager.getInstance().removeUserFeature(userId)
         }
     }
 
-    fun registerInLocalAsync(userId: String) = async(Dispatchers.IO) {
-        val bytes = userId.base64ToByteArray() ?: return@async
+    private fun registerInLocal(userId: String) {
+        val bytes = userId.base64ToByteArray() ?: return
         //只读尺寸就可以了
-        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.count()) ?: return@async
+        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.count()) ?: return
         val rgbBytes = BitMapUtil.getRGBFromBMP(bitmap)
         FaceServiceManager.getInstance().addRunnable {
             FaceServiceManager.getInstance()
                 .registerUserByImage(userId, rgbBytes, bitmap.width, bitmap.height)
         }
+        bitmap.recycle()
     }
 
     fun updateUsers(users: List<User>) {
-        users.filterNotNull()
-            .filter { !TextUtils.isEmpty(it.userid) }.map { it.userid }
-            .forEach { deleteInLocalAsync(it) }
-        users.filter { it.flag == 1 }.forEach {
-            val file = File(FacePayApplication.INSTANCE.filesDir, it.userid)
-            if (file.exists())
-                file.delete()
-        }
         users.filter { it.flag == 0 && !TextUtils.isEmpty(it.picture) }.forEach {
             val file = File(FacePayApplication.INSTANCE.filesDir, it.userid)
             val outputStream = FileOutputStream(file)
@@ -100,13 +96,19 @@ class UserViewModel(
                 outputStream.close()
             }
             it.picture = ""
-            registerInLocalAsync(it.userid)
+            registerInLocal(it.userid)
         }
-        dataSource.updataAllUsers(users)
-        val d = Maybe.timer(5, TimeUnit.SECONDS)
-            .subscribe {
+        val updateUsers = users.filter { it.needInsertOrUpdate() }
+        val deletedUsers = users.filter { it.needDelete() }
+        deletedUsers.forEach { deleteInLocalAsync(it.userid) }
+        val temp = dataSource.insertDatas(updateUsers)
+            .andThen(dataSource.deleteUsers(deletedUsers))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                log("Update all users success!")
                 ActivityPartnerManager.dismissDialog()
-            }
+            }, { e -> e.printStackTrace() })
     }
 
     fun updateMealLimits(list: List<MealLimit>) {

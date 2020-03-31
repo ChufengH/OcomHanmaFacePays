@@ -89,7 +89,8 @@ class FaceDetectActivity : BaseCameraActivity(), CoroutineScope {
             p0, mCameraHelper?.previewSize?.width ?: 640, mCameraHelper?.previewSize?.height ?: 480
         )
         if (faces == null) {
-            tv_description.text = mContantHint ?: "检测中...."
+//            tv_description.text = mContantHint ?: "检测中...."
+            tv_description.text =  "检测中...."
             mFaceRectView.clearRect()
         } else {
             //不在支付的时候才识别

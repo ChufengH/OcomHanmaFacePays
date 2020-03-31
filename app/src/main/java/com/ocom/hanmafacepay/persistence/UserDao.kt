@@ -8,7 +8,7 @@ import io.reactivex.*
  * Data Access Object for the users table.
  */
 @Dao
-interface UserDao{
+interface UserDao {
 
     @Transaction
     fun updataAllUsers(users: List<User>) {
@@ -16,8 +16,12 @@ interface UserDao{
             deleteUser(it.userid).blockingAwait()
         }
         users.filter { it.needInsertOrUpdate() }.let {
-            insertDatas(it).blockingAwait()}
+            insertDatas(it).blockingAwait()
+        }
     }
+
+    @Delete
+    fun deleteUsers(users: List<User>): Completable
 
     @Query("SELECT * FROM Users WHERE card = :card_no")
     fun getUserByCard(card_no: String): Single<User>
@@ -29,17 +33,17 @@ interface UserDao{
     fun getAllusers(): Observable<List<User>>
 
     @Query("DELETE FROM Users WHERE userid = :id")
-    fun deleteUser(id: String):Completable
+    fun deleteUser(id: String): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertData(user:User):Completable
+    fun insertData(user: User): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDatas(user:List<User>):Completable
+    fun insertDatas(user: List<User>): Completable
 
     /**
      * Delete all users.
      */
     @Query("DELETE FROM Users")
-    fun deleteAllUsers():Completable
+    fun deleteAllUsers(): Completable
 }
