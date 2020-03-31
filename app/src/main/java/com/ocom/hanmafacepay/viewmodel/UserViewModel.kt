@@ -33,10 +33,7 @@ import com.ocom.hanmafacepay.persistence.UserDao
 import com.ocom.hanmafacepay.ui.widget.ActivityPartnerManager
 import com.ocom.hanmafacepay.util.extension.base64ToByteArray
 import com.ocom.hanmafacepay.util.extension.log
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -128,7 +125,7 @@ class UserViewModel(
     }
 
     // for every emission of the user, get the user name
-    fun getAllUsers(): Observable<List<User>> {
+    fun getAllUsers(): Flowable<List<User>> {
         return dataSource.getAllusers()
     }
 
@@ -139,6 +136,8 @@ class UserViewModel(
     fun deleteUser(userId: String) {
         dataSource.deleteUser(userId)
     }
+
+    fun deleteAllUsers() = dataSource.deleteAllUsers()
 
     fun deleteOrder(id: String) = orderDao.deleteOrder(id)
 

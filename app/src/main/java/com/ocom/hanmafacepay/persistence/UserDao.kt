@@ -30,7 +30,7 @@ interface UserDao {
     fun getUserById(id: String): Maybe<User>
 
     @Query("SELECT * FROM Users")
-    fun getAllusers(): Observable<List<User>>
+    fun getAllusers(): Flowable<List<User>>
 
     @Query("DELETE FROM Users WHERE userid = :id")
     fun deleteUser(id: String): Completable

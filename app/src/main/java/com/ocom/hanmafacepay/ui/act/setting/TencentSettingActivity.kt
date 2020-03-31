@@ -1,5 +1,6 @@
 package com.ocom.faceidentification.module.tencent.setting
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.res.ColorStateList
@@ -9,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProviders
+import com.example.android.observability.Injection
 import com.ocom.faceidentification.module.setting.tradeHistory.TradeHistoryFragment
 import com.ocom.faceidentification.module.setting.tradeHistory.UserListFragment
 import com.ocom.faceidentification.module.tencent.setting.settings.TencentSettingsFragment
@@ -17,6 +20,15 @@ import com.ocom.hanmafacepay.ui.act.setting.about.TencentAboutFragment
 import com.ocom.hanmafacepay.ui.act.setting.about.TencentBusinessByDayFragment
 import com.ocom.hanmafacepay.ui.base.BaseActivity
 import com.ocom.hanmafacepay.ui.base.BaseFragment
+import com.ocom.hanmafacepay.ui.widget.ActivityPartnerManager
+import com.ocom.hanmafacepay.util.DialogManager
+import com.ocom.hanmafacepay.util.extension.log
+import com.ocom.hanmafacepay.util.extension.showToast
+import com.ocom.hanmafacepay.viewmodel.UserViewModel
+import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_tencent_setting.*
 
 class TencentSettingActivity : BaseActivity() {
@@ -112,11 +124,48 @@ class TencentSettingActivity : BaseActivity() {
         }
     }
 
+    private lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: UserViewModel
+
     private lateinit var searchView: SearchView
+    private val mDeleteUserDialog by lazy {
+        AlertDialog.Builder(this@TencentSettingActivity, R.style.lightDialog)
+            .setTitle("删除记录")
+            .setMessage("是否删除所有用户记录? 请注意这不可恢复!")
+            .setPositiveButton("确定") { dialog, _ ->
+                dialog.dismiss()
+                clearAllUsers()
+            }
+            .setNegativeButton("取消") { dialog, _ -> dialog.dismiss() }
+            .create()
+    }
+
+    private fun clearAllUsers() {
+        ActivityPartnerManager.showAlertDialog("正在删除用户数据")
+        viewModelFactory = Injection.provideViewModelFactory(this)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
+        val temp = viewModel.deleteAllUsers()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally {
+                ActivityPartnerManager.dismissDialog()
+            }
+            .doOnError { e -> showToast("删除用户失败${e.localizedMessage}") }
+            .subscribe {
+                log("删除用户成功")
+                showToast("删除用户成功")
+            }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_tencent_toolbar_setting, menu)
         // Associate searchable configuration with the SearchView
+        menu.findItem(R.id.action_delete)
+            .setOnMenuItemClickListener {
+                mDeleteUserDialog.show()
+                true
+            }
         val searchManager =
             getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView = menu.findItem(R.id.action_search)
