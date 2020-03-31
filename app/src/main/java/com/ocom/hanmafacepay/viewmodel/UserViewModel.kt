@@ -137,7 +137,13 @@ class UserViewModel(
         dataSource.deleteUser(userId)
     }
 
-    fun deleteAllUsers() = dataSource.deleteAllUsers()
+    fun deleteAllUsers():Completable =
+        dataSource.deleteAllUsers()
+            .andThen(Completable.fromAction {
+                FaceServiceManager.getInstance().addRunnable {
+                    FaceServiceManager.getInstance().removeAllUsers()
+                }
+            })
 
     fun deleteOrder(id: String) = orderDao.deleteOrder(id)
 

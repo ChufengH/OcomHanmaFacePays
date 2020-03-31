@@ -26,6 +26,7 @@ import com.ocom.hanmafacepay.util.extension.log
 import com.ocom.hanmafacepay.util.extension.showToast
 import com.ocom.hanmafacepay.viewmodel.UserViewModel
 import com.ocom.hanmafacepay.viewmodel.ViewModelFactory
+import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
