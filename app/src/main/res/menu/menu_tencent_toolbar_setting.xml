@@ -11,7 +11,7 @@
             app:showAsAction="ifRoom" />
     <item
             android:id="@+id/action_delete"
-            android:icon="@drawable/ic_face"
+            android:icon="@drawable/ic_24_delete"
             android:orderInCategory="100"
             android:title="删除用户"
             app:showAsAction="ifRoom" />
