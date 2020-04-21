@@ -10,8 +10,8 @@ android {
         applicationId "com.ocom.hanmafacepay"
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "1.68"
-        versionCode 26
+        versionName "1.69"
+        versionCode 27
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi"
